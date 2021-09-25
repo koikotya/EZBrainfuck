@@ -1,0 +1,19 @@
+fn main() {
+    fixed(50,10) a;
+    fixed(50,10) b;
+    fixed(50,10) c;
+
+    scan(a);
+    scan(b);
+
+    c = 333.75*b*b*b*b*b*b+
+        a*a*(11*a*a*b*b-b*b*b*b*b*b-121*b*b*b*b-2)+
+        5.5*b*b*b*b*b*b*b*b+
+        a/(2*b);
+
+    print(c);
+
+    char newl;
+    newl = 10;
+    print(newl);
+}

@@ -1,0 +1,15 @@
+fn main() {
+    uint(1) a;
+    uint(1) b;
+    uint(1) c;
+    uint(2) ans;
+    scan(a);
+    scan(b);
+    scan(c);
+    ans = 21-a-b-c;
+    print(ans);
+
+    char newl;
+    newl = 10;
+    print(newl);
+}
