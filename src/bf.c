@@ -427,8 +427,8 @@ void printChar(Variable *v) {
 void printUint(Variable *v) {
     fprintf(Fresult,"\nprint uint\n");
     movePointer(0,v->location);
-    movePointer(0,v->unit_size*v->size);
-    for (int i = 0;i < v->size-1;++i) {
+    movePointer(0,v->unit_size*size(v));
+    for (int i = 0;i < size(v)-1;++i) {
         movePointer(v->unit_size,0);
         fprintf(Fresult,"[>>+<]>[<]>[<<++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------<+>>>[-]]<<");
     }
@@ -442,7 +442,7 @@ void printUint(Variable *v) {
 void printInt(Variable *v) {
     fprintf(Fresult,"\nprint int\n");
     movePointer(0,v->location);
-    movePointer(0,v->unit_size*(v->size-1));
+    movePointer(0,v->unit_size*(size(v)-1));
     fprintf(Fresult,"[>>+<]>[<]>[++++++++++++++++++++++++++++++++++++++++++++.---------------------------------------------]<<");
     for (int i = 0;i < v->idegit-1;++i) {
         movePointer(v->unit_size,0);
@@ -458,7 +458,7 @@ void printInt(Variable *v) {
 void printFixed(Variable *v) {
     fprintf(Fresult,"\nprint fixed\n");
     movePointer(0,v->location);
-    movePointer(0,v->unit_size*(v->size-1));
+    movePointer(0,v->unit_size*(size(v)-1));
     fprintf(Fresult,"[>>+<]>[<]>[++++++++++++++++++++++++++++++++++++++++++++.---------------------------------------------]<<");
     for (int i = 0;i < v->idegit-1;++i) {
         movePointer(v->unit_size,0);

@@ -13,6 +13,10 @@ int min(int a,int b) {
     return (a < b ? a : b);
 }
 
+int size(Variable *v) {
+    return v->idegit+v->fdegit+v->sign;
+}
+
 int getIndex(Operation op) {
     int res = 0;
     if (op == PLUS_TEMP) res = 1;
@@ -35,10 +39,10 @@ void setLiteral(Variable *v1,Variable *v2,int index1) {
         setInteger(v1,index1,v2->ident);
     } else if (v1->type == INT) {
         setInteger(v1,index1,v2->ident);
-        setSign(v1,index1,v2->sign);
+        setSign(v1,index1,v2->negative);
     } else if (v1->type == FIXED) {
         setDecimal(v1,index1,v2->ident,v2->op);
-        setSign(v1,index1,v2->sign);
+        setSign(v1,index1,v2->negative);
     } else if (v1->type == CHAR) {
         setChar(v1,index1,v2->ident);
     } else if (v1->type == BOOL) {
@@ -64,10 +68,10 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         move(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit);
         // 符号の処理
         if ((v1->type == INT || v1->type == FIXED) && (v2->type == INT || v2->type == FIXED)) {
-            move(v1,v2,v1->size-1,v2->size-1,index1,v2_index,1);
+            move(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1);
         }
-        turnSign(v1,index1,v2->sign);
-        clear(v2,0,v2_index,v2->size);
+        turnSign(v1,index1,v2->negative);
+        clear(v2,0,v2_index,size(v2));
         freeVariable(v2);
     } else {
         // v2が変数の場合
@@ -78,32 +82,32 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         copy(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit,1);
         // 符号の処理
         if ((v1->type == INT || v1->type == FIXED) && (v2->type == INT || v2->type == FIXED)) {
-            copy(v1,v2,v1->size-1,v2->size-1,index1,v2_index,1,1);
+            copy(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1,1);
         }
-        turnSign(v1,index1,v2->sign);
+        turnSign(v1,index1,v2->negative);
     }
 };
 
 // todo:激ヤバ実装なのでどうにかする
+// todo:dfsの分割。1回目のdfsで桁数などを取得、2回目のdfsでメモリの位置を確定、コード生成
 Variable *dfs(Node *p, Variable *t) {
     Variable *res = NULL;
     if (p == NULL) return res;
     if (p->type == PLUS_AST) {
         if (p->n == 1) {
             res = dfs(p->list[0],t);
-            res->sign = false;
         } else {
             res = (Variable *)malloc(sizeof(Variable));
             res->type = t->type;
             res->op = PLUS_TEMP;
             res->idegit = t->idegit;
             res->fdegit = t->fdegit;
-            res->size = t->size;
+            res->sign = t->sign;
             res->location = used_memory;
             res->unit_size = 8;
-            res->sign = false;
+            res->negative = false;
             val_list[list_size++] = res;
-            used_memory += res->size*res->unit_size;
+            used_memory += size(res)*res->unit_size;
             
             Variable *v1 = dfs(p->list[0],t);
             Variable *v2 = dfs(p->list[1],t);
@@ -129,19 +133,19 @@ Variable *dfs(Node *p, Variable *t) {
     } else if (p->type == MINUS_AST) {
         if (p->n == 1) {
             res = dfs(p->list[0],t);
-            res->sign = (!res->sign);
+            res->negative = (!res->negative);
         } else {
             res = (Variable *)malloc(sizeof(Variable));
             res->type = t->type;
             res->op = MINUS_TEMP;
             res->idegit = t->idegit;
             res->fdegit = t->fdegit;
-            res->size = t->size;
+            res->sign = t->sign;
             res->location = used_memory;
             res->unit_size = 8;
-            res->sign = false;
+            res->negative = false;
             val_list[list_size++] = res;
-            used_memory += res->size*res->unit_size;
+            used_memory += size(res)*res->unit_size;
             
             Variable *v1 = dfs(p->list[0],t);
             Variable *v2 = dfs(p->list[1],t);
@@ -170,12 +174,12 @@ Variable *dfs(Node *p, Variable *t) {
         res->op = TIMES_TEMP;
         res->idegit = t->idegit+t->idegit+t->fdegit;
         res->fdegit = t->fdegit;
-        res->size = t->size+t->idegit+t->fdegit;
+        res->sign = t->sign;
         res->location = used_memory;
         res->unit_size = 8;
-        res->sign = false;
+        res->negative = false;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
         
         Variable *v1 = dfs(p->list[0],t);
         Variable *v2 = dfs(p->list[1],t);
@@ -206,12 +210,12 @@ Variable *dfs(Node *p, Variable *t) {
         res->op = DIVIDE_TEMP;
         res->idegit = t->idegit+t->idegit;
         res->fdegit = t->fdegit+t->fdegit;
-        res->size = t->size+t->idegit+t->fdegit;
+        res->sign = t->sign;
         res->location = used_memory;
         res->unit_size = 8;
-        res->sign = false;
+        res->negative = false;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
         
         Variable *v1 = dfs(p->list[0],t);
         Variable *v2 = dfs(p->list[1],t);
@@ -236,20 +240,20 @@ Variable *dfs(Node *p, Variable *t) {
             // error
         }
         movePointer(res->location,0);
-        clear(res,0,0,res->size);
-        clear(res,0,1,res->size);
+        clear(res,0,0,size(res));
+        clear(res,0,1,size(res));
     } else if (p->type == MOD_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->type = t->type;
         res->op = MOD_TEMP;
         res->idegit = t->idegit+t->idegit;
         res->fdegit = t->fdegit+t->fdegit;
-        res->size = t->size+t->idegit+t->fdegit;
+        res->sign = t->sign;
         res->location = used_memory;
         res->unit_size = 8;
-        res->sign = false;
+        res->negative = false;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
         
         Variable *v1 = dfs(p->list[0],t);
         Variable *v2 = dfs(p->list[1],t);
@@ -274,12 +278,12 @@ Variable *dfs(Node *p, Variable *t) {
             // error
         }
         movePointer(res->location,0);
-        clear(res,0,0,res->size);
-        clear(res,0,7,res->size);
+        clear(res,0,0,size(res));
+        clear(res,0,7,size(res));
     } else if (p->type == ASSIGN_AST) {
         Variable *v1 = dfs(p->list[0],NULL);
         Variable *v2 = dfs(p->list[1],v1);
-        clear(v1,0,0,v1->size);
+        clear(v1,0,0,size(v1));
         setValue(v1,v2,0);
     } else if (p->type == INTNUMBER_AST) {
         res = (Variable *)malloc(sizeof(Variable));
@@ -298,65 +302,65 @@ Variable *dfs(Node *p, Variable *t) {
         res->op = NOT_OP;
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
-        res->size = res->idegit;
+        res->sign = false;
         res->location = used_memory;
         res->unit_size = 3;
-        res->sign = false;
+        res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
     } else if (p->type == INT_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->type = INT;
         res->op = NOT_OP;
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
-        res->size = res->idegit+1;
+        res->sign = true;
         res->location = used_memory;
         res->unit_size = 3;
-        res->sign = false;
+        res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
     } else if (p->type == FIXED_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->type = FIXED;
         res->op = NOT_OP;
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = atoi(p->list[1]->str);
-        res->size = res->idegit+res->fdegit+1;
+        res->sign = true;
         res->location = used_memory;
         res->unit_size = 3;
-        res->sign = false;
+        res->negative = false;
         res->ident = p->list[2]->str;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
     } else if (p->type == BOOL_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->type = BOOL;
         res->op = NOT_OP;
         res->idegit = 1;
         res->fdegit = 0;
-        res->size = res->idegit;
+        res->sign = false;
         res->location = used_memory;
         res->unit_size = 2;
-        res->sign = false;
+        res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
     } else if (p->type == CHAR_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->type = CHAR;
         res->op = NOT_OP;
         res->idegit = 1;
         res->fdegit = 0;
-        res->size = res->idegit;
+        res->sign = false;
         res->location = used_memory;
         res->unit_size = 2;
-        res->sign = false;
+        res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
-        used_memory += res->size*res->unit_size;
+        used_memory += size(res)*res->unit_size;
     } else if (p->type == STR_AST) {
     } else if (p->type == EQUAL_AST) {
     } else if (p->type == NOTEQUAL_AST) {
@@ -373,7 +377,7 @@ Variable *dfs(Node *p, Variable *t) {
         }
     } else if (p->type == SCAN_AST) {
         Variable *v = dfs(p->list[0],NULL);
-        clear(v,0,0,v->size);
+        clear(v,0,0,size(v));
         if (v->type == UINT) {
             scanUint(v);
         } else if (v->type == INT) {

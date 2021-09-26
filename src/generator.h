@@ -25,12 +25,15 @@ typedef struct{
     Operation op;
     int idegit; // 整数部の桁数
     int fdegit; // 小数部の桁数
-    int size; // 桁数（+符号）。ユニットの数
+    bool sign; // int,fixedでは常にtrue、それ以外では常にfalse
+    // int size; // ユニットの数を表す。idegit+fdegit+signに等しい
     int location; // メモリ使用開始位置（左端の位置）
     int unit_size; // 変数では2か3、計算中の値では8
-    bool sign; // int,fixedの時のみ使用、符号を管理
+    bool negative; // int,fixedの時のみ使用、符号を管理
     char *ident; // 変数名、リテラルを保存
 } Variable;
+
+int size(Variable *v) ;
 
 void movePointer(int p1,int p2) ;
 void setSign(Variable* v,int index,bool sign) ;
