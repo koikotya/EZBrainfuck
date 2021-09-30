@@ -1,0 +1,16 @@
+fn main() {
+    int(5) a;
+    int(5) b;
+    int(5) c;
+    int(5) d;
+    scan(a);
+    scan(b);
+    scan(c);
+    scan(d);
+    a = a*d-b*c;
+    print(a);
+    
+    char newl;
+    newl = 10;
+    print(newl);
+}

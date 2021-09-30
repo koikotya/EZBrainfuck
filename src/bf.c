@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "generator.h"
+#include "ast.h"
+// #include "generator.h"
 
 extern FILE *Fresult;
 

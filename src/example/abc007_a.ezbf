@@ -1,0 +1,11 @@
+fn main() {
+    char newl;
+    newl = 10;
+ 
+    uint(5) n;
+    scan(n);
+    n = n-1;
+ 
+    print(n);
+    print(newl);
+}

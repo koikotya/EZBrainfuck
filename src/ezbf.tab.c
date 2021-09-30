@@ -476,8 +476,8 @@ static const yytype_uint8 yyrline[] =
 {
        0,    30,    30,    37,    40,    46,    49,    52,    55,    58,
       61,    67,    70,    73,    79,    82,    85,    88,    91,    94,
-     100,   103,   106,   109,   112,   118,   141,   144,   147,   153,
-     156,   159,   162,   168,   171,   174,   180,   183,   186,   189
+     100,   103,   106,   109,   112,   118,   124,   127,   130,   136,
+     139,   142,   145,   151,   154,   157,   163,   166,   169,   172
 };
 #endif
 
@@ -1657,7 +1657,7 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 141 ".\\ezbf.y"
+#line 124 ".\\ezbf.y"
     {
         (yyval.p) = (yyvsp[(1) - (1)].p);
     ;}
@@ -1666,7 +1666,7 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 144 ".\\ezbf.y"
+#line 127 ".\\ezbf.y"
     {
         (yyval.p) = build_node2(PLUS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
@@ -1675,7 +1675,7 @@ yyreduce:
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 147 ".\\ezbf.y"
+#line 130 ".\\ezbf.y"
     {
         (yyval.p) = build_node2(MINUS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
@@ -1684,7 +1684,7 @@ yyreduce:
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 153 ".\\ezbf.y"
+#line 136 ".\\ezbf.y"
     {
         (yyval.p) = (yyvsp[(1) - (1)].p);
     ;}
@@ -1693,7 +1693,7 @@ yyreduce:
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 156 ".\\ezbf.y"
+#line 139 ".\\ezbf.y"
     {
         (yyval.p) = build_node2(TIMES_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
@@ -1702,7 +1702,7 @@ yyreduce:
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 159 ".\\ezbf.y"
+#line 142 ".\\ezbf.y"
     {
         (yyval.p) = build_node2(DIVIDE_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
@@ -1711,7 +1711,7 @@ yyreduce:
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 162 ".\\ezbf.y"
+#line 145 ".\\ezbf.y"
     {
         (yyval.p) = build_node2(MOD_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
@@ -1720,7 +1720,7 @@ yyreduce:
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 168 ".\\ezbf.y"
+#line 151 ".\\ezbf.y"
     {
         (yyval.p) = (yyvsp[(1) - (1)].p);
     ;}
@@ -1729,7 +1729,7 @@ yyreduce:
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 171 ".\\ezbf.y"
+#line 154 ".\\ezbf.y"
     {
         (yyval.p) = build_node1(PLUS_AST,(yyvsp[(2) - (2)].p));
     ;}
@@ -1738,7 +1738,7 @@ yyreduce:
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 174 ".\\ezbf.y"
+#line 157 ".\\ezbf.y"
     {
         (yyval.p) = build_node1(MINUS_AST,(yyvsp[(2) - (2)].p));
     ;}
@@ -1747,7 +1747,7 @@ yyreduce:
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 180 ".\\ezbf.y"
+#line 163 ".\\ezbf.y"
     {
         (yyval.p) = (yyvsp[(1) - (1)].p)
     ;}
@@ -1756,7 +1756,7 @@ yyreduce:
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 183 ".\\ezbf.y"
+#line 166 ".\\ezbf.y"
     {
         (yyval.p) = (yyvsp[(1) - (1)].p)
     ;}
@@ -1765,7 +1765,7 @@ yyreduce:
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 186 ".\\ezbf.y"
+#line 169 ".\\ezbf.y"
     {
         (yyval.p) = (yyvsp[(1) - (1)].p)
     ;}
@@ -1774,7 +1774,7 @@ yyreduce:
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 189 ".\\ezbf.y"
+#line 172 ".\\ezbf.y"
     {
         (yyval.p) = (yyvsp[(2) - (3)].p);
     ;}
@@ -1995,7 +1995,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 194 ".\\ezbf.y"
+#line 177 ".\\ezbf.y"
 
 
 int yyerror(char const *str) {
@@ -2003,17 +2003,3 @@ int yyerror(char const *str) {
     fprintf(stderr, "parser error near %s\n", yytext);
     return 0;
 }
-/*
-int main(void) {
-    extern int yyparse(void);
-    extern FILE *yyin;
-
-    yyin = stdin;
-    if (yyparse()) {
-        fprintf(stderr, "Error ! Error ! Error !\n");
-        exit(1);
-    }
-    printf("syntax ok\n");
-    print_node(parse_result,0);
-}
-*/

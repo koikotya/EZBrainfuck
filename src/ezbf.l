@@ -16,11 +16,6 @@ int yywrap(void) {
 "<="                   {return LESSEQUAL;}
 ">"                    {return GREATER;}
 ">="                   {return GREATEREQUAL;}
-    /* "+="                   {return ASSIGNPLUS;} */
-    /* "-="                   {return ASSIGNMINUS;} */
-    /* "*="                   {return ASSIGNTIMES;} */
-    /* "/="                   {return ASSIGNDIVIDE;} */
-    /* "%="                   {return ASSIGNMOD;} */
 "+"                    {return PLUS;}
 "-"                    {return MINUS;}
 "*"                    {return TIMES;}
@@ -46,6 +41,7 @@ int yywrap(void) {
 "scan"                 {return SCAN;} 
 "print"                {return PRINT;}
 [ \t\n] ;
+"//".* ;
 [0-9]+                 {
     yylval.p = build_str_node(INTNUMBER_AST,yytext);
     return INTNUMBER;

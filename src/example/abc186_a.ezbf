@@ -1,0 +1,12 @@
+fn main() {
+    uint(4) n;
+    uint(4) w;
+    scan(n);
+    scan(w);
+    n = n/w;
+    print(n);
+    
+    char newl;
+    newl = 10;
+    print(newl);
+}

@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
-#include "generator.h"
+// #include "generator.h"
 
 extern FILE *yyin;
 extern Node *parse_result;
 extern int yyparse(void);
+extern int list_size;
 FILE *Fresult;
 
 
@@ -30,6 +31,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     printf("syntax ok\n");
+    dfs1(parse_result);
     // print_node(parse_result,0);
-    dfs(parse_result,NULL);
+    list_size = 0;
+    dfs2(parse_result);
 }

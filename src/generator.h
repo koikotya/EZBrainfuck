@@ -1,12 +1,14 @@
+// このヘッダファイルは使わない
+
 #include <stdbool.h>
 
 // dfsの引数のとき使う
 typedef enum {
-    UINT,
-    INT,
-    FIXED,
-    CHAR,
-    BOOL,
+    UINT_TYPE,
+    INT_TYPE,
+    FIXED_TYPE,
+    CHAR_TYPE,
+    BOOL_TYPE,
 } Typename;
 // dfsの戻り値のとき使う
 typedef enum {

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ast.h"
-#include "generator.h"
+// #include "generator.h"
 
 int list_size = 0;
 Variable *val_list[256];
@@ -11,6 +11,10 @@ int used_memory = 0;
 
 int min(int a,int b) {
     return (a < b ? a : b);
+}
+
+int max(int a,int b) {
+    return (a > b ? a : b);
 }
 
 int size(Variable *v) {
@@ -35,21 +39,29 @@ void freeVariable(Variable *v) {
 }
 
 void setLiteral(Variable *v1,Variable *v2,int index1) {
-    if (v1->type == UINT) {
+    if (v1->type == UINT_TYPE) {
         setInteger(v1,index1,v2->ident);
-    } else if (v1->type == INT) {
+    } else if (v1->type == INT_TYPE) {
         setInteger(v1,index1,v2->ident);
         setSign(v1,index1,v2->negative);
-    } else if (v1->type == FIXED) {
+    } else if (v1->type == FIXED_TYPE) {
         setDecimal(v1,index1,v2->ident,v2->op);
         setSign(v1,index1,v2->negative);
-    } else if (v1->type == CHAR) {
+    } else if (v1->type == CHAR_TYPE) {
         setChar(v1,index1,v2->ident);
-    } else if (v1->type == BOOL) {
+    } else if (v1->type == BOOL_TYPE) {
         setChar(v1,index1,v2->ident);
     } else {
         printf("error setLiteral\n");
     }
+}
+
+Typename castType(Typename t1,Typename t2) {
+    if (t1 == t2) return t1;
+    if ((t1 == UINT_TYPE && t2 == INT_TYPE) || (t1 == INT_TYPE && t2 == UINT_TYPE)) return INT_TYPE;
+    if (((t1 == UINT_TYPE || t1 == INT_TYPE) && t2 == FIXED_TYPE) || ((t2 == UINT_TYPE || t2 == INT_TYPE) && t1 == FIXED_TYPE)) return FIXED_TYPE;
+    printf("type error\n");
+    exit(1);
 }
 
 // v2をv1のメモリに書き込む
@@ -67,7 +79,7 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         int idegit = min(v1->idegit,v2->idegit);
         move(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit);
         // 符号の処理
-        if ((v1->type == INT || v1->type == FIXED) && (v2->type == INT || v2->type == FIXED)) {
+        if ((v1->type == INT_TYPE || v1->type == FIXED_TYPE) && (v2->type == INT_TYPE || v2->type == FIXED_TYPE)) {
             move(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1);
         }
         turnSign(v1,index1,v2->negative);
@@ -81,7 +93,7 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         int idegit = min(v1->idegit,v2->idegit);
         copy(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit,1);
         // 符号の処理
-        if ((v1->type == INT || v1->type == FIXED) && (v2->type == INT || v2->type == FIXED)) {
+        if ((v1->type == INT_TYPE || v1->type == FIXED_TYPE) && (v2->type == INT_TYPE || v2->type == FIXED_TYPE)) {
             copy(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1,1);
         }
         turnSign(v1,index1,v2->negative);
@@ -90,277 +102,172 @@ void setValue(Variable *v1,Variable *v2,int index1) {
 
 // todo:激ヤバ実装なのでどうにかする
 // todo:dfsの分割。1回目のdfsで桁数などを取得、2回目のdfsでメモリの位置を確定、コード生成
-Variable *dfs(Node *p, Variable *t) {
+void dfs1(Node *p) {
     Variable *res = NULL;
-    if (p == NULL) return res;
+    if (p == NULL) return;
     if (p->type == PLUS_AST) {
         if (p->n == 1) {
-            res = dfs(p->list[0],t);
+            dfs1(p->list[0]);
+            res = (Variable *)malloc(sizeof(Variable));
+            *res = *p->list[0]->v;
+            res->sign = true;
         } else {
             res = (Variable *)malloc(sizeof(Variable));
-            res->type = t->type;
             res->op = PLUS_TEMP;
-            res->idegit = t->idegit;
-            res->fdegit = t->fdegit;
-            res->sign = t->sign;
-            res->location = used_memory;
             res->unit_size = 8;
             res->negative = false;
-            val_list[list_size++] = res;
-            used_memory += size(res)*res->unit_size;
-            
-            Variable *v1 = dfs(p->list[0],t);
-            Variable *v2 = dfs(p->list[1],t);
-            setValue(res,v1,1);
-            setValue(res,v2,0);
-
-            movePointer(0,res->location);
-            if (t->type == UINT) {
-                add(res->idegit);
-            } else if (t->type == INT) {
-                signedAdd(res->idegit);
-            } else if (t->type == FIXED) {
-                signedAdd(res->idegit+res->fdegit);
-            } else if (t->type == CHAR) {
-                charAdd();
-            } else if (t->type == BOOL) {
-                // 定義しない
-            } else {
-                // error
-            }
-            movePointer(res->location,0);
+            dfs1(p->list[0]);
+            dfs1(p->list[1]);
+            Variable *v1 = p->list[0]->v;
+            Variable *v2 = p->list[1]->v;
+            res->type = castType(v1->type,v2->type);
+            res->idegit = max(v1->idegit,v2->idegit);
+            res->fdegit = max(v1->fdegit,v2->fdegit);
+            res->sign = (v1->sign|v2->sign);
         }
     } else if (p->type == MINUS_AST) {
         if (p->n == 1) {
-            res = dfs(p->list[0],t);
-            res->negative = (!res->negative);
+            dfs1(p->list[0]);
+            res = (Variable *)malloc(sizeof(Variable));
+            *res = *p->list[0]->v;
+            res->sign = true;
+            // res->negative = (!res->negative);
         } else {
             res = (Variable *)malloc(sizeof(Variable));
-            res->type = t->type;
             res->op = MINUS_TEMP;
-            res->idegit = t->idegit;
-            res->fdegit = t->fdegit;
-            res->sign = t->sign;
-            res->location = used_memory;
             res->unit_size = 8;
             res->negative = false;
-            val_list[list_size++] = res;
-            used_memory += size(res)*res->unit_size;
-            
-            Variable *v1 = dfs(p->list[0],t);
-            Variable *v2 = dfs(p->list[1],t);
-            setValue(res,v1,1);
-            setValue(res,v2,0);
-
-            movePointer(0,res->location);
-            if (t->type == UINT) {
-                sub(res->idegit);
-            } else if (t->type == INT) {
-                signedSub(res->idegit);
-            } else if (t->type == FIXED) {
-                signedSub(res->idegit+res->fdegit);
-            } else if (t->type == CHAR) {
-                charSub();
-            } else if (t->type == BOOL) {
-                // 定義しない
-            } else {
-                // error
-            }
-            movePointer(res->location,0);
+            dfs1(p->list[0]);
+            dfs1(p->list[1]);
+            Variable *v1 = p->list[0]->v;
+            Variable *v2 = p->list[1]->v;
+            res->type = castType(v1->type,v2->type);
+            res->idegit = max(v1->idegit,v2->idegit);
+            res->fdegit = max(v1->fdegit,v2->fdegit);
+            res->sign = (v1->sign|v2->sign);
         }
     } else if (p->type == TIMES_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = t->type;
         res->op = TIMES_TEMP;
-        res->idegit = t->idegit+t->idegit+t->fdegit;
-        res->fdegit = t->fdegit;
-        res->sign = t->sign;
-        res->location = used_memory;
         res->unit_size = 8;
         res->negative = false;
-        val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
-        
-        Variable *v1 = dfs(p->list[0],t);
-        Variable *v2 = dfs(p->list[1],t);
-        setValue(res,v1,1);
-        setValue(res,v2,0);
-
-        res->idegit = t->idegit+t->idegit;
-        res->fdegit = t->fdegit+t->fdegit;
-
-        movePointer(0,res->location);
-        if (t->type == UINT) {
-            multShort(t->idegit);
-        } else if (t->type == INT) {
-            signedMultShort(t->idegit);
-        } else if (t->type == FIXED) {
-            signedMultShort(t->idegit+t->fdegit);
-        } else if (t->type == CHAR) {
-            // 定義しない
-        } else if (t->type == BOOL) {
-            // 定義しない
-        } else {
-            // error
-        }
-        movePointer(res->location,0);
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = (v1->sign|v2->sign);
     } else if (p->type == DIVIDE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = t->type;
         res->op = DIVIDE_TEMP;
-        res->idegit = t->idegit+t->idegit;
-        res->fdegit = t->fdegit+t->fdegit;
-        res->sign = t->sign;
-        res->location = used_memory;
         res->unit_size = 8;
         res->negative = false;
-        val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
-        
-        Variable *v1 = dfs(p->list[0],t);
-        Variable *v2 = dfs(p->list[1],t);
-        setValue(res,v1,1);
-
-        res->idegit = t->idegit+t->idegit+t->fdegit;
-        res->fdegit = t->fdegit;
-        setValue(res,v2,0);
-
-        movePointer(0,res->location);
-        if (t->type == UINT) {
-            divide(t->idegit);
-        } else if (t->type == INT) {
-            signedDivide(t->idegit);
-        } else if (t->type == FIXED) {
-            signedDivide(t->idegit+t->fdegit);
-        } else if (t->type == CHAR) {
-            // 定義しない
-        } else if (t->type == BOOL) {
-            // 定義しない
-        } else {
-            // error
-        }
-        movePointer(res->location,0);
-        clear(res,0,0,size(res));
-        clear(res,0,1,size(res));
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = (v1->sign|v2->sign);
     } else if (p->type == MOD_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = t->type;
         res->op = MOD_TEMP;
-        res->idegit = t->idegit+t->idegit;
-        res->fdegit = t->fdegit+t->fdegit;
-        res->sign = t->sign;
-        res->location = used_memory;
         res->unit_size = 8;
         res->negative = false;
-        val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
-        
-        Variable *v1 = dfs(p->list[0],t);
-        Variable *v2 = dfs(p->list[1],t);
-        setValue(res,v1,1);
-
-        res->idegit = t->idegit+t->idegit+t->fdegit;
-        res->fdegit = t->fdegit;
-        setValue(res,v2,0);
-
-        movePointer(0,res->location);
-        if (t->type == UINT) {
-            divide(t->idegit);
-        } else if (t->type == INT) {
-            signedDivide(t->idegit);
-        } else if (t->type == FIXED) {
-            signedDivide(t->idegit+t->fdegit);
-        } else if (t->type == CHAR) {
-            // 定義しない
-        } else if (t->type == BOOL) {
-            // 定義しない
-        } else {
-            // error
-        }
-        movePointer(res->location,0);
-        clear(res,0,0,size(res));
-        clear(res,0,7,size(res));
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = (v1->sign|v2->sign);
     } else if (p->type == ASSIGN_AST) {
-        Variable *v1 = dfs(p->list[0],NULL);
-        Variable *v2 = dfs(p->list[1],v1);
-        clear(v1,0,0,size(v1));
-        setValue(v1,v2,0);
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
     } else if (p->type == INTNUMBER_AST) {
         res = (Variable *)malloc(sizeof(Variable));
+        res->type = UINT_TYPE;
         res->op = INT_LITERAL;
+        res->idegit = strlen(p->str);
+        res->fdegit = 0;
+        res->sign = false;
         res->ident = p->str;
     } else if (p->type == DECIMALNUMBER_AST) {
         res = (Variable *)malloc(sizeof(Variable));
+        res->type = FIXED_TYPE;
         res->op = DECIMAL_LITERAL;
+        res->idegit = 0;
+        for (int i = 0;i < strlen(p->str);++i) {
+            if (p->str[i] == '.') break;
+            res->idegit++;
+        }
+        res->fdegit = strlen(p->str)-1-res->idegit;
+        res->sign = true;
         res->ident = p->str;
     } else if (p->type == IF_AST) {
     } else if (p->type == IF_ELSE_AST) {
     } else if (p->type == WHILE_AST) {
     } else if (p->type == UINT_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = UINT;
+        res->type = UINT_TYPE;
         res->op = NOT_OP;
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = false;
-        res->location = used_memory;
         res->unit_size = 3;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
     } else if (p->type == INT_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = INT;
+        res->type = INT_TYPE;
         res->op = NOT_OP;
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = true;
-        res->location = used_memory;
         res->unit_size = 3;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
     } else if (p->type == FIXED_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = FIXED;
+        res->type = FIXED_TYPE;
         res->op = NOT_OP;
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = atoi(p->list[1]->str);
         res->sign = true;
-        res->location = used_memory;
         res->unit_size = 3;
         res->negative = false;
         res->ident = p->list[2]->str;
         val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
     } else if (p->type == BOOL_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = BOOL;
+        res->type = BOOL_TYPE;
         res->op = NOT_OP;
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->location = used_memory;
         res->unit_size = 2;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
     } else if (p->type == CHAR_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->type = CHAR;
+        res->type = CHAR_TYPE;
         res->op = NOT_OP;
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->location = used_memory;
         res->unit_size = 2;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
-        used_memory += size(res)*res->unit_size;
     } else if (p->type == STR_AST) {
     } else if (p->type == EQUAL_AST) {
     } else if (p->type == NOTEQUAL_AST) {
@@ -376,40 +283,272 @@ Variable *dfs(Node *p, Variable *t) {
             break;
         }
     } else if (p->type == SCAN_AST) {
-        Variable *v = dfs(p->list[0],NULL);
-        clear(v,0,0,size(v));
-        if (v->type == UINT) {
-            scanUint(v);
-        } else if (v->type == INT) {
-            scanInt(v);
-        } else if (v->type == FIXED) {
-            scanFixed(v);
-        } else if (v->type == CHAR) {
-            scanChar(v);
-        } else if (v->type == BOOL) {
+        dfs1(p->list[0]);
+    } else if (p->type == PRINT_AST) {
+        dfs1(p->list[0]);
+    } else if (p->type == MAIN_AST) {
+        for (int i = 0;i < p->n;++i) dfs1(p->list[i]);
+        // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->location);
+    } else if (p->type == STATEMENTS_AST) {
+        for (int i = 0;i < p->n;++i) dfs1(p->list[i]);
+    } else {
+    }
+    p->v = res;
+}
+
+void dfs2(Node *p) {
+    if (p == NULL) return;
+    Variable *v0 = p->v;
+    if (p->type == PLUS_AST) {
+        if (p->n == 1) {
+            dfs2(p->list[0]);
+        } else {
+            v0->location = used_memory;
+            v0->unit_size = 8;
+            v0->negative = false;
+            val_list[list_size++] = v0;
+            used_memory += size(v0)*v0->unit_size;
+            dfs2(p->list[0]);
+            dfs2(p->list[1]);
+            Variable *v1 = p->list[0]->v;
+            Variable *v2 = p->list[1]->v;
+            setValue(v0,v1,1);
+            setValue(v0,v2,0);
+
+            movePointer(0,v0->location);
+            if (v0->type == UINT_TYPE) {
+                add(v0->idegit);
+            } else if (v0->type == INT_TYPE) {
+                signedAdd(v0->idegit);
+            } else if (v0->type == FIXED_TYPE) {
+                signedAdd(v0->idegit+v0->fdegit);
+            } else if (v0->type == CHAR_TYPE) {
+                charAdd();
+            } else if (v0->type == BOOL_TYPE) {
+                // 定義しない
+            } else {
+                // error
+            }
+            movePointer(v0->location,0);
+        }
+    } else if (p->type == MINUS_AST) {
+        if (p->n == 1) {
+            dfs2(p->list[0]);
+            v0->negative = (!v0->negative);
+        } else {
+            v0->location = used_memory;
+            v0->unit_size = 8;
+            v0->negative = false;
+            val_list[list_size++] = v0;
+            used_memory += size(v0)*v0->unit_size;
+            dfs2(p->list[0]);
+            dfs2(p->list[1]);
+            Variable *v1 = p->list[0]->v;
+            Variable *v2 = p->list[1]->v;
+            setValue(v0,v1,1);
+            setValue(v0,v2,0);
+
+            movePointer(0,v0->location);
+            if (v0->type == UINT_TYPE) {
+                sub(v0->idegit);
+            } else if (v0->type == INT_TYPE) {
+                signedSub(v0->idegit);
+            } else if (v0->type == FIXED_TYPE) {
+                signedSub(v0->idegit+v0->fdegit);
+            } else if (v0->type == CHAR_TYPE) {
+                charSub();
+            } else if (v0->type == BOOL_TYPE) {
+                // 定義しない
+            } else {
+                // error
+            }
+            movePointer(v0->location,0);
+        }
+    } else if (p->type == TIMES_AST) {
+        v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
+
+        v0->location = used_memory;
+        v0->unit_size = 8;
+        v0->negative = false;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,1);
+        setValue(v0,v2,0);
+
+        v0->idegit -= v0->fdegit;
+        v0->fdegit += v0->fdegit;
+
+        movePointer(0,v0->location);
+        if (v0->type == UINT_TYPE) {
+            multShort(v0->idegit/2);
+        } else if (v0->type == INT_TYPE) {
+            signedMultShort(v0->idegit/2);
+        } else if (v0->type == FIXED_TYPE) {
+            signedMultShort((v0->idegit+v0->fdegit)/2);
+        } else if (v0->type == CHAR_TYPE) {
+            // 定義しない
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
+        }
+        movePointer(v0->location,0);
+    } else if (p->type == DIVIDE_AST) {
+        v0->idegit = v0->idegit+v0->idegit;
+        v0->fdegit = v0->fdegit+v0->fdegit;
+
+        v0->location = used_memory;
+        v0->unit_size = 8;
+        v0->negative = false;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,1);
+
+        v0->fdegit /= 2;
+        v0->idegit += v0->fdegit;
+        setValue(v0,v2,0);
+
+        movePointer(0,v0->location);
+        if (v0->type == UINT_TYPE) {
+            divide(v0->idegit/2);
+        } else if (v0->type == INT_TYPE) {
+            signedDivide(v0->idegit/2);
+        } else if (v0->type == FIXED_TYPE) {
+            signedDivide((v0->idegit+v0->fdegit)/2);
+        } else if (v0->type == CHAR_TYPE) {
+            // 定義しない
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
+        }
+        movePointer(v0->location,0);
+        clear(v0,0,0,size(v0));
+        clear(v0,0,1,size(v0));
+    } else if (p->type == MOD_AST) {
+        v0->idegit = v0->idegit+v0->idegit;
+        v0->fdegit = v0->fdegit+v0->fdegit;
+
+        v0->location = used_memory;
+        v0->unit_size = 8;
+        v0->negative = false;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,1);
+
+        v0->fdegit /= 2;
+        v0->idegit += v0->fdegit;
+        setValue(v0,v2,0);
+
+        movePointer(0,v0->location);
+        if (v0->type == UINT_TYPE) {
+            divide(v0->idegit/2);
+        } else if (v0->type == INT_TYPE) {
+            signedDivide(v0->idegit/2);
+        } else if (v0->type == FIXED_TYPE) {
+            signedDivide((v0->idegit+v0->fdegit)/2);
+        } else if (v0->type == CHAR_TYPE) {
+            // 定義しない
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
+        }
+        movePointer(v0->location,0);
+        clear(v0,0,0,size(v0));
+        clear(v0,0,7,size(v0));
+    } else if (p->type == ASSIGN_AST) {
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        clear(v1,0,0,size(v1));
+        setValue(v1,v2,0);
+    } else if (p->type == INTNUMBER_AST) {
+    } else if (p->type == DECIMALNUMBER_AST) {
+    } else if (p->type == IF_AST) {
+    } else if (p->type == IF_ELSE_AST) {
+    } else if (p->type == WHILE_AST) {
+    } else if (p->type == UINT_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+    } else if (p->type == INT_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+    } else if (p->type == FIXED_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+    } else if (p->type == BOOL_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+    } else if (p->type == CHAR_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+    } else if (p->type == STR_AST) {
+    } else if (p->type == EQUAL_AST) {
+    } else if (p->type == NOTEQUAL_AST) {
+    } else if (p->type == LESS_AST) {
+    } else if (p->type == LESSEQUAL_AST) {
+    } else if (p->type == GREATER_AST) {
+    } else if (p->type == GREATEREQUAL_AST) {
+    } else if (p->type == IDENT_AST) {
+        for (int i = 0;i < list_size;++i) if (strcmp(val_list[i]->ident,p->str) == 0) {
+            *v0 = *val_list[i];
+            break;
+        }
+    } else if (p->type == SCAN_AST) {
+        dfs2(p->list[0]);
+        Variable *v1 = p->list[0]->v;
+        clear(v1,0,0,size(v1));
+        if (v1->type == UINT_TYPE) {
+            scanUint(v1);
+        } else if (v1->type == INT_TYPE) {
+            scanInt(v1);
+        } else if (v1->type == FIXED_TYPE) {
+            scanFixed(v1);
+        } else if (v1->type == CHAR_TYPE) {
+            scanChar(v1);
+        } else if (v1->type == BOOL_TYPE) {
         } else {}
     } else if (p->type == PRINT_AST) {
         if (p->list[0]->type == STR_AST) {
         } else if (p->list[0]->type == IDENT_AST) {
-            Variable *v = dfs(p->list[0],NULL);
-            if (v->type == UINT) {
-                printUint(v);
-            } else if (v->type == INT) {
-                printInt(v);
-            } else if (v->type == FIXED) {
-                printFixed(v);
-            } else if (v->type == CHAR) {
-                printChar(v);
-            } else if (v->type == BOOL) {
-                printChar(v);
+            dfs2(p->list[0]);
+            Variable *v1 = p->list[0]->v;
+            if (v1->type == UINT_TYPE) {
+                printUint(v1);
+            } else if (v1->type == INT_TYPE) {
+                printInt(v1);
+            } else if (v1->type == FIXED_TYPE) {
+                printFixed(v1);
+            } else if (v1->type == CHAR_TYPE) {
+                printChar(v1);
+            } else if (v1->type == BOOL_TYPE) {
+                printChar(v1);
             } else {}
         } else {}
     } else if (p->type == MAIN_AST) {
-        for (int i = 0;i < p->n;++i) dfs(p->list[i],NULL);
+        for (int i = 0;i < p->n;++i) dfs2(p->list[i]);
         // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->location);
     } else if (p->type == STATEMENTS_AST) {
-        for (int i = 0;i < p->n;++i) dfs(p->list[i],NULL);
+        for (int i = 0;i < p->n;++i) dfs2(p->list[i]);
     } else {
     }
-    return res;
 }
