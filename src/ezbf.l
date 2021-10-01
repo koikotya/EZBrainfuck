@@ -55,8 +55,11 @@ int yywrap(void) {
 }
 \".+\"                 {
     char *s;
-    s = (char *)malloc(yyleng-2);
+    s = (char *)malloc(sizeof(char)*yyleng-1);
     memcpy(s,&yytext[1],yyleng-2);
+    // char s[256];
+    // for (int i = 1;i < yyleng-1;++i) s[i-1] = yytext[i];
+    s[yyleng-2] = '\0';
     yylval.p = build_str_node(STR_AST,s);
     return STR;
 }

@@ -417,6 +417,18 @@ void clear(Variable *v,int start_unit,int index,int len) {
     fprintf(Fresult,"\nend clear\n");
 }
 
+void printStr(int used_memory,char *str) {
+    fprintf(Fresult,"\nprint str\n");
+    movePointer(0,used_memory);
+    for (int i = 0;i < strlen(str);++i) {
+        for (int j = 0;j < str[i];++j) fprintf(Fresult,"+");
+        fprintf(Fresult,".");
+        for (int j = 0;j < str[i];++j) fprintf(Fresult,"-");
+    }
+    movePointer(used_memory,0);
+    fprintf(Fresult,"\nend print str\n");
+}
+
 void printChar(Variable *v) {
     fprintf(Fresult,"\nprint char\n");
     movePointer(0,v->location);
@@ -531,4 +543,62 @@ void scanChar(Variable *v) {
     fprintf(Fresult,",");
     movePointer(v->location,0);
     fprintf(Fresult,"\nend scan char\n");
+}
+
+void ifBegin(Variable *v) {
+    fprintf(Fresult,"\nif\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,"[-");
+    movePointer(v->location,0);
+}
+
+void ifEnd(Variable *v) {
+    movePointer(0,v->location);
+    fprintf(Fresult,"]");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend if\n");
+}
+
+void ifElseBegin(Variable *v) {
+    fprintf(Fresult,"\nif\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,">+<[->-<");
+    movePointer(v->location,0);
+}
+
+void ifElseMid(Variable *v) {
+    movePointer(0,v->location);
+    fprintf(Fresult,"]");
+    fprintf(Fresult,"\nelse\n");
+    fprintf(Fresult,">[-<");
+    movePointer(v->location,0);
+
+}
+
+void ifElseEnd(Variable *v) {
+    movePointer(0,v->location);
+    fprintf(Fresult,">]<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend if\n");
+}
+
+void equalUnsigned(Variable *v) {
+    fprintf(Fresult,"\nequal unsigned\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    fprintf(Fresult,">>+>[<->-]<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend equal unsigned\n");
+}
+
+void lessUnsigned(Variable *v) {
+    fprintf(Fresult,"\nless unsigned\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend less unsigned\n");
 }

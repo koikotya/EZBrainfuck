@@ -1,15 +1,8 @@
 // test program
 
 fn main() {
-    char newl;
-    newl = 10;
+    uint(2) y;
 
-    uint(2) a;
-    uint(2) b;
-    scan(a);
-    scan(b);
-    a = a+b;
-    print(a);
-
-    print(newl);
+    if (y < 3) {
+    }
 }

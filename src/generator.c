@@ -18,7 +18,7 @@ int max(int a,int b) {
 }
 
 int size(Variable *v) {
-    return v->idegit+v->fdegit+v->sign;
+    return v->idegit+v->fdegit+(v->sign ? 1 : 0);
 }
 
 int getIndex(Operation op) {
@@ -28,6 +28,12 @@ int getIndex(Operation op) {
     else if (op == TIMES_TEMP) res = 4;
     else if (op == DIVIDE_TEMP) res = 7;
     else if (op == MOD_TEMP) res = 1;
+    else if (op == EQUAL_COND) res = 2;
+    else if (op == NOTEQUAL_COND) ;
+    else if (op == LESS_COND) res = 0;
+    else if (op == LESSEQUAL_COND) ;
+    else if (op == GREATER_COND) ;
+    else if (op == GREATEREQUAL_COND) ;
     else ;
     return res;
 }
@@ -211,7 +217,22 @@ void dfs1(Node *p) {
         res->sign = true;
         res->ident = p->str;
     } else if (p->type == IF_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->unit_size = 2;
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        res->idegit = 0;
+        res->fdegit = 0;
+        res->sign = true;
     } else if (p->type == IF_ELSE_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->unit_size = 2;
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        dfs1(p->list[2]);
+        res->idegit = 0;
+        res->fdegit = 0;
+        res->sign = true;
     } else if (p->type == WHILE_AST) {
     } else if (p->type == UINT_AST) {
         res = (Variable *)malloc(sizeof(Variable));
@@ -270,8 +291,32 @@ void dfs1(Node *p) {
         val_list[list_size++] = res;
     } else if (p->type == STR_AST) {
     } else if (p->type == EQUAL_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->op = EQUAL_COND;
+        res->unit_size = 8;
+        res->negative = false;
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = true;
     } else if (p->type == NOTEQUAL_AST) {
     } else if (p->type == LESS_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->op = LESS_COND;
+        res->unit_size = 8;
+        res->negative = false;
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = true;
     } else if (p->type == LESSEQUAL_AST) {
     } else if (p->type == GREATER_AST) {
     } else if (p->type == GREATEREQUAL_AST) {
@@ -479,7 +524,39 @@ void dfs2(Node *p) {
     } else if (p->type == INTNUMBER_AST) {
     } else if (p->type == DECIMALNUMBER_AST) {
     } else if (p->type == IF_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+
+        dfs2(p->list[0]);
+        Variable *v1 = p->list[0]->v;
+        move(v0,v1,0,size(v1)-1,0,getIndex(v1->op),1);
+        freeVariable(v1);
+        ifBegin(v0);
+
+        dfs2(p->list[1]);
+
+        ifEnd(v0);
+        freeVariable(v0);
     } else if (p->type == IF_ELSE_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+
+        dfs2(p->list[0]);
+        Variable *v1 = p->list[0]->v;
+        move(v0,v1,0,size(v1)-1,0,getIndex(v1->op),1);
+        freeVariable(v1);
+        ifElseBegin(v0);
+
+        dfs2(p->list[1]);
+
+        ifElseMid(v0);
+
+        dfs2(p->list[2]);
+
+        ifElseEnd(v0);
+        freeVariable(v0);
     } else if (p->type == WHILE_AST) {
     } else if (p->type == UINT_AST) {
         v0->location = used_memory;
@@ -503,8 +580,58 @@ void dfs2(Node *p) {
         used_memory += size(v0)*v0->unit_size;
     } else if (p->type == STR_AST) {
     } else if (p->type == EQUAL_AST) {
+        v0->location = used_memory;
+        v0->unit_size = 8;
+        v0->negative = false;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,1);
+        setValue(v0,v2,0);
+
+        if (v0->type == UINT_TYPE) {
+            equalUnsigned(v0);
+        } else if (v0->type == INT_TYPE) {
+            // todo
+        } else if (v0->type == FIXED_TYPE) {
+            // todo
+        } else if (v0->type == CHAR_TYPE) {
+            // todo
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
+        }
     } else if (p->type == NOTEQUAL_AST) {
     } else if (p->type == LESS_AST) {
+        v0->location = used_memory;
+        v0->unit_size = 8;
+        v0->negative = false;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,1);
+        setValue(v0,v2,0);
+
+        if (v0->type == UINT_TYPE) {
+            lessUnsigned(v0);
+        } else if (v0->type == INT_TYPE) {
+            // todo
+        } else if (v0->type == FIXED_TYPE) {
+            // todo
+        } else if (v0->type == CHAR_TYPE) {
+            // todo
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
+        }
     } else if (p->type == LESSEQUAL_AST) {
     } else if (p->type == GREATER_AST) {
     } else if (p->type == GREATEREQUAL_AST) {
@@ -529,6 +656,7 @@ void dfs2(Node *p) {
         } else {}
     } else if (p->type == PRINT_AST) {
         if (p->list[0]->type == STR_AST) {
+            printStr(used_memory,p->list[0]->str);
         } else if (p->list[0]->type == IDENT_AST) {
             dfs2(p->list[0]);
             Variable *v1 = p->list[0]->v;

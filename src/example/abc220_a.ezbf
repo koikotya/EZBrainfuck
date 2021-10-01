@@ -1,0 +1,19 @@
+fn main() {
+    uint(4) a;
+    uint(4) b;
+    uint(4) c;
+    scan(a);
+    scan(b);
+    scan(c);
+
+    b = b/c*c;
+    if (b < a) {
+        print("-1");
+    } else {
+        print(b);
+    }
+    
+    char newl;
+    newl = 10;
+    print(newl);
+}

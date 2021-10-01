@@ -1,7 +1,7 @@
 #include <stdbool.h>
 
 typedef enum {
-    PLUS_AST = 1000,
+    PLUS_AST = 0,
     MINUS_AST,
     TIMES_AST,
     DIVIDE_AST,
@@ -108,6 +108,7 @@ void divide_Uniden(int n) ;
 void move(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len) ;
 void copy(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len,int empty_index) ;
 void clear(Variable *v,int start_unit,int index,int len) ;
+void printStr(int used_memory,char *str) ;
 void printChar(Variable *v) ;
 void printUint(Variable *v) ;
 void printInt(Variable *v) ;
@@ -116,3 +117,10 @@ void scanUint(Variable *v) ;
 void scanInt(Variable *v) ;
 void scanFixed(Variable *v) ;
 void scanChar(Variable *v) ;
+void ifBegin(Variable *v) ;
+void ifEnd(Variable *v) ;
+void ifElseBegin(Variable *v) ;
+void ifElseMid(Variable *v) ;
+void ifElseEnd(Variable *v) ;
+void equalUnsigned(Variable *v) ;
+void lessUnsigned(Variable *v) ;

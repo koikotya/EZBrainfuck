@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     printf("syntax ok\n");
-    dfs1(parse_result);
     // print_node(parse_result,0);
+    dfs1(parse_result);
     list_size = 0;
     dfs2(parse_result);
 }
