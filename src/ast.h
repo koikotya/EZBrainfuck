@@ -122,5 +122,8 @@ void ifEnd(Variable *v) ;
 void ifElseBegin(Variable *v) ;
 void ifElseMid(Variable *v) ;
 void ifElseEnd(Variable *v) ;
+void whileBegin(Variable *v) ;
+void whileMid(Variable *v) ;
+void whileEnd(Variable *v) ;
 void equalUnsigned(Variable *v) ;
 void lessUnsigned(Variable *v) ;

@@ -58,7 +58,7 @@ statement
     | IF LPAREN condition RPAREN LBRACE statements RBRACE ELSE LBRACE statements RBRACE {
         $$ = build_node3(IF_ELSE_AST,$3,$6,$10);
     }
-    | WHILE LPAREN IDENT RPAREN LBRACE statements RBRACE {
+    | WHILE LPAREN condition RPAREN LBRACE statements RBRACE {
         $$ = build_node2(WHILE_AST,$3,$6);
     }
     ;

@@ -582,6 +582,27 @@ void ifElseEnd(Variable *v) {
     fprintf(Fresult,"\nend if\n");
 }
 
+void whileBegin(Variable *v) {
+    fprintf(Fresult,"\nwhile\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,"+[-");
+    movePointer(v->location,0);
+}
+
+void whileMid(Variable *v) {
+    fprintf(Fresult,"\nwhile mid\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,">[-<");
+    movePointer(v->location,0);
+}
+
+void whileEnd(Variable *v) {
+    movePointer(0,v->location);
+    fprintf(Fresult,">]<]");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend while\n");
+}
+
 void equalUnsigned(Variable *v) {
     fprintf(Fresult,"\nequal unsigned\n");
     movePointer(0,v->location);

@@ -1,0 +1,21 @@
+// https://atcoder.jp/contests/abc212/tasks/abc212_a
+
+fn main() {
+    uint(3) a;
+    uint(3) b;
+    scan(a);
+    scan(b);
+    if (b == 0) {
+        print("Gold");
+    } else {
+        if (a == 0) {
+            print("Silver");
+        } else {
+            print("Alloy");
+        }
+    }
+
+    char newl;
+    newl = 10;
+    print(newl);
+}

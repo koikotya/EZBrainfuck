@@ -106,8 +106,8 @@ void setValue(Variable *v1,Variable *v2,int index1) {
     }
 };
 
-// todo:激ヤバ実装なのでどうにかする
-// todo:dfsの分割。1回目のdfsで桁数などを取得、2回目のdfsでメモリの位置を確定、コード生成
+// todo:激ヤバ実装なのでどうにかする。名前を変える
+// 1回目のdfsで桁数などを取得、2回目のdfsでメモリの位置を確定、コード生成
 void dfs1(Node *p) {
     Variable *res = NULL;
     if (p == NULL) return;
@@ -234,6 +234,13 @@ void dfs1(Node *p) {
         res->fdegit = 0;
         res->sign = true;
     } else if (p->type == WHILE_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->unit_size = 2;
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        res->idegit = 0;
+        res->fdegit = 0;
+        res->sign = true;
     } else if (p->type == UINT_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->type = UINT_TYPE;
@@ -558,6 +565,21 @@ void dfs2(Node *p) {
         ifElseEnd(v0);
         freeVariable(v0);
     } else if (p->type == WHILE_AST) {
+        v0->location = used_memory;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+
+        whileBegin(v0);
+        dfs2(p->list[0]);
+        Variable *v1 = p->list[0]->v;
+        copy(v0,v1,0,size(v1)-1,0,getIndex(v1->op),1,7);
+        move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
+        whileMid(v0);
+        dfs2(p->list[1]);
+        whileEnd(v0);
+
+        freeVariable(v1);
+        freeVariable(v0);
     } else if (p->type == UINT_AST) {
         v0->location = used_memory;
         val_list[list_size++] = v0;

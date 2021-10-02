@@ -1,8 +1,14 @@
 // test program
 
 fn main() {
-    uint(2) y;
+    char newl;
+    newl = 10;
 
-    if (y < 3) {
+    uint(1) y;
+    scan(y);
+    while (0 < y) {
+        print(y);
+        print(newl);
+        y = y-1;
     }
 }

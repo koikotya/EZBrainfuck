@@ -842,10 +842,9 @@ YY_RULE_SETUP
     return INTNUMBER;
 }
 	YY_BREAK
-/* todo:バグを直す */
 case 35:
 YY_RULE_SETUP
-#line 57 ".\\ezbf.l"
+#line 56 ".\\ezbf.l"
 {
     char *s;
     s = (char *)malloc(sizeof(char)*yyleng-1);
@@ -859,7 +858,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 67 ".\\ezbf.l"
+#line 66 ".\\ezbf.l"
 {
     yylval.p = build_str_node(DECIMALNUMBER_AST,yytext);
     return DECIMALNUMBER;
@@ -867,7 +866,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 71 ".\\ezbf.l"
+#line 70 ".\\ezbf.l"
 {
     yylval.p = build_str_node(IDENT_AST,yytext);
     return IDENT;
@@ -883,10 +882,10 @@ YY_RULE_SETUP
 /* <<EOF>>       {return EOF;} */
 case 38:
 YY_RULE_SETUP
-#line 83 ".\\ezbf.l"
+#line 82 ".\\ezbf.l"
 ECHO;
 	YY_BREAK
-#line 890 "lex.yy.c"
+#line 889 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1772,4 +1771,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 83 ".\\ezbf.l"
+#line 82 ".\\ezbf.l"
