@@ -86,10 +86,10 @@ condition
         $$ = build_node2(LESS_AST,$1,$3);
     }
     | expression LESSEQUAL expression {
-        $$ = build_node2(LESSEQUAL_AST,$1,$3);
+        $$ = build_node2(GREATEREQUAL_AST,$3,$1);
     }
     | expression GREATER expression {
-        $$ = build_node2(GREATER_AST,$1,$3);
+        $$ = build_node2(LESS_AST,$3,$1);
     }
     | expression GREATEREQUAL expression {
         $$ = build_node2(GREATEREQUAL_AST,$1,$3);

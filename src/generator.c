@@ -23,22 +23,28 @@ int size(Variable *v) {
 
 int getIndex(Operation op) {
     int res = 0;
-    if (op == PLUS_TEMP) res = 1;
-    else if (op == MINUS_TEMP) res = 1;
-    else if (op == TIMES_TEMP) res = 4;
-    else if (op == DIVIDE_TEMP) res = 7;
-    else if (op == MOD_TEMP) res = 1;
+    if (op == PLUS_OP) res = 1;
+    else if (op == MINUS_OP) res = 1;
+    else if (op == TIMES_OP) res = 4;
+    else if (op == DIVIDE_OP) res = 7;
+    else if (op == MOD_OP) res = 1;
     else if (op == EQUAL_COND) res = 2;
-    else if (op == NOTEQUAL_COND) ;
+    else if (op == NOTEQUAL_COND) res = 3;
     else if (op == LESS_COND) res = 0;
-    else if (op == LESSEQUAL_COND) ;
-    else if (op == GREATER_COND) ;
-    else if (op == GREATEREQUAL_COND) ;
+    // else if (op == LESSEQUAL_COND) ;
+    // else if (op == GREATER_COND) ;
+    else if (op == GREATEREQUAL_COND) res = 1;
     else ;
     return res;
 }
 
 void freeVariable(Variable *v) {
+    // while (val_list[list_size-1] != v) {
+        // list_size--;
+        // used_memory = val_list[list_size]->location;
+        // clear(val_list[list_size],0,0,size(val_list[list_size]));
+        // free(val_list[list_size]);
+    // }
     list_size--;
     used_memory = val_list[list_size]->location;
     free(v);
@@ -62,12 +68,8 @@ void setLiteral(Variable *v1,Variable *v2,int index1) {
     }
 }
 
-Typename castType(Typename t1,Typename t2) {
-    if (t1 == t2) return t1;
-    if ((t1 == UINT_TYPE && t2 == INT_TYPE) || (t1 == INT_TYPE && t2 == UINT_TYPE)) return INT_TYPE;
-    if (((t1 == UINT_TYPE || t1 == INT_TYPE) && t2 == FIXED_TYPE) || ((t2 == UINT_TYPE || t2 == INT_TYPE) && t1 == FIXED_TYPE)) return FIXED_TYPE;
-    printf("type error\n");
-    exit(1);
+Type castType(Type t1,Type t2) {
+    return (t1 > t2 ? t1 : t2);
 }
 
 // v2をv1のメモリに書き込む
@@ -77,7 +79,7 @@ void setValue(Variable *v1,Variable *v2,int index1) {
     if (v2->op == INT_LITERAL || v2->op == DECIMAL_LITERAL) {
         // v2がリテラルの場合
         setLiteral(v1,v2,index1);
-    } else if (v2->op == PLUS_TEMP || v2->op == MINUS_TEMP || v2->op == TIMES_TEMP || v2->op == DIVIDE_TEMP || v2->op == MOD_TEMP) {
+    } else if (v2->op == PLUS_OP || v2->op == MINUS_OP || v2->op == TIMES_OP || v2->op == DIVIDE_OP || v2->op == MOD_OP) {
         // v2が計算中の値の場合
         // v2をv1にムーブ
         v2_index = getIndex(v2->op);
@@ -94,7 +96,6 @@ void setValue(Variable *v1,Variable *v2,int index1) {
     } else {
         // v2が変数の場合
         // v2をv1にコピー
-        // todo:a = -aでバグる問題を解決
         int fdegit = min(v1->fdegit,v2->fdegit);
         int idegit = min(v1->idegit,v2->idegit);
         copy(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit,1);
@@ -119,7 +120,7 @@ void dfs1(Node *p) {
             res->sign = true;
         } else {
             res = (Variable *)malloc(sizeof(Variable));
-            res->op = PLUS_TEMP;
+            res->op = PLUS_OP;
             res->unit_size = 8;
             res->negative = false;
             dfs1(p->list[0]);
@@ -140,7 +141,7 @@ void dfs1(Node *p) {
             // res->negative = (!res->negative);
         } else {
             res = (Variable *)malloc(sizeof(Variable));
-            res->op = MINUS_TEMP;
+            res->op = MINUS_OP;
             res->unit_size = 8;
             res->negative = false;
             dfs1(p->list[0]);
@@ -154,7 +155,7 @@ void dfs1(Node *p) {
         }
     } else if (p->type == TIMES_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->op = TIMES_TEMP;
+        res->op = TIMES_OP;
         res->unit_size = 8;
         res->negative = false;
         dfs1(p->list[0]);
@@ -167,7 +168,7 @@ void dfs1(Node *p) {
         res->sign = (v1->sign|v2->sign);
     } else if (p->type == DIVIDE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->op = DIVIDE_TEMP;
+        res->op = DIVIDE_OP;
         res->unit_size = 8;
         res->negative = false;
         dfs1(p->list[0]);
@@ -180,7 +181,7 @@ void dfs1(Node *p) {
         res->sign = (v1->sign|v2->sign);
     } else if (p->type == MOD_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->op = MOD_TEMP;
+        res->op = MOD_OP;
         res->unit_size = 8;
         res->negative = false;
         dfs1(p->list[0]);
@@ -311,6 +312,18 @@ void dfs1(Node *p) {
         res->fdegit = max(v1->fdegit,v2->fdegit);
         res->sign = true;
     } else if (p->type == NOTEQUAL_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->op = NOTEQUAL_COND;
+        res->unit_size = 8;
+        res->negative = false;
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = true;
     } else if (p->type == LESS_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = LESS_COND;
@@ -324,13 +337,25 @@ void dfs1(Node *p) {
         res->idegit = max(v1->idegit,v2->idegit);
         res->fdegit = max(v1->fdegit,v2->fdegit);
         res->sign = true;
-    } else if (p->type == LESSEQUAL_AST) {
-    } else if (p->type == GREATER_AST) {
+    // } else if (p->type == LESSEQUAL_AST) {
+    // } else if (p->type == GREATER_AST) {
     } else if (p->type == GREATEREQUAL_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->op = GREATEREQUAL_COND;
+        res->unit_size = 8;
+        res->negative = false;
+        dfs1(p->list[0]);
+        dfs1(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = true;
     } else if (p->type == IDENT_AST) {
         // todo:マッチしなかった場合にエラーを表示
         res = (Variable *)malloc(sizeof(Variable));
-        for (int i = 0;i < list_size;++i) if (strcmp(val_list[i]->ident,p->str) == 0) {
+        for (int i = 0;i < list_size;++i) if (val_list[i]->ident != NULL && strcmp(val_list[i]->ident,p->str) == 0) {
             *res = *val_list[i];
             break;
         }
@@ -371,11 +396,11 @@ void dfs2(Node *p) {
             if (v0->type == UINT_TYPE) {
                 add(v0->idegit);
             } else if (v0->type == INT_TYPE) {
-                signedAdd(v0->idegit);
+                addSigned(v0->idegit);
             } else if (v0->type == FIXED_TYPE) {
-                signedAdd(v0->idegit+v0->fdegit);
+                addSigned(v0->idegit+v0->fdegit);
             } else if (v0->type == CHAR_TYPE) {
-                charAdd();
+                addChar();
             } else if (v0->type == BOOL_TYPE) {
                 // 定義しない
             } else {
@@ -404,11 +429,11 @@ void dfs2(Node *p) {
             if (v0->type == UINT_TYPE) {
                 sub(v0->idegit);
             } else if (v0->type == INT_TYPE) {
-                signedSub(v0->idegit);
+                subSigned(v0->idegit);
             } else if (v0->type == FIXED_TYPE) {
-                signedSub(v0->idegit+v0->fdegit);
+                subSigned(v0->idegit+v0->fdegit);
             } else if (v0->type == CHAR_TYPE) {
-                charSub();
+                subChar();
             } else if (v0->type == BOOL_TYPE) {
                 // 定義しない
             } else {
@@ -436,11 +461,11 @@ void dfs2(Node *p) {
 
         movePointer(0,v0->location);
         if (v0->type == UINT_TYPE) {
-            multShort(v0->idegit/2);
+            shortMult(v0->idegit/2);
         } else if (v0->type == INT_TYPE) {
-            signedMultShort(v0->idegit/2);
+            shortMultSigned(v0->idegit/2);
         } else if (v0->type == FIXED_TYPE) {
-            signedMultShort((v0->idegit+v0->fdegit)/2);
+            shortMultSigned((v0->idegit+v0->fdegit)/2);
         } else if (v0->type == CHAR_TYPE) {
             // 定義しない
         } else if (v0->type == BOOL_TYPE) {
@@ -472,9 +497,9 @@ void dfs2(Node *p) {
         if (v0->type == UINT_TYPE) {
             divide(v0->idegit/2);
         } else if (v0->type == INT_TYPE) {
-            signedDivide(v0->idegit/2);
+            divideSigned(v0->idegit/2);
         } else if (v0->type == FIXED_TYPE) {
-            signedDivide((v0->idegit+v0->fdegit)/2);
+            divideSigned((v0->idegit+v0->fdegit)/2);
         } else if (v0->type == CHAR_TYPE) {
             // 定義しない
         } else if (v0->type == BOOL_TYPE) {
@@ -508,9 +533,9 @@ void dfs2(Node *p) {
         if (v0->type == UINT_TYPE) {
             divide(v0->idegit/2);
         } else if (v0->type == INT_TYPE) {
-            signedDivide(v0->idegit/2);
+            divideSigned(v0->idegit/2);
         } else if (v0->type == FIXED_TYPE) {
-            signedDivide((v0->idegit+v0->fdegit)/2);
+            divideSigned((v0->idegit+v0->fdegit)/2);
         } else if (v0->type == CHAR_TYPE) {
             // 定義しない
         } else if (v0->type == BOOL_TYPE) {
@@ -526,8 +551,12 @@ void dfs2(Node *p) {
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
-        clear(v1,0,0,size(v1));
-        setValue(v1,v2,0);
+        if (v1->ident != NULL && v2->ident != NULL && strcmp(v1->ident,v2->ident) == 0) {
+            turnSign(v1,0,v2->negative);
+        } else {
+            clear(v1,0,0,size(v1));
+            setValue(v1,v2,0);
+        }
     } else if (p->type == INTNUMBER_AST) {
     } else if (p->type == DECIMALNUMBER_AST) {
     } else if (p->type == IF_AST) {
@@ -617,17 +646,42 @@ void dfs2(Node *p) {
         if (v0->type == UINT_TYPE) {
             equalUnsigned(v0);
         } else if (v0->type == INT_TYPE) {
-            // todo
+            equalSigned(v0);
         } else if (v0->type == FIXED_TYPE) {
-            // todo
+            equalSigned(v0);
         } else if (v0->type == CHAR_TYPE) {
-            // todo
+            equalChar(v0);
         } else if (v0->type == BOOL_TYPE) {
-            // 定義しない
+            equalChar(v0);
         } else {
             // error
         }
     } else if (p->type == NOTEQUAL_AST) {
+        v0->location = used_memory;
+        v0->unit_size = 8;
+        v0->negative = false;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,1);
+        setValue(v0,v2,0);
+
+        if (v0->type == UINT_TYPE) {
+            notEqualUnsigned(v0);
+        } else if (v0->type == INT_TYPE) {
+            notEqualSigned(v0);
+        } else if (v0->type == FIXED_TYPE) {
+            notEqualSigned(v0);
+        } else if (v0->type == CHAR_TYPE) {
+            notEqualChar(v0);
+        } else if (v0->type == BOOL_TYPE) {
+            notEqualChar(v0);
+        } else {
+            // error
+        }
     } else if (p->type == LESS_AST) {
         v0->location = used_memory;
         v0->unit_size = 8;
@@ -644,21 +698,46 @@ void dfs2(Node *p) {
         if (v0->type == UINT_TYPE) {
             lessUnsigned(v0);
         } else if (v0->type == INT_TYPE) {
-            // todo
+            lessSigned(v0);
         } else if (v0->type == FIXED_TYPE) {
-            // todo
+            lessSigned(v0);
         } else if (v0->type == CHAR_TYPE) {
-            // todo
+            lessChar(v0);
         } else if (v0->type == BOOL_TYPE) {
             // 定義しない
         } else {
             // error
         }
-    } else if (p->type == LESSEQUAL_AST) {
-    } else if (p->type == GREATER_AST) {
+    // } else if (p->type == LESSEQUAL_AST) {
+    // } else if (p->type == GREATER_AST) {
     } else if (p->type == GREATEREQUAL_AST) {
+        v0->location = used_memory;
+        v0->unit_size = 8;
+        v0->negative = false;
+        val_list[list_size++] = v0;
+        used_memory += size(v0)*v0->unit_size;
+        dfs2(p->list[0]);
+        dfs2(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,1);
+        setValue(v0,v2,0);
+
+        if (v0->type == UINT_TYPE) {
+            greaterEqualUnsigned(v0);
+        } else if (v0->type == INT_TYPE) {
+            greaterEqualSigned(v0);
+        } else if (v0->type == FIXED_TYPE) {
+            greaterEqualSigned(v0);
+        } else if (v0->type == CHAR_TYPE) {
+            greaterEqualChar(v0);
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
+        }
     } else if (p->type == IDENT_AST) {
-        for (int i = 0;i < list_size;++i) if (strcmp(val_list[i]->ident,p->str) == 0) {
+        for (int i = 0;i < list_size;++i) if (val_list[i]->ident != NULL && strcmp(val_list[i]->ident,p->str) == 0) {
             *v0 = *val_list[i];
             break;
         }

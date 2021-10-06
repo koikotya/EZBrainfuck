@@ -4,11 +4,8 @@ fn main() {
     char newl;
     newl = 10;
 
-    uint(1) y;
-    scan(y);
-    while (0 < y) {
-        print(y);
-        print(newl);
-        y = y-1;
-    }
+    int(1) a;
+    scan(a);
+    print(a); 
+    print(newl);
 }

@@ -21,8 +21,8 @@ typedef enum {
     EQUAL_AST,
     NOTEQUAL_AST,
     LESS_AST,
-    LESSEQUAL_AST,
-    GREATER_AST,
+    // LESSEQUAL_AST,
+    // GREATER_AST,
     GREATEREQUAL_AST,
     IDENT_AST,
     SCAN_AST,
@@ -31,34 +31,34 @@ typedef enum {
     STATEMENTS_AST,
 } Ntype;
 
-// dfsの引数のとき使う
 typedef enum {
-    UINT_TYPE = 2000,
+    BOOL_TYPE = 2000,
+    CHAR_TYPE,
+    UINT_TYPE,
     INT_TYPE,
     FIXED_TYPE,
-    CHAR_TYPE,
-    BOOL_TYPE,
-} Typename;
-// dfsの戻り値のとき使う
+} Type;
+
 typedef enum {
     INT_LITERAL = 3000,
     DECIMAL_LITERAL,
-    PLUS_TEMP, // 計算中の値
-    MINUS_TEMP,
-    TIMES_TEMP,
-    DIVIDE_TEMP,
-    MOD_TEMP,
+    PLUS_OP, // 計算中の値
+    MINUS_OP,
+    TIMES_OP,
+    DIVIDE_OP,
+    MOD_OP,
+    // ASSIGN_OP,
     EQUAL_COND,
     NOTEQUAL_COND,
     LESS_COND,
-    LESSEQUAL_COND,
-    GREATER_COND,
+    // LESSEQUAL_COND,
+    // GREATER_COND,
     GREATEREQUAL_COND,
     NOT_OP,
 } Operation;
 
 typedef struct{
-    Typename type;
+    Type type;
     Operation op;
     int idegit; // 整数部の桁数
     int fdegit; // 小数部の桁数
@@ -94,17 +94,17 @@ void setInteger(Variable* v,int index,char *literal) ;
 void setDecimal(Variable* v,int index,char *literal,Operation op) ;
 void add(int n) ;
 void sub(int n) ;
-void signedAdd(int n) ;
-void signedSub(int n) ;
-void charAdd() ;
-void charSub() ;
+void addSigned(int n) ;
+void subSigned(int n) ;
+void addChar() ;
+void subChar() ;
 void mult(int n) ;
-void signedMult(int n) ;
-void multShort(int n) ;
-void signedMultShort(int n) ;
+void multSigned(int n) ;
+void shortMult(int n) ;
+void shortMultSigned(int n) ;
 void divide(int n) ;
-void signedDivide(int n) ;
-void divide_Uniden(int n) ;
+void divideSigned(int n) ;
+void UnidenDivide(int n) ;
 void move(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len) ;
 void copy(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len,int empty_index) ;
 void clear(Variable *v,int start_unit,int index,int len) ;
@@ -126,4 +126,14 @@ void whileBegin(Variable *v) ;
 void whileMid(Variable *v) ;
 void whileEnd(Variable *v) ;
 void equalUnsigned(Variable *v) ;
+void notEqualUnsigned(Variable *v) ;
 void lessUnsigned(Variable *v) ;
+void greaterEqualUnsigned(Variable *v) ;
+void equalSigned(Variable *v) ;
+void notEqualSigned(Variable *v) ;
+void lessSigned(Variable *v) ;
+void greaterEqualSigned(Variable *v) ;
+void equalChar(Variable *v) ;
+void notEqualChar(Variable *v) ;
+void lessChar(Variable *v) ;
+void greaterEqualChar(Variable *v) ;

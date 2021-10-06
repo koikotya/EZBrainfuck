@@ -9,21 +9,21 @@ typedef enum {
     FIXED_TYPE,
     CHAR_TYPE,
     BOOL_TYPE,
-} Typename;
+} Type;
 // dfsの戻り値のとき使う
 typedef enum {
     INT_LITERAL,
     DECIMAL_LITERAL,
-    PLUS_TEMP, // 計算中の値
-    MINUS_TEMP,
-    TIMES_TEMP,
-    DIVIDE_TEMP,
-    MOD_TEMP,
+    PLUS_OP, // 計算中の値
+    MINUS_OP,
+    TIMES_OP,
+    DIVIDE_OP,
+    MOD_OP,
     NOT_OP,
 } Operation;
 
 typedef struct{
-    Typename type;
+    Type type;
     Operation op;
     int idegit; // 整数部の桁数
     int fdegit; // 小数部の桁数
@@ -45,17 +45,17 @@ void setInteger(Variable* v,int index,char *literal) ;
 void setDecimal(Variable* v,int index,char *literal,Operation op) ;
 void add(int n) ;
 void sub(int n) ;
-void signedAdd(int n) ;
-void signedSub(int n) ;
-void charAdd() ;
-void charSub() ;
+void addSigned(int n) ;
+void subSigned(int n) ;
+void addChar() ;
+void subChar() ;
 void mult(int n) ;
-void signedMult(int n) ;
-void multShort(int n) ;
-void signedMultShort(int n) ;
+void multSigned(int n) ;
+void shortMult(int n) ;
+void shortMultSigned(int n) ;
 void divide(int n) ;
-void signedDivide(int n) ;
-void divide_Uniden(int n) ;
+void divideSigned(int n) ;
+void UnidenDivide(int n) ;
 void move(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len) ;
 void copy(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len,int empty_index) ;
 void clear(Variable *v,int start_unit,int index,int len) ;

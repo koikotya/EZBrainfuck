@@ -1578,7 +1578,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 88 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(LESSEQUAL_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = build_node2(GREATEREQUAL_AST,(yyvsp[(3) - (3)].p),(yyvsp[(1) - (3)].p));
     ;}
     break;
 
@@ -1587,7 +1587,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 91 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(GREATER_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = build_node2(LESS_AST,(yyvsp[(3) - (3)].p),(yyvsp[(1) - (3)].p));
     ;}
     break;
 

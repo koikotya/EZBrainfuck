@@ -100,7 +100,7 @@ void sub(int n) {
     fprintf(Fresult,"\nend sub\n");
 }
 
-void signedAdd(int n) {
+void addSigned(int n) {
     fprintf(Fresult,"\nsigned add\n");
     movePointer(0,n*8);
     fprintf(Fresult,"[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
@@ -122,7 +122,7 @@ void signedAdd(int n) {
     fprintf(Fresult,"\nend signed add\n");
 }
 
-void signedSub(int n) {
+void subSigned(int n) {
     fprintf(Fresult,"\nigned sub\n");
     movePointer(0,n*8);
     fprintf(Fresult,"[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
@@ -146,13 +146,13 @@ void signedSub(int n) {
     fprintf(Fresult,"\nend signed sub\n");
 }
 
-void charAdd() {
+void addChar() {
     fprintf(Fresult,"\nchar add\n");
     fprintf(Fresult,"[>+<-]");
     fprintf(Fresult,"\nend char add\n");
 }
 
-void charSub() {
+void subChar() {
     fprintf(Fresult,"\nchar sub\n");
     fprintf(Fresult,"[>-<-]");
     fprintf(Fresult,"\nend char sub\n");
@@ -181,7 +181,7 @@ void mult(int n) {
     fprintf(Fresult,"\nend mult\n");
 }
 
-void signedMult(int n) {
+void multSigned(int n) {
     fprintf(Fresult,"\nsigned mult\n");
     for (int i = 0;i < n;++i) {
         fprintf(Fresult,"[->");
@@ -203,7 +203,7 @@ void signedMult(int n) {
     fprintf(Fresult,"\nend signed mult\n");
 }
 
-void multShort(int n) {
+void shortMult(int n) {
     fprintf(Fresult,"\nmult short\n");
     for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>+>");
     for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
@@ -225,7 +225,7 @@ void multShort(int n) {
     fprintf(Fresult,"\nend mult short\n");
 }
 
-void signedMultShort(int n) {
+void shortMultSigned(int n) {
     fprintf(Fresult,"\nmult short\n");
     for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>+>");
     for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
@@ -291,7 +291,7 @@ void divide(int n) {
     fprintf(Fresult,"\nend divide\n");
 }
 
-void signedDivide(int n) {
+void divideSigned(int n) {
     fprintf(Fresult,"\nsigned divide\n");
     for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>>");
     for (int i = 0;i < n;++i) {
@@ -328,7 +328,7 @@ void signedDivide(int n) {
 }
 
 // Unidenさんありがとうございます
-void divide_Uniden(int n) {
+void UnidenDivide(int n) {
     fprintf(Fresult,"\ndivide Uniden\n");
     for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>+>");
     fprintf(Fresult,"<[<<<<<<<[>>>>>>>[-]>>>>>>>>[>>>>>>>>]");
@@ -614,6 +614,16 @@ void equalUnsigned(Variable *v) {
     fprintf(Fresult,"\nend equal unsigned\n");
 }
 
+void notEqualUnsigned(Variable *v) {
+    fprintf(Fresult,"\nnot equal unsigned\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend not equal unsigned\n");
+}
+
 void lessUnsigned(Variable *v) {
     fprintf(Fresult,"\nless unsigned\n");
     movePointer(0,v->location);
@@ -622,4 +632,129 @@ void lessUnsigned(Variable *v) {
     for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
     movePointer(v->location,0);
     fprintf(Fresult,"\nend less unsigned\n");
+}
+
+void greaterEqualUnsigned(Variable *v) {
+    fprintf(Fresult,"\ngreater equal unsigned\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
+    fprintf(Fresult,">+<[>-<-]");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend greater equal unsigned\n");
+}
+
+void equalSigned(Variable *v) {
+    fprintf(Fresult,"\nequal signed\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>>");
+    fprintf(Fresult,"[>-<-]>>+<[>-<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[[-]>>>+<<<]>[[-]>>+<<]>>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    fprintf(Fresult,">-]>[<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    fprintf(Fresult,">>-]+>[<->-]<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend equal signed\n");
+}
+
+void notEqualSigned(Variable *v) {
+    fprintf(Fresult,"\nnot equal signed\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>>");
+    fprintf(Fresult,"[>-<-]>>+<[>-<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[[-]>>>+<<<]>[[-]>>+<<]>>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    fprintf(Fresult,">-]>[<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    fprintf(Fresult,">>-]<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend not equal signed\n");
+}
+
+void lessSigned(Variable *v) {
+    fprintf(Fresult,"\nless signed\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>>");
+    fprintf(Fresult,"[>>+<<-]>[>++<-]>[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
+    fprintf(Fresult,">>>>]<<-[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[-]>[-]>>>>>>>");
+    fprintf(Fresult,">>>>]<<-[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[[-]>>>+<<<]>[[-]>>+<<]>>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    fprintf(Fresult,">>>[<<<+>>>-]>]<<-[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    fprintf(Fresult,"+");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
+    fprintf(Fresult,">+<[>-<-]>[<+>-]>>>]<<[+]<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend less signed\n");
+}
+
+void greaterEqualSigned(Variable *v) {
+    fprintf(Fresult,"\ngreater equal signed\n");
+    movePointer(0,v->location);
+    int n = v->idegit+v->fdegit;
+    for (int i = 0;i < n;++i) fprintf(Fresult,">>>>>>>>");
+    fprintf(Fresult,"[>>+<<-]>[>++<-]>[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
+    fprintf(Fresult,">>>>]<<-[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[-]>[-]>>>>>>>");
+    fprintf(Fresult,">>>>]<<-[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[[-]>>>+<<<]>[[-]>>+<<]>>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    fprintf(Fresult,">>>[<<<+>>>-]>]<<-[>>+<]>[<]>-[+<<<<");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    fprintf(Fresult,"+");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
+    fprintf(Fresult,">+<[>-<-]>[<+>-]>>>]<<[+]<+<[>-<-]");
+    for (int i = 0;i < n;++i) fprintf(Fresult,"<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend greater equal signed\n");
+}
+
+void equalChar(Variable *v) {
+    fprintf(Fresult,"\nequal char\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,"[>-<-]>[>>>>>>>>>>+<<<<<<<<<<[-]]>>>>>>>>>+>[<->-]<<<<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend equal char\n");
+}
+
+void notEqualChar(Variable *v) {
+    fprintf(Fresult,"\nnot equal char\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,"[>-<-]>[>>>>>>>>>>+<<<<<<<<<<[-]]<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend not equal char\n");
+}
+
+void lessChar(Variable *v) {
+    fprintf(Fresult,"\nless char\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<<[-]>+>>]<<-<]>[-]<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend less char\n");
+}
+
+void greaterEqualChar(Variable *v) {
+    fprintf(Fresult,"\ngreater equal char\n");
+    movePointer(0,v->location);
+    fprintf(Fresult,"[->[>>+<]>[<]>-[+>>>>>+<<<<<<<<[-]>+>>]<<-<]>[-]>>>>>>>>+<[>-<-]<<<<<<<<");
+    movePointer(v->location,0);
+    fprintf(Fresult,"\nend greater equal char\n");
 }
