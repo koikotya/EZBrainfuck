@@ -21,8 +21,6 @@ typedef enum {
     EQUAL_AST,
     NOTEQUAL_AST,
     LESS_AST,
-    // LESSEQUAL_AST,
-    // GREATER_AST,
     GREATEREQUAL_AST,
     IDENT_AST,
     SCAN_AST,
@@ -47,12 +45,9 @@ typedef enum {
     TIMES_OP,
     DIVIDE_OP,
     MOD_OP,
-    // ASSIGN_OP,
     EQUAL_COND,
     NOTEQUAL_COND,
     LESS_COND,
-    // LESSEQUAL_COND,
-    // GREATER_COND,
     GREATEREQUAL_COND,
     NOT_OP,
 } Operation;
@@ -63,7 +58,6 @@ typedef struct{
     int idegit; // 整数部の桁数
     int fdegit; // 小数部の桁数
     bool sign; // int,fixedでは常にtrue、それ以外では常にfalse
-    // int size; // ユニットの数を表す。idegit+fdegit+signに等しい
     int location; // メモリ使用開始位置（左端の位置）
     int unit_size; // 変数では2か3、計算中の値では8
     bool negative; // int,fixedの時のみ使用、符号を管理
@@ -106,7 +100,11 @@ void divide(int n) ;
 void divideSigned(int n) ;
 void UnidenDivide(int n) ;
 void move(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len) ;
+void moveCharToInt(Variable *v1,Variable *v2,int index1,int index2);
+void moveIntToChar(Variable *v1,Variable *v2,int index1,int index2);
 void copy(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len,int empty_index) ;
+void copyCharToInt(Variable *v1,Variable *v2,int index1,int index2,int empty_index);
+void copyIntToChar(Variable *v1,Variable *v2,int index1,int index2,int empty_index);
 void clear(Variable *v,int start_unit,int index,int len) ;
 void printStr(int used_memory,char *str) ;
 void printChar(Variable *v) ;

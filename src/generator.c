@@ -31,15 +31,13 @@ int getIndex(Operation op) {
     else if (op == EQUAL_COND) res = 2;
     else if (op == NOTEQUAL_COND) res = 3;
     else if (op == LESS_COND) res = 0;
-    // else if (op == LESSEQUAL_COND) ;
-    // else if (op == GREATER_COND) ;
     else if (op == GREATEREQUAL_COND) res = 1;
     else ;
     return res;
 }
 
 void freeVariable(Variable *v) {
-    // while (val_list[list_size-1] != v) {
+    // while (val_list[list_size-1]->location != v->location) {
         // list_size--;
         // used_memory = val_list[list_size]->location;
         // clear(val_list[list_size],0,0,size(val_list[list_size]));
@@ -85,12 +83,33 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         v2_index = getIndex(v2->op);
         int fdegit = min(v1->fdegit,v2->fdegit);
         int idegit = min(v1->idegit,v2->idegit);
-        move(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit);
-        // 符号の処理
-        if ((v1->type == INT_TYPE || v1->type == FIXED_TYPE) && (v2->type == INT_TYPE || v2->type == FIXED_TYPE)) {
-            move(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1);
+        if (v1->type == CHAR_TYPE && CHAR_TYPE < v2->type) {
+            Variable *v3;
+            v3 = (Variable *)malloc(sizeof(Variable));
+            v3->location = used_memory;
+            val_list[list_size++] = v3;
+            moveIntToChar(v3,v2,0,v2_index);
+            move(v1,v3,0,0,index1,0,1);
+            freeVariable(v3);
+        } else if (v2->type == CHAR_TYPE && CHAR_TYPE < v1->type) {
+            Variable *v3;
+            v3 = (Variable *)malloc(sizeof(Variable));
+            v3->idegit = 3;
+            v3->unit_size = 8;
+            v3->location = used_memory;
+            val_list[list_size++] = v3;
+            moveCharToInt(v3,v2,0,v2_index);
+            move(v1,v3,v1->fdegit,0,index1,1,min(v1->idegit,v3->idegit));
+            clear(v3,0,0,3);
+            freeVariable(v3);
+        } else {
+            move(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit);
+            // 符号の処理
+            if ((v1->type == INT_TYPE || v1->type == FIXED_TYPE) && (v2->type == INT_TYPE || v2->type == FIXED_TYPE)) {
+                move(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1);
+            }
+            turnSign(v1,index1,v2->negative);
         }
-        turnSign(v1,index1,v2->negative);
         clear(v2,0,v2_index,size(v2));
         freeVariable(v2);
     } else {
@@ -98,12 +117,33 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         // v2をv1にコピー
         int fdegit = min(v1->fdegit,v2->fdegit);
         int idegit = min(v1->idegit,v2->idegit);
-        copy(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit,1);
-        // 符号の処理
-        if ((v1->type == INT_TYPE || v1->type == FIXED_TYPE) && (v2->type == INT_TYPE || v2->type == FIXED_TYPE)) {
-            copy(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1,1);
+        if (v1->type == CHAR_TYPE && CHAR_TYPE < v2->type) {
+            Variable *v3;
+            v3 = (Variable *)malloc(sizeof(Variable));
+            v3->location = used_memory;
+            val_list[list_size++] = v3;
+            copyIntToChar(v3,v2,0,v2_index,1);
+            move(v1,v3,0,0,index1,0,1);
+            freeVariable(v3);
+        } else if (v2->type == CHAR_TYPE && CHAR_TYPE < v1->type) {
+            Variable *v3;
+            v3 = (Variable *)malloc(sizeof(Variable));
+            v3->idegit = 3;
+            v3->unit_size = 8;
+            v3->location = used_memory;
+            val_list[list_size++] = v3;
+            copyCharToInt(v3,v2,0,v2_index,1);
+            move(v1,v3,v1->fdegit,0,index1,1,min(v1->idegit,v3->idegit));
+            clear(v3,0,0,3);
+            freeVariable(v3);
+        } else {
+            copy(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit,1);
+            // 符号の処理
+            if ((v1->type == INT_TYPE || v1->type == FIXED_TYPE) && (v2->type == INT_TYPE || v2->type == FIXED_TYPE)) {
+                copy(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1,1);
+            }
+            turnSign(v1,index1,v2->negative);
         }
-        turnSign(v1,index1,v2->negative);
     }
 };
 
@@ -118,6 +158,7 @@ void dfs1(Node *p) {
             res = (Variable *)malloc(sizeof(Variable));
             *res = *p->list[0]->v;
             res->sign = true;
+            if (res->type == UINT_TYPE) res->type = INT_TYPE;
         } else {
             res = (Variable *)malloc(sizeof(Variable));
             res->op = PLUS_OP;
@@ -138,6 +179,7 @@ void dfs1(Node *p) {
             res = (Variable *)malloc(sizeof(Variable));
             *res = *p->list[0]->v;
             res->sign = true;
+            if (res->type == UINT_TYPE) res->type = INT_TYPE;
             // res->negative = (!res->negative);
         } else {
             res = (Variable *)malloc(sizeof(Variable));
@@ -337,8 +379,6 @@ void dfs1(Node *p) {
         res->idegit = max(v1->idegit,v2->idegit);
         res->fdegit = max(v1->fdegit,v2->fdegit);
         res->sign = true;
-    // } else if (p->type == LESSEQUAL_AST) {
-    // } else if (p->type == GREATER_AST) {
     } else if (p->type == GREATEREQUAL_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = GREATEREQUAL_COND;
@@ -708,8 +748,6 @@ void dfs2(Node *p) {
         } else {
             // error
         }
-    // } else if (p->type == LESSEQUAL_AST) {
-    // } else if (p->type == GREATER_AST) {
     } else if (p->type == GREATEREQUAL_AST) {
         v0->location = used_memory;
         v0->unit_size = 8;

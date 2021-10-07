@@ -35,4 +35,5 @@ int main(int argc, char *argv[]) {
     dfs1(parse_result);
     list_size = 0;
     dfs2(parse_result);
+    fclose(Fresult);
 }

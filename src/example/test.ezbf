@@ -4,8 +4,10 @@ fn main() {
     char newl;
     newl = 10;
 
-    int(1) a;
-    scan(a);
-    print(a); 
+    char a;
+    int(3) b;
+    a = 'a';
+    b = a+001;
+    print(b); 
     print(newl);
 }
