@@ -5,7 +5,7 @@
 // #include "generator.h"
 
 int list_size = 0;
-Variable *val_list[256];
+Variable *val_list[100010];
 
 int used_memory = 0;
 
