@@ -1,3 +1,5 @@
+// https://atcoder.jp/contests/abc007/tasks/abc007_1
+
 fn main() {
     char newl;
     newl = 10;

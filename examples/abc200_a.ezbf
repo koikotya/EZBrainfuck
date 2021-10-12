@@ -1,7 +1,9 @@
+// https://atcoder.jp/contests/abc200/tasks/abc200_a
+
 fn main() {
-    uint(2) n;
+    uint(4) n;
     scan(n);
-    n = n-1;
+    n = (n+99)/100;
     print(n);
     
     char newl;

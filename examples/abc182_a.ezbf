@@ -1,13 +1,11 @@
+// https://atcoder.jp/contests/abc182/tasks/abc182_a
+
 fn main() {
     int(5) a;
     int(5) b;
-    int(5) c;
-    int(5) d;
     scan(a);
     scan(b);
-    scan(c);
-    scan(d);
-    a = a*d-b*c;
+    a = a*2+100-b;
     print(a);
     
     char newl;

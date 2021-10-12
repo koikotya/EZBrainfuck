@@ -1,9 +1,9 @@
+// https://atcoder.jp/contests/abc198/tasks/abc198_a
+
 fn main() {
-    uint(4) n;
-    uint(4) w;
+    uint(2) n;
     scan(n);
-    scan(w);
-    n = n/w;
+    n = n-1;
     print(n);
     
     char newl;

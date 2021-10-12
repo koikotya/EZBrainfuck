@@ -1,3 +1,5 @@
+// https://atcoder.jp/contests/abc173/tasks/abc173_a
+
 fn main() {
     uint(5) n;
     uint(5) ans;

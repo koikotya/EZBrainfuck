@@ -1,0 +1,25 @@
+// https://atcoder.jp/contests/abs/tasks/practice_1
+
+fn main() {
+    char newl;
+    newl = 10;
+    char space;
+    space = 32;
+
+    uint(4) a; scan(a);
+    uint(4) b; scan(b);
+    uint(4) c; scan(c);
+    uint(4) sum;
+    sum = a+b+c;
+
+    print(sum);
+    print(space);
+
+    char s;
+    scan(s);
+    while (s != newl) {
+        print(s);
+        scan(s);
+    }
+    print(newl);
+}

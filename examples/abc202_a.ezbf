@@ -1,3 +1,5 @@
+// https://atcoder.jp/contests/abc202/tasks/abc202_a
+
 fn main() {
     uint(1) a;
     uint(1) b;

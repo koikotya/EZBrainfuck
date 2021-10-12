@@ -30,10 +30,11 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Error ! Error ! Error !\n");
         exit(1);
     }
-    printf("syntax ok\n");
+    // printf("syntax ok\n");
     // print_node(parse_result,0);
     dfs1(parse_result);
     list_size = 0;
     dfs2(parse_result);
     fclose(Fresult);
+    printf("Successfully generated code\n");
 }
