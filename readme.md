@@ -27,4 +27,4 @@ ezbf.exe inputfile [outputfile]
 
 ## 謝辞
 
-一部のBrainf*ckコードを提供していただいた[@Andy](https://gist.github.com/unidentifiedexe)氏に感謝申し上げます。
+一部のBrainf*ckコードを提供していただいた[@unidentifiedexe](https://gist.github.com/unidentifiedexe)氏に感謝申し上げます。
