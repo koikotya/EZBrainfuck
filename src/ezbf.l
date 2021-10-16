@@ -49,7 +49,7 @@ int yywrap(void) {
 \'.\'                  {
     char *s;
     s = (char *)malloc(3);
-    itoa(yytext[1],s,10);
+    sprintf(s,"%d",yytext[1]);
     yylval.p = build_str_node(INTNUMBER_AST,s);
     return INTNUMBER;
 }
