@@ -7,6 +7,8 @@ extern FILE *yyin;
 extern Node *parse_result;
 extern int yyparse(void);
 extern int list_size;
+extern void dfs1(Node *p);
+extern void dfs2(Node *p);
 FILE *Fresult;
 
 
