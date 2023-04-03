@@ -1,5 +1,6 @@
 # EZBrainfuck
 Brainf*ckのコードを生成する自作言語です。
+Brainf*ckのコードを生成する自作言語です。
 主に競技プログラミングでの使用を想定して開発されました。
 bf20041219で実行することを想定しています。
 
@@ -23,6 +24,17 @@ ezbf.exe inputfile [outputfile]
 [language.md](./language.md)
 
 [examples/](./examples)
+
+## ライセンス
+
+[MIT License](./LICENSE)
+
+本プログラムで生成されたBrainf*ckコードについては、ライセンスに関係無くご自由にお使いください。
+
+## 謝辞
+
+一部のBrainf*ckコードを提供していただいた[@unidentifiedexe](https://gist.github.com/unidentifiedexe)氏に感謝申し上げます。
+
 
 ## ライセンス
 
