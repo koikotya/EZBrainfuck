@@ -62,7 +62,7 @@ void setLiteral(Variable *v1,Variable *v2,int index1) {
     } else if (v1->type == BOOL_TYPE) {
         setChar(v1,index1,v2->ident);
     } else {
-        printf("error setLiteral\n");
+        fprintf(stderr,"error setLiteral\n");
     }
 }
 

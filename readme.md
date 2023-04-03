@@ -7,6 +7,11 @@ bf20041219で実行することを想定しています。
 それから、現段階ではエラーメッセージを実装していません。
 ごめんなさい。
 
+
+開発段階なので優しく扱ってください。
+それから、現段階ではエラーメッセージを実装していません。
+ごめんなさい。
+
 ## 使い方
 ```
 ezbf.exe inputfile [outputfile]
@@ -27,4 +32,4 @@ ezbf.exe inputfile [outputfile]
 
 ## 謝辞
 
-一部のBrainf*ckコードを提供していただいた[@Andy](https://gist.github.com/unidentifiedexe)氏に感謝申し上げます。
+一部のBrainf*ckコードを提供していただいた[@unidentifiedexe](https://gist.github.com/unidentifiedexe)氏に感謝申し上げます。

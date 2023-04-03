@@ -7,6 +7,8 @@ extern FILE *yyin;
 extern Node *parse_result;
 extern int yyparse(void);
 extern int list_size;
+extern void dfs1(Node *p);
+extern void dfs2(Node *p);
 FILE *Fresult;
 
 
@@ -27,7 +29,7 @@ int main(int argc, char *argv[]) {
     else Fresult = fopen(argv[2],"w");
 
     if (yyparse()) {
-        fprintf(stderr, "Error ! Error ! Error !\n");
+        fprintf(stderr, "parser erorr\n");
         exit(1);
     }
     // printf("syntax ok\n");
@@ -36,5 +38,5 @@ int main(int argc, char *argv[]) {
     list_size = 0;
     dfs2(parse_result);
     fclose(Fresult);
-    printf("Successfully generated code\n");
+    fprintf(stderr,"Successfully generated code\n");
 }
