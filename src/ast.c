@@ -85,3 +85,15 @@ void print_node(Node *p,int i) {
     }
     printf("\n");
 }
+
+#ifdef __EMSCRIPTEN__
+extern char err[1000];
+
+void print_err(char *s) {
+    strcat(err, s);
+}
+#else
+void print_err(char *s) {
+    fprintf(stderr,"%s",s);
+}
+#endif

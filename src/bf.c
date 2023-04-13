@@ -4,11 +4,20 @@
 #include "ast.h"
 // #include "generator.h"
 
+#ifdef __EMSCRIPTEN__
+extern char result[1<<20];
+
+void output(char *s) {
+    strcat(result, s);
+}
+
+#else
 extern FILE *Fresult;
 
 void output(char *s) {
     fprintf(Fresult,s);
 }
+#endif
 
 void movePointer(int p1,int p2) {
     if (p1 < p2) {
@@ -84,7 +93,7 @@ void setDecimal(Variable* v,int index,char *literal,Operation op) {
         movePointer(0,v->unit_size*len2);
         movePointer(v->location+v->unit_size*v->fdegit+index,0);
     } else {
-        fprintf(stderr, "error setDecimal\n");
+        print_err("error setDecimal\n");
     }
     output("\nend set decimal\n");
 }

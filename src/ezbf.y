@@ -178,6 +178,8 @@ primary_expression
 
 int yyerror(char const *str) {
     extern char *yytext;
-    fprintf(stderr, "parser error near %s\n", yytext);
+    print_err("parser error near ");
+    print_err(yytext);
+    print_err("\n");
     return 0;
 }

@@ -77,6 +77,7 @@ Node* build_node1(Ntype t,Node* p1);
 Node* build_node2(Ntype t,Node* p1,Node* p2);
 Node* build_node3(Ntype t,Node* p1,Node* p2,Node* p3);
 void print_node(Node *p,int i);
+void print_err(char *s);
 
 int size(Variable *v) ;
 
@@ -135,3 +136,7 @@ void equalChar(Variable *v) ;
 void notEqualChar(Variable *v) ;
 void lessChar(Variable *v) ;
 void greaterEqualChar(Variable *v) ;
+
+// emscriptenでのコンパイルエラー回避に必要
+int yylex(void);
+int yyerror(char const *str);
