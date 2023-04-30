@@ -1,0 +1,20 @@
+// https://atcoder.jp/contests/abc218/tasks/abc218_a
+
+fn main() {
+    char newl;
+    newl = 10;
+
+    uint(1) n;
+    char s;
+    scan(n);
+    while (0 < n) {
+        n = n-1;
+        scan(s);
+    }
+    if (s == 'o') {
+        print("Yes");
+    } else {
+        print("No");
+    }
+    print(newl);
+}

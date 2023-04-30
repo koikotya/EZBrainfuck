@@ -1,0 +1,19 @@
+// https://atcoder.jp/contests/abc221/tasks/abc221_a
+
+fn main() {
+    char newl;
+    newl = 10;
+
+    uint(1) a;
+    uint(1) b;
+    uint(10) ans;
+    scan(a);
+    scan(b);
+    ans = 1;
+    while (a != b) {
+        a = a-1;
+        ans = ans*32;
+    }
+    print(ans);
+    print(newl);
+}

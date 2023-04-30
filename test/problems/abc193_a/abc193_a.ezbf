@@ -1,0 +1,17 @@
+// https://atcoder.jp/contests/abc193/tasks/abc193_a
+
+fn main() {
+    uint(6) a;
+    uint(6) b;
+    scan(a);
+    scan(b);
+    fixed(2,5) ans;
+    fixed(6,5) temp;
+    temp = a;
+    ans = (temp-b)/temp*100;
+    print(ans);
+    
+    char newl;
+    newl = 10;
+    print(newl);
+}

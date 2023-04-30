@@ -1,0 +1,26 @@
+// https://atcoder.jp/contests/abc219/tasks/abc219_a
+
+fn main() {
+    uint(3) x;
+    scan(x);
+    if (x < 40) {
+        x = 40-x;
+        print(x);
+    } else {
+        if (x < 70) {
+            x = 70-x;
+            print(x);
+        } else {
+            if (x < 90) {
+                x = 90-x;
+                print(x);
+            } else {
+                print("expert");
+            }
+        }
+    }
+
+    char newl;
+    newl = 10;
+    print(newl);
+}

@@ -1,0 +1,52 @@
+// https://atcoder.jp/contests/abs/tasks/arc089_a
+
+fn main() {
+    uint(6) n;
+    uint(6) t0;
+    uint(6) t1;
+    int(6) x0;
+    int(6) x1;
+    int(6) y0;
+    int(6) y1;
+    uint(6) temp0;
+    uint(6) temp1;
+    uint(1) p0;
+    uint(1) p1;
+    uint(1) ans;
+
+    scan(n);
+    t0 = 0;
+    x0 = 0;
+    y0 = 0;
+    ans = 1;
+    while (0 < n) {
+        n = n-1;
+        scan(t1);
+        scan(x1);
+        scan(y1);
+        temp0 = x1-x0;
+        temp1 = y1-y0;
+        temp0 = temp0+temp1;
+        if (t1-t0 < temp0) {
+            ans = 0;
+        }
+        p0 = t1-t0;
+        p1 = temp0;
+        if (p0%2 == p1%2) {
+        } else {
+            ans = 0;
+        }
+        t0 = t1;
+        x0 = x1;
+        y0 = y1;
+    }
+    if (ans == 1) {
+        print("Yes");
+    } else {
+        print("No");
+    }
+
+    char newl;
+    newl = 10;
+    print(newl);
+}

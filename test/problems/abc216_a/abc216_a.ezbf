@@ -1,0 +1,24 @@
+// https://atcoder.jp/contests/abc216/tasks/abc216_a
+
+fn main() {
+    fixed(3,1) a;
+    uint(2) x;
+    uint(2) y;
+
+    scan(a);
+    x = a;
+    y = (x-a)*10;
+    print(x);
+    if (y < 3) {
+        print("-");
+    } else {
+        if (y < 7) {
+        } else {
+            print("+");
+        }
+    }
+
+    char newl;
+    newl = 10;
+    print(newl);
+}

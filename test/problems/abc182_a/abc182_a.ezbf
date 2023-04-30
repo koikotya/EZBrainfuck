@@ -1,0 +1,14 @@
+// https://atcoder.jp/contests/abc182/tasks/abc182_a
+
+fn main() {
+    int(5) a;
+    int(5) b;
+    scan(a);
+    scan(b);
+    a = a*2+100-b;
+    print(a);
+    
+    char newl;
+    newl = 10;
+    print(newl);
+}
