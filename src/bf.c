@@ -174,90 +174,69 @@ void subChar() {
 void mult(int n) {
     output("\nmult\n");
     for (int i = 0;i < n;++i) {
-        output("[->");
-        for (int j = 0;j < n;++j) output("[>+>+<<-]>[<+>-]>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output(">>");
-        for (int j = 0;j < n;++j) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("<<<]");
-        for (int j = 0;j < n;++j) output(">>>>>>>>");
-        output(">");
-        for (int j = 0;j < n;++j) output("<<<<<<<<[>>>>>>>>+<<<<<<<<-]");
-        output(">>>>>>>");
+        output(">[-");
+        for (int i = 0;i < n;++i) output(">[>+>+<<-]>[<+>-]>[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>");
+        for (int i = 0;i < n;++i) output("<<<<<<<<");
+        output("]>");
+        for (int i = 0;i < n;++i) output(">>>>>>>>");
+        for (int i = 0;i < n;++i) output("<<<<<<<<[>>>>>>>>+<<<<<<<<-]");
+        output(">>>>>>");
     }
-    output(">");
-    for (int i = 0;i < n;++i) output("[-]>>>>>>>>");
-    output("<<<<<<[>+<-]");
+    for (int i = 0;i < n;++i) output(">>[-]>>>>>>");
+    output("<<<<[>+<-]>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<<<<<<<<<");
-    output(">>>>>");
     output("\nend mult\n");
 }
 
 void multSigned(int n) {
     output("\nsigned mult\n");
     for (int i = 0;i < n;++i) {
-        output("[->");
-        for (int j = 0;j < n;++j) output("[>+>+<<-]>[<+>-]>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output(">>");
-        for (int j = 0;j < n;++j) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("<<<]");
-        for (int j = 0;j < n;++j) output(">>>>>>>>");
-        output(">");
-        for (int j = 0;j < n;++j) output("<<<<<<<<[>>>>>>>>+<<<<<<<<-]");
-        output(">>>>>>>");
+        output(">[-");
+        for (int i = 0;i < n;++i) output(">[>+>+<<-]>[<+>-]>[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>");
+        for (int i = 0;i < n;++i) output("<<<<<<<<");
+        output("]>");
+        for (int i = 0;i < n;++i) output(">>>>>>>>");
+        for (int i = 0;i < n;++i) output("<<<<<<<<[>>>>>>>>+<<<<<<<<-]");
+        output(">>>>>>");
     }
-    output(">");
-    for (int i = 0;i < n;++i) output("[-]>>>>>>>>");
-    output("<<<<<<[>+<-]>>>>>[>-<-]>[+[-]>>>+<<<]<");
+    for (int i = 0;i < n;++i) output(">>[-]>>>>>>");
+    output("<<<<[>+<-]>>>>>[>-<-]>[+[-]>>>+<<<]<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<<<<<<<<<");
     output("\nend signed mult\n");
 }
 
-void shortMult(int n) {
+void multShort(int n) {
     output("\nmult short\n");
-    for (int i = 0;i < n;++i) output(">>>>>>>+>");
+    for (int i = 0;i < n;++i) output("+>>>>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
-    output(">>>>>>>[-<<<<<<<[->");
-    for (int i = 0;i < n;++i) output("[>+>+<<-]>[<+>-]>>>>>>>");
+    output("[->[-");
+    for (int i = 0;i < n;++i) output(">[>+>+<<-]>[<+>-]>[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
-    output(">>");
-    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
-    for (int i = 0;i < n;++i) output("<<<<<<<<");
-    output("<<<]>");
+    output("]>");
     for (int i = 0;i < n;++i) output(">>>>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<[>>>>>>>>+<<<<<<<<-]");
-    output(">>>>>>>>>>>>>>]");
-    for (int i = 0;i < n;++i) output(">>>>>>>>");
-    output("<<<<<<<<<<<<[>+<-]<<");
-    for (int i = 0;i < n;++i) output("[-]<<<<<<<<");
-    output(">>>>>>>");
-    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output(">>>>>>]");
+    for (int i = 0;i < n;++i) output(">>[-]>>>>>>");
+    output("<<<<[>+<-]>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<<<<<<<<<");
     output("\nend mult short\n");
 }
 
-void shortMultSigned(int n) {
-    output("\nmult short\n");
-    for (int i = 0;i < n;++i) output(">>>>>>>+>");
+void multSignedShort(int n) {
+    output("\nsigned mult short\n");
+    for (int i = 0;i < n;++i) output("+>>>>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
-    output(">>>>>>>[-<<<<<<<[->");
-    for (int i = 0;i < n;++i) output("[>+>+<<-]>[<+>-]>>>>>>>");
+    output("[->[-");
+    for (int i = 0;i < n;++i) output(">[>+>+<<-]>[<+>-]>[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
-    output(">>");
-    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
-    for (int i = 0;i < n;++i) output("<<<<<<<<");
-    output("<<<]>");
+    output("]>");
     for (int i = 0;i < n;++i) output(">>>>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<[>>>>>>>>+<<<<<<<<-]");
-    output(">>>>>>>>>>>>>>]");
-    for (int i = 0;i < n;++i) output(">>>>>>>>");
-    output("<<<<<<<<<<<<[>+<-]>>>>>[>-<-]>[+[-]>>>+<<<]<<<<<<<<");
-    for (int i = 0;i < n;++i) output("[-]<<<<<<<<");
-    output(">>>>>>>");
-    for (int i = 0;i < n;++i) output("<<<<<<<<");
-    output("\nend mult short\n");
+    output(">>>>>>]");
+    for (int i = 0;i < n;++i) output(">>[-]>>>>>>");
+    output("<<<<[>+<-]>>>>>[>-<-]>[+[-]>>>+<<<]<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<<<<<<<<<");
+    output("\nend signed mult short\n");
 }
 
 void divide(int n) {
