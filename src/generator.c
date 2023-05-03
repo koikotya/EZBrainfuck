@@ -26,8 +26,8 @@ int getIndex(Operation op) {
     if (op == PLUS_OP) res = 1;
     else if (op == MINUS_OP) res = 1;
     else if (op == TIMES_OP) res = 5;
-    else if (op == DIVIDE_OP) res = 7;
-    else if (op == MOD_OP) res = 1;
+    else if (op == DIVIDE_OP) res = 1;
+    else if (op == MOD_OP) res = 5;
     else if (op == EQUAL_COND) res = 2;
     else if (op == NOTEQUAL_COND) res = 3;
     else if (op == LESS_COND) res = 0;
@@ -527,11 +527,11 @@ void dfs2(Node *p) {
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
-        setValue(v0,v1,1);
+        setValue(v0,v1,5);
 
         v0->fdegit /= 2;
         v0->idegit += v0->fdegit;
-        setValue(v0,v2,0);
+        setValue(v0,v2,2);
 
         movePointer(0,v0->location);
         if (v0->type == UINT_TYPE) {
@@ -548,8 +548,7 @@ void dfs2(Node *p) {
             // error
         }
         movePointer(v0->location,0);
-        clear(v0,0,0,size(v0));
-        clear(v0,0,1,size(v0));
+        clear(v0,0,getIndex(MOD_OP),size(v0));
     } else if (p->type == MOD_AST) {
         v0->idegit = v0->idegit+v0->idegit;
         v0->fdegit = v0->fdegit+v0->fdegit;
@@ -563,11 +562,11 @@ void dfs2(Node *p) {
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
-        setValue(v0,v1,1);
+        setValue(v0,v1,5);
 
         v0->fdegit /= 2;
         v0->idegit += v0->fdegit;
-        setValue(v0,v2,0);
+        setValue(v0,v2,2);
 
         movePointer(0,v0->location);
         if (v0->type == UINT_TYPE) {
@@ -584,8 +583,7 @@ void dfs2(Node *p) {
             // error
         }
         movePointer(v0->location,0);
-        clear(v0,0,0,size(v0));
-        clear(v0,0,7,size(v0));
+        clear(v0,0,getIndex(DIVIDE_OP),size(v0));
     } else if (p->type == ASSIGN_AST) {
         dfs2(p->list[0]);
         dfs2(p->list[1]);

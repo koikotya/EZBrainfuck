@@ -242,80 +242,83 @@ void multSignedShort(int n) {
 void divide(int n) {
     /*
     a/b = q..r
-    0: b
-    1: a,r
-    2: 
-    3: temp copy b
-    4: 引き算用カウンタ
-    5: temp copy a
-    6: ループ用フラグ
-    7: q 
+    0:
+    1:q
+    2:b
+    3:
+    4:
+    5:a,r
+    6:
+    7:
     */
     output("\ndivide\n");
+    // ｂを右にシフト
+    for (int i = 0;i < n;++i) output(">>>>>>>>+");
+    output("[-<<<<<<[");
     for (int i = 0;i < n;++i) output(">>>>>>>>");
-    for (int i = 0;i < n;++i) {
-        output("<<<<<<<<[");
-        for (int j = 0;j < n;++j) output(">>>>>>>>");
-        output("+");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("-]");
-    }
-    for (int i = 0;i < n;++i) output(">>>>>>>>");
-    for (int i = 0;i < n;++i) {
-        for (int j = 0;j < n;++j) output("[<<<<<<<<+>>>>>>>>-]>>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("<<+[<<<<<");
-        for (int j = 0;j < n;++j) output("[>+>>>+<<<<-]>[<+>-]>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("<");
-        for (int j = 0;j < n;++j) output("[>>+>>+<<<<-]>>[<<+>>-]>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output(">>>>");
-        for (int j = 0;j < n;++j) output("[-<<<[>>+<]>[<]>-[+>>>>>>>>>+<<<<<<<<<<<++++++++++>>]<<->>>]>>>>>>>>");
-        output("[<<<");
-        for (int j = 0;j < n;++j) output("<<<<<<<<[-]");
-        output(">>>>>->-<<<<<<");
-        for (int j = 0;j < n;++j) output(">>>>[<<<<+>>>>-]>>>>");
-        output(">>>-]");
-        for (int j = 0;j < n;++j) output("<<<<<<<[-]<");
-        output(">>>+<]<<<<<<");
-    }
+    output("+");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output("-]<<]");
+    // ループ用フラグを立てる
+    for (int i = 0;i < n;++i) output(">>>>>>>>+");
+    // 除算
+    output("[");
+    for (int i = 0;i < n;++i) output(">>[<<<<<<<<+>>>>>>>>-]>>>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output("[<<<<<<<+>");
+    for (int i = 0;i < n;++i) output("[>+>+<<-]>[<+>-]>>>>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output(">>");
+    for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+<<++++++++++>>>>>>>+<<<<<]<<-<]>>>>>>>>");
+    output("[-");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output("<<<->");
+    for (int i = 0;i < n;++i) output("[>+>+<<-]>[<+>-]>>>>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output(">>>>>>-<<<<");
+    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
+    output("-]");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output(">>>>]<<<<<<<<]");
+    for (int i = 0;i < n;++i) output(">>[-]>>>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
     output("\nend divide\n");
 }
 
 void divideSigned(int n) {
     output("\nsigned divide\n");
+    // ｂを右にシフト
+    for (int i = 0;i < n;++i) output(">>>>>>>>+");
+    output("[-<<<<<<[");
     for (int i = 0;i < n;++i) output(">>>>>>>>");
-    for (int i = 0;i < n;++i) {
-        output("<<<<<<<<[");
-        for (int j = 0;j < n;++j) output(">>>>>>>>");
-        output("+");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("-]");
-    }
-    for (int i = 0;i < n;++i) output(">>>>>>>>");
-    for (int i = 0;i < n;++i) {
-        for (int j = 0;j < n;++j) output("[<<<<<<<<+>>>>>>>>-]>>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("<<+[<<<<<");
-        for (int j = 0;j < n;++j) output("[>+>>>+<<<<-]>[<+>-]>>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output("<");
-        for (int j = 0;j < n;++j) output("[>>+>>+<<<<-]>>[<<+>>-]>>>>>>");
-        for (int j = 0;j < n;++j) output("<<<<<<<<");
-        output(">>>>");
-        for (int j = 0;j < n;++j) output("[-<<<[>>+<]>[<]>-[+>>>>>>>>>+<<<<<<<<<<<++++++++++>>]<<->>>]>>>>>>>>");
-        output("[<<<");
-        for (int j = 0;j < n;++j) output("<<<<<<<<[-]");
-        output(">>>>>->-<<<<<<");
-        for (int j = 0;j < n;++j) output(">>>>[<<<<+>>>>-]>>>>");
-        output(">>>-]");
-        for (int j = 0;j < n;++j) output("<<<<<<<[-]<");
-        output(">>>+<]<<<<<<");
-    }
+    output("+");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output("-]<<]");
+    // ループ用フラグを立てる
+    for (int i = 0;i < n;++i) output(">>>>>>>>+");
+    // 除算
+    output("[");
+    for (int i = 0;i < n;++i) output(">>[<<<<<<<<+>>>>>>>>-]>>>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output("[<<<<<<<+>");
+    for (int i = 0;i < n;++i) output("[>+>+<<-]>[<+>-]>>>>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output(">>");
+    for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+<<++++++++++>>>>>>>+<<<<<]<<-<]>>>>>>>>");
+    output("[-");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output("<<<->");
+    for (int i = 0;i < n;++i) output("[>+>+<<-]>[<+>-]>>>>>>>");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output(">>>>>>-<<<<");
+    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
+    output("-]");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    output(">>>>]<<<<<<<<]");
     for (int i = 0;i < n;++i) output(">>>>>>>>>>>>>>>>");
-    output("[>>>+<<<-]>[>+>-<<-]>[<+>-]>[+[-]>>>>+<<<<]<<<");
-    for (int i = 0;i < n;++i) output("<<<<<<<<<<<<<<<<");
+    output(">>>>>[<+<<->>>-]<[>+<-]<<[+[-]<+>]<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    for (int i = 0;i < n;++i) output("<<<<<<[-]<<");
     output("\nend signed divide\n");
 }
 
