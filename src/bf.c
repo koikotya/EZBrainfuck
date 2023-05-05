@@ -101,73 +101,99 @@ void setDecimal(Variable* v,int index,char *literal,Operation op) {
 // todo:add関数その他にVriable構造体を渡すように改造
 void add(int n) {
     output("\nadd\n");
-    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
+    for (int i = 0;i < n;++i) output(">[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     output("\nend add\n");
 }
 
 void sub(int n) {
     output("\nsub\n");
-    for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>>>>>>>>");
+    for (int i = 0;i < n;++i) output(">[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>>>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     output("\nend sub\n");
 }
 
 void addSigned(int n) {
     output("\nsigned add\n");
-    movePointer(0,n*8);
-    output("[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
-    movePointer(n*8,0);
-    sub(n);
-    movePointer(0,n*8);
-    output("[->[>-<-]>+[<+>-]<<");
+    // movePointer(0,n*8);
+    // output("[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
+    // movePointer(n*8,0);
+    // sub(n);
+    // movePointer(0,n*8);
+    // output("[->[>-<-]>+[<+>-]<<");
 
-    for (int i = 0;i < n;++i) output("<<<<<<+++++++++<[>-<-]<");
-    output(">+");
-    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>[<+>-]>>>>>>>");
+    // for (int i = 0;i < n;++i) output("<<<<<<+++++++++<[>-<-]<");
+    // output(">+");
+    // for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>[<+>-]>>>>>>>");
     
-    output("<]>>>>-<]>[-<<<<");
-    movePointer(n*8,0);
-    add(n);
-    movePointer(0,n*8);
-    output(">>>>]<<<<");
-    movePointer(n*8,0);
+    // output("<]>>>>-<]>[-<<<<");
+    // movePointer(n*8,0);
+    // add(n);
+    // movePointer(0,n*8);
+    // output(">>>>]<<<<");
+    // movePointer(n*8,0);
+    for (int i = 0;i < n;++i) output(">>>>>>>>");
+    output(">[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[<<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>>>>>>>>");
+    output(" [>[>-<-]>+[<+>-]<");
+    for (int i = 0;i < n;++i) output("<<<<<<<+++++++++<[>-<-]");
+    output("+");
+    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>[<+>-]>>>>>>>");
+    output("<[-]]>>>>-<+[-]]>[<<<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
+    output(">>>>-]<<<<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
     output("\nend signed add\n");
 }
 
 void subSigned(int n) {
     output("\nigned sub\n");
-    movePointer(0,n*8);
-    output("[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
-    movePointer(n*8,0);
-    add(n);
-    movePointer(0,n*8);
-    output(">>>>-<]>[-<<<<");
-    movePointer(n*8,0);
-    sub(n);
-    movePointer(0,n*8);
+    // movePointer(0,n*8);
+    // output("[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
+    // movePointer(n*8,0);
+    // add(n);
+    // movePointer(0,n*8);
+    // output(">>>>-<]>[-<<<<");
+    // movePointer(n*8,0);
+    // sub(n);
+    // movePointer(0,n*8);
 
-    output("[->[>-<-]>+[<+>-]<<");
-    for (int i = 0;i < n;++i) output("<<<<<<+++++++++<[>-<-]<");
-    output(">+");
+    // output("[->[>-<-]>+[<+>-]<<");
+    // for (int i = 0;i < n;++i) output("<<<<<<+++++++++<[>-<-]<");
+    // output(">+");
+    // for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>[<+>-]>>>>>>>");
+    // output("<]>>>>]<<<<");
+
+    // // output("[->[>-<-]>+[<+>-]<<]>>>>]<<<<");
+
+    // movePointer(n*8,0);
+    for (int i = 0;i < n;++i) output(">>>>>>>>");
+    output(">[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[<<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>>>>>>>>");
+    output(">>>>-<+[-]]>[<<<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
+    for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>>>>>>>>");
+    output("[>[>-<-]>+[<+>-]<");
+    for (int i = 0;i < n;++i) output("<<<<<<<+++++++++<[>-<-]");
+    output("+");
     for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>[<+>-]>>>>>>>");
-    output("<]>>>>]<<<<");
-
-    // output("[->[>-<-]>+[<+>-]<<]>>>>]<<<<");
-
-    movePointer(n*8,0);
+    output("<[-]]>>>>-]<<<<<");
+    for (int i = 0;i < n;++i) output("<<<<<<<<");
     output("\nend signed sub\n");
 }
 
 void addChar() {
     output("\nchar add\n");
-    output("[>+<-]");
+    output(">[>+<-]<");
     output("\nend char add\n");
 }
 
 void subChar() {
     output("\nchar sub\n");
-    output("[>-<-]");
+    output(">[>-<-]<");
     output("\nend char sub\n");
 }
 

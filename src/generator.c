@@ -23,8 +23,8 @@ int size(Variable *v) {
 
 int getIndex(Operation op) {
     int res = 0;
-    if (op == PLUS_OP) res = 1;
-    else if (op == MINUS_OP) res = 1;
+    if (op == PLUS_OP) res = 2;
+    else if (op == MINUS_OP) res = 2;
     else if (op == TIMES_OP) res = 5;
     else if (op == DIVIDE_OP) res = 1;
     else if (op == MOD_OP) res = 5;
@@ -429,8 +429,8 @@ void dfs2(Node *p) {
             dfs2(p->list[1]);
             Variable *v1 = p->list[0]->v;
             Variable *v2 = p->list[1]->v;
-            setValue(v0,v1,1);
-            setValue(v0,v2,0);
+            setValue(v0,v1,2);
+            setValue(v0,v2,1);
 
             movePointer(0,v0->location);
             if (v0->type == UINT_TYPE) {
@@ -462,8 +462,8 @@ void dfs2(Node *p) {
             dfs2(p->list[1]);
             Variable *v1 = p->list[0]->v;
             Variable *v2 = p->list[1]->v;
-            setValue(v0,v1,1);
-            setValue(v0,v2,0);
+            setValue(v0,v1,2);
+            setValue(v0,v2,1);
 
             movePointer(0,v0->location);
             if (v0->type == UINT_TYPE) {
