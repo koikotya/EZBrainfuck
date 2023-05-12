@@ -715,7 +715,7 @@ void notEqualUnsigned(Variable *v) {
     output("\nnot equal unsigned\n");
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
-    for (int i = 0;i < n;++i) output("[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
+    for (int i = 0;i < n;++i) output(">>[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend not equal unsigned\n");
@@ -764,13 +764,13 @@ void notEqualSigned(Variable *v) {
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
     for (int i = 0;i < n;++i) output(">>>>>>>>");
-    output("[>-<-]>>+<[>-<<");
+    output(">>[>-<-]>>+<[>-<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     for (int i = 0;i < n;++i) output("[[-]>>>+<<<]>[[-]>>+<<]>>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
     output(">-]>[<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     for (int i = 0;i < n;++i) output("[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
-    output(">>-]<<");
+    output(">>-]<<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend not equal signed\n");
@@ -835,7 +835,7 @@ void equalChar(Variable *v) {
 void notEqualChar(Variable *v) {
     output("\nnot equal char\n");
     movePointer(0,v->location);
-    output("[>-<-]>[>>>>>>>>>>+<<<<<<<<<<[-]]<");
+    output(">>[>-<-]>[>>>>>>>>>>+<<<<<<<<<<[-]]<<<");
     movePointer(v->location,0);
     output("\nend not equal char\n");
 }
