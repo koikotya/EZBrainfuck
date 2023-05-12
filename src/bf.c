@@ -735,8 +735,8 @@ void greaterEqualUnsigned(Variable *v) {
     output("\ngreater equal unsigned\n");
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
-    for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
-    output(">+<[>-<-]");
+    for (int i = 0;i < n;++i) output(">[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>");
+    output(">>+<[>-<-]<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend greater equal unsigned\n");
@@ -805,7 +805,7 @@ void greaterEqualSigned(Variable *v) {
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
     for (int i = 0;i < n;++i) output(">>>>>>>>");
-    output("[>>+<<-]>[>++<-]>[>>+<]>[<]>-[+<<<<");
+    output(">[>>+<<-]>[>++<-]>[>>+<]>[<]>-[+<<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
     output(">>>>]<<-[>>+<]>[<]>-[+<<<<");
@@ -818,7 +818,7 @@ void greaterEqualSigned(Variable *v) {
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     output("+");
     for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
-    output(">+<[>-<-]>[<+>-]>>>]<<[+]<+<[>-<-]");
+    output(">+<[>-<-]>[<+>-]>>>]<<[+]<+<[>-<-]<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend greater equal signed\n");
@@ -851,7 +851,7 @@ void lessChar(Variable *v) {
 void greaterEqualChar(Variable *v) {
     output("\ngreater equal char\n");
     movePointer(0,v->location);
-    output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<<[-]>+>>]<<-<]>[-]>>>>>>>>+<[>-<-]<<<<<<<<");
+    output(">[->[>>+<]>[<]>-[+>>>>>+<<<<<<<<[-]>+>>]<<-<]>[-]>>>>>>>>+<[>-<-]<<<<<<<<<");
     movePointer(v->location,0);
     output("\nend greater equal char\n");
 }
