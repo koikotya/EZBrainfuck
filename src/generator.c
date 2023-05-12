@@ -261,7 +261,7 @@ void dfs1(Node *p) {
         res->ident = p->str;
     } else if (p->type == IF_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 2;
+        res->unit_size = 4;
         dfs1(p->list[0]);
         dfs1(p->list[1]);
         res->idegit = 0;
@@ -269,7 +269,7 @@ void dfs1(Node *p) {
         res->sign = true;
     } else if (p->type == IF_ELSE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 2;
+        res->unit_size = 4;
         dfs1(p->list[0]);
         dfs1(p->list[1]);
         dfs1(p->list[2]);
@@ -278,7 +278,7 @@ void dfs1(Node *p) {
         res->sign = true;
     } else if (p->type == WHILE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 2;
+        res->unit_size = 4;
         dfs1(p->list[0]);
         dfs1(p->list[1]);
         res->idegit = 0;
@@ -604,7 +604,7 @@ void dfs2(Node *p) {
 
         dfs2(p->list[0]);
         Variable *v1 = p->list[0]->v;
-        move(v0,v1,0,size(v1)-1,0,getIndex(v1->op),1);
+        move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
         freeVariable(v1);
         ifBegin(v0);
 
@@ -619,7 +619,7 @@ void dfs2(Node *p) {
 
         dfs2(p->list[0]);
         Variable *v1 = p->list[0]->v;
-        move(v0,v1,0,size(v1)-1,0,getIndex(v1->op),1);
+        move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
         freeVariable(v1);
         ifElseBegin(v0);
 
@@ -639,8 +639,8 @@ void dfs2(Node *p) {
         whileBegin(v0);
         dfs2(p->list[0]);
         Variable *v1 = p->list[0]->v;
-        copy(v0,v1,0,size(v1)-1,0,getIndex(v1->op),1,7);
-        move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
+        copy(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1,0);
+        move(v0,v1,0,size(v1)-1,2,getIndex(v1->op),1);
         whileMid(v0);
         dfs2(p->list[1]);
         whileEnd(v0);

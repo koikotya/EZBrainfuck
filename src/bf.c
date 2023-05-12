@@ -645,13 +645,13 @@ void scanChar(Variable *v) {
 void ifBegin(Variable *v) {
     output("\nif\n");
     movePointer(0,v->location);
-    output("[-");
+    output(">[-<");
     movePointer(v->location,0);
 }
 
 void ifEnd(Variable *v) {
     movePointer(0,v->location);
-    output("]");
+    output(">]<");
     movePointer(v->location,0);
     output("\nend if\n");
 }
@@ -659,22 +659,22 @@ void ifEnd(Variable *v) {
 void ifElseBegin(Variable *v) {
     output("\nif\n");
     movePointer(0,v->location);
-    output(">+<[->-<");
+    output(">>+<[->-<<");
     movePointer(v->location,0);
 }
 
 void ifElseMid(Variable *v) {
     movePointer(0,v->location);
-    output("]");
+    output(">]");
     output("\nelse\n");
-    output(">[-<");
+    output(">[-<<");
     movePointer(v->location,0);
 
 }
 
 void ifElseEnd(Variable *v) {
     movePointer(0,v->location);
-    output(">]<");
+    output(">>]<<");
     movePointer(v->location,0);
     output("\nend if\n");
 }
@@ -682,20 +682,20 @@ void ifElseEnd(Variable *v) {
 void whileBegin(Variable *v) {
     output("\nwhile\n");
     movePointer(0,v->location);
-    output("+[-");
+    output(">+[-<");
     movePointer(v->location,0);
 }
 
 void whileMid(Variable *v) {
     output("\nwhile mid\n");
     movePointer(0,v->location);
-    output(">[-<");
+    output(">>[-<<");
     movePointer(v->location,0);
 }
 
 void whileEnd(Variable *v) {
     movePointer(0,v->location);
-    output(">]<]");
+    output(">>]<]<");
     movePointer(v->location,0);
     output("\nend while\n");
 }
