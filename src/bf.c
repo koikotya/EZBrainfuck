@@ -115,23 +115,6 @@ void sub(int n) {
 
 void addSigned(int n) {
     output("\nsigned add\n");
-    // movePointer(0,n*8);
-    // output("[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
-    // movePointer(n*8,0);
-    // sub(n);
-    // movePointer(0,n*8);
-    // output("[->[>-<-]>+[<+>-]<<");
-
-    // for (int i = 0;i < n;++i) output("<<<<<<+++++++++<[>-<-]<");
-    // output(">+");
-    // for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>[<+>-]>>>>>>>");
-    
-    // output("<]>>>>-<]>[-<<<<");
-    // movePointer(n*8,0);
-    // add(n);
-    // movePointer(0,n*8);
-    // output(">>>>]<<<<");
-    // movePointer(n*8,0);
     for (int i = 0;i < n;++i) output(">>>>>>>>");
     output(">[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
@@ -149,26 +132,7 @@ void addSigned(int n) {
 }
 
 void subSigned(int n) {
-    output("\nigned sub\n");
-    // movePointer(0,n*8);
-    // output("[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[+[-]<<<");
-    // movePointer(n*8,0);
-    // add(n);
-    // movePointer(0,n*8);
-    // output(">>>>-<]>[-<<<<");
-    // movePointer(n*8,0);
-    // sub(n);
-    // movePointer(0,n*8);
-
-    // output("[->[>-<-]>+[<+>-]<<");
-    // for (int i = 0;i < n;++i) output("<<<<<<+++++++++<[>-<-]<");
-    // output(">+");
-    // for (int i = 0;i < n;++i) output("[->---------[>>+<]>[<]>-[+<<---------->>>>>>>+<<<<<]<<++++++++++<]>[<+>-]>>>>>>>");
-    // output("<]>>>>]<<<<");
-
-    // // output("[->[>-<-]>+[<+>-]<<]>>>>]<<<<");
-
-    // movePointer(n*8,0);
+    output("\nsigned sub\n");
     for (int i = 0;i < n;++i) output(">>>>>>>>");
     output(">[>>>+<<<-]>[>+>-<<-]>[<+>-]>>+<[<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
@@ -740,8 +704,8 @@ void equalUnsigned(Variable *v) {
     output("\nequal unsigned\n");
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
-    for (int i = 0;i < n;++i) output("[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
-    output(">>+>[<->-]<<<");
+    for (int i = 0;i < n;++i) output(">[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>");
+    output(">>>+>[<->-]<<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend equal unsigned\n");
@@ -783,13 +747,13 @@ void equalSigned(Variable *v) {
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
     for (int i = 0;i < n;++i) output(">>>>>>>>");
-    output("[>-<-]>>+<[>-<<");
+    output(">[>-<-]>>+<[>-<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     for (int i = 0;i < n;++i) output("[[-]>>>+<<<]>[[-]>>+<<]>>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
     output(">-]>[<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     for (int i = 0;i < n;++i) output("[->-<]>[+++++++++[-]>>+<]>[<]>[>>>>>>>>+<<<<<<<<[-]]>>>>>");
-    output(">>-]+>[<->-]<<<");
+    output(">>-]+>[<->-]<<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend equal signed\n");
@@ -863,7 +827,7 @@ void greaterEqualSigned(Variable *v) {
 void equalChar(Variable *v) {
     output("\nequal char\n");
     movePointer(0,v->location);
-    output("[>-<-]>[>>>>>>>>>>+<<<<<<<<<<[-]]>>>>>>>>>+>[<->-]<<<<<<<<<<<");
+    output(">[>-<-]>[>>>>>>>>>>+<<<<<<<<<<[-]]>>>>>>>>>+>[<->-]<<<<<<<<<<<<");
     movePointer(v->location,0);
     output("\nend equal char\n");
 }
