@@ -725,7 +725,7 @@ void lessUnsigned(Variable *v) {
     output("\nless unsigned\n");
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
-    for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
+    for (int i = 0;i < n;++i) output(">[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend less unsigned\n");
@@ -781,7 +781,7 @@ void lessSigned(Variable *v) {
     movePointer(0,v->location);
     int n = v->idegit+v->fdegit;
     for (int i = 0;i < n;++i) output(">>>>>>>>");
-    output("[>>+<<-]>[>++<-]>[>>+<]>[<]>-[+<<<<");
+    output(">[>>+<<-]>[>++<-]>[>>+<]>[<]>-[+<<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
     output(">>>>]<<-[>>+<]>[<]>-[+<<<<");
@@ -794,7 +794,7 @@ void lessSigned(Variable *v) {
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     output("+");
     for (int i = 0;i < n;++i) output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<++++++++++>>]<<-<]>[-]>>>>>>>");
-    output(">+<[>-<-]>[<+>-]>>>]<<[+]<<");
+    output(">+<[>-<-]>[<+>-]>>>]<<[+]<<<");
     for (int i = 0;i < n;++i) output("<<<<<<<<");
     movePointer(v->location,0);
     output("\nend less signed\n");
@@ -843,7 +843,7 @@ void notEqualChar(Variable *v) {
 void lessChar(Variable *v) {
     output("\nless char\n");
     movePointer(0,v->location);
-    output("[->[>>+<]>[<]>-[+>>>>>+<<<<<<<<[-]>+>>]<<-<]>[-]<");
+    output(">[->[>>+<]>[<]>-[+>>>>>+<<<<<<<<[-]>+>>]<<-<]>[-]<<");
     movePointer(v->location,0);
     output("\nend less char\n");
 }

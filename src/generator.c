@@ -30,7 +30,7 @@ int getIndex(Operation op) {
     else if (op == MOD_OP) res = 5;
     else if (op == EQUAL_COND) res = 3;
     else if (op == NOTEQUAL_COND) res = 5;
-    else if (op == LESS_COND) res = 0;
+    else if (op == LESS_COND) res = 1;
     else if (op == GREATEREQUAL_COND) res = 1;
     else ;
     return res;
@@ -730,8 +730,8 @@ void dfs2(Node *p) {
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
-        setValue(v0,v1,1);
-        setValue(v0,v2,0);
+        setValue(v0,v1,2);
+        setValue(v0,v2,1);
 
         if (v0->type == UINT_TYPE) {
             lessUnsigned(v0);
