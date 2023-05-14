@@ -540,7 +540,11 @@ void printUint(Variable *v) {
     movePointer(0,v->unit_size*size(v));
     for (int i = 0;i < size(v)-1;++i) {
         movePointer(v->unit_size,0);
-        output("[>>+<]>[<]>[<<++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------<+>>>[-]]<<");
+        output("[>>+<]>[<]>[");
+        movePointer(v->unit_size,0);
+        output("+");
+        movePointer(0,v->unit_size-2);
+        output("++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------>>[-]]<<");
     }
     output("<[-]>");
     movePointer(v->unit_size,0);
@@ -556,7 +560,11 @@ void printInt(Variable *v) {
     output("[>>+<]>[<]>[++++++++++++++++++++++++++++++++++++++++++++.---------------------------------------------]<<");
     for (int i = 0;i < v->idegit-1;++i) {
         movePointer(v->unit_size,0);
-        output("[>>+<]>[<]>[<<++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------<+>>>[-]]<<");
+        output("[>>+<]>[<]>[");
+        movePointer(v->unit_size,0);
+        output("+");
+        movePointer(0,v->unit_size-2);
+        output("++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------>>[-]]<<");
     }
     output("<[-]>");
     movePointer(v->unit_size,0);
@@ -572,7 +580,11 @@ void printFixed(Variable *v) {
     output("[>>+<]>[<]>[++++++++++++++++++++++++++++++++++++++++++++.---------------------------------------------]<<");
     for (int i = 0;i < v->idegit-1;++i) {
         movePointer(v->unit_size,0);
-        output("[>>+<]>[<]>[<<++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------<+>>>[-]]<<");
+        output("[>>+<]>[<]>[");
+        movePointer(v->unit_size,0);
+        output("+");
+        movePointer(0,v->unit_size-2);
+        output("++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------>>[-]]<<");
     }
     output("<[-]>");
     movePointer(v->unit_size,0);
@@ -590,8 +602,15 @@ void scanUint(Variable *v) {
     output("\nscan uint\n");
     movePointer(0,v->location);
     output(">>+[-<,----------[----------------------[----------------<");
-    for (int i = 0;i < v->idegit-1;++i) output(">>>");
-    for (int i = 0;i < v->idegit-1;++i) output("<<<[>>>+<<<-]");
+    for (int i = 0;i < v->idegit-1;++i) movePointer(0,v->unit_size);
+    for (int i = 0;i < v->idegit-1;++i) {
+        movePointer(v->unit_size,0);
+        output("[");
+        movePointer(0,v->unit_size);
+        output("+");
+        movePointer(v->unit_size,0);
+        output("-]");
+    }
     output(">[<+>-]>+<]]>]<<");
     movePointer(v->location,0);
     output("\nend scan uint\n");
@@ -602,13 +621,22 @@ void scanInt(Variable *v) {
     movePointer(0,v->location);
 
     output(",---------------------------------------------[--->>+<]>[<]>-[+");
-    for (int i = 0;i < v->idegit-1;++i) output(">>>");
-    output(">+<");
-    for (int i = 0;i < v->idegit-1;++i) output("<<<");
+    for (int i = 0;i < v->idegit-1;++i) movePointer(0,v->unit_size);
+    movePointer(0,v->unit_size-2);
+    output("+");
+    movePointer(v->unit_size-2,0);
+    for (int i = 0;i < v->idegit-1;++i) movePointer(v->unit_size,0);
 
     output("]+[-<,----------[----------------------[----------------<");
-    for (int i = 0;i < v->idegit-1;++i) output(">>>");
-    for (int i = 0;i < v->idegit-1;++i) output("<<<[>>>+<<<-]");
+    for (int i = 0;i < v->idegit-1;++i) movePointer(0,v->unit_size);
+    for (int i = 0;i < v->idegit-1;++i) {
+        movePointer(v->unit_size,0);
+        output("[");
+        movePointer(0,v->unit_size);
+        output("+");
+        movePointer(v->unit_size,0);
+        output("-]");
+    }
     output(">[<+>-]>+<]]>]<<");
     movePointer(v->location,0);
     output("\nend scan int\n");
@@ -620,16 +648,41 @@ void scanFixed(Variable *v) {
     movePointer(0,v->unit_size*v->fdegit);
 
     output(",---------------------------------------------[--->>+<]>[<]>-[+");
-    for (int i = 0;i < v->idegit-1;++i) output(">>>");
-    output(">+<");
-    for (int i = 0;i < v->idegit-1;++i) output("<<<");
+    for (int i = 0;i < v->idegit-1;++i) movePointer(0,v->unit_size);
+    movePointer(0,v->unit_size-2);
+    output("+");
+    movePointer(v->unit_size-2,0);
+    for (int i = 0;i < v->idegit-1;++i) movePointer(v->unit_size,0);
 
     output("]+[-<,----------------------------------------------[--<");
-    for (int i = 0;i < v->idegit-1;++i) output(">>>");
-    for (int i = 0;i < v->idegit-1;++i) output("<<<[>>>+<<<-]");
+    for (int i = 0;i < v->idegit-1;++i) movePointer(0,v->unit_size);
+    for (int i = 0;i < v->idegit-1;++i) {
+        movePointer(v->unit_size,0);
+        output("[");
+        movePointer(0,v->unit_size);
+        output("+");
+        movePointer(v->unit_size,0);
+        output("-]");
+    }
     output(">[<+>-]>+<]>]+");
-    for (int i = 0;i < v->fdegit-1;++i) output("[-<,----------[----------------------[----------------[<<<<+>>>>-]<<+>>]]>]<<<");
-    output("[-<,----------[----------------------[----------------[<<<<+>>>>-],----------[----------------------]]]>]<<<<<");
+    for (int i = 0;i < v->fdegit-1;++i) {
+        output("[-<,----------[----------------------[----------------[<");
+        movePointer(v->unit_size,0);
+        output("+");
+        movePointer(0,v->unit_size);
+        output(">-]");
+        movePointer(v->unit_size-1,0);
+        output("+");
+        movePointer(0,v->unit_size-1);
+        output("]]>]");
+        movePointer(v->unit_size,0);
+    }
+    output("[-<,----------[----------------------[----------------[<");
+    movePointer(v->unit_size,0);;
+    output("+");
+    movePointer(0,v->unit_size);;
+    output(">-],----------[----------------------]]]>]<<");
+    movePointer(v->unit_size,0);
     movePointer(v->location,0);
     output("\nend scan fixed\n");
 }
