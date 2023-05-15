@@ -73,7 +73,7 @@ Type castType(Type t1,Type t2) {
 // v2をv1のメモリに書き込む
 // v1のどのindexに書き込みかは引数で指定
 void setValue(Variable *v1,Variable *v2,int index1) {
-    int v2_index = 0;
+    int v2_index = 1;
     if (v2->op == INT_LITERAL || v2->op == DECIMAL_LITERAL) {
         // v2がリテラルの場合
         setLiteral(v1,v2,index1);
@@ -88,8 +88,8 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             v3 = (Variable *)malloc(sizeof(Variable));
             v3->location = used_memory;
             val_list[list_size++] = v3;
-            moveIntToChar(v3,v2,0,v2_index);
-            move(v1,v3,0,0,index1,0,1);
+            moveIntToChar(v3,v2,1,v2_index);
+            move(v1,v3,0,0,index1,1,1);
             freeVariable(v3);
         } else if (v2->type == CHAR_TYPE && CHAR_TYPE < v1->type) {
             Variable *v3;
@@ -98,9 +98,9 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             v3->unit_size = 8;
             v3->location = used_memory;
             val_list[list_size++] = v3;
-            moveCharToInt(v3,v2,0,v2_index);
-            move(v1,v3,v1->fdegit,0,index1,1,min(v1->idegit,v3->idegit));
-            clear(v3,0,0,3);
+            moveCharToInt(v3,v2,1,v2_index);
+            move(v1,v3,v1->fdegit,0,index1,2,min(v1->idegit,v3->idegit));
+            clear(v3,0,1,3);
             freeVariable(v3);
         } else {
             move(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit);
@@ -122,8 +122,8 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             v3 = (Variable *)malloc(sizeof(Variable));
             v3->location = used_memory;
             val_list[list_size++] = v3;
-            copyIntToChar(v3,v2,0,v2_index,1);
-            move(v1,v3,0,0,index1,0,1);
+            copyIntToChar(v3,v2,1,v2_index,2);
+            move(v1,v3,0,0,index1,1,1);
             freeVariable(v3);
         } else if (v2->type == CHAR_TYPE && CHAR_TYPE < v1->type) {
             Variable *v3;
@@ -132,15 +132,15 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             v3->unit_size = 8;
             v3->location = used_memory;
             val_list[list_size++] = v3;
-            copyCharToInt(v3,v2,0,v2_index,1);
-            move(v1,v3,v1->fdegit,0,index1,1,min(v1->idegit,v3->idegit));
-            clear(v3,0,0,3);
+            copyCharToInt(v3,v2,1,v2_index,2);
+            move(v1,v3,v1->fdegit,0,index1,2,min(v1->idegit,v3->idegit));
+            clear(v3,0,1,3);
             freeVariable(v3);
         } else {
-            copy(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit,1);
+            copy(v1,v2,v1->fdegit-fdegit,v2->fdegit-fdegit,index1,v2_index,fdegit+idegit,2);
             // 符号の処理
             if ((v1->type == INT_TYPE || v1->type == FIXED_TYPE) && (v2->type == INT_TYPE || v2->type == FIXED_TYPE)) {
-                copy(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1,1);
+                copy(v1,v2,size(v1)-1,size(v2)-1,index1,v2_index,1,2);
             }
             turnSign(v1,index1,v2->negative);
         }
@@ -291,7 +291,7 @@ void dfs1(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 3;
+        res->unit_size = 4;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
@@ -302,7 +302,7 @@ void dfs1(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = true;
-        res->unit_size = 3;
+        res->unit_size = 4;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
@@ -313,7 +313,7 @@ void dfs1(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = atoi(p->list[1]->str);
         res->sign = true;
-        res->unit_size = 3;
+        res->unit_size = 4;
         res->negative = false;
         res->ident = p->list[2]->str;
         val_list[list_size++] = res;
@@ -324,7 +324,7 @@ void dfs1(Node *p) {
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 2;
+        res->unit_size = 4;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
@@ -335,7 +335,7 @@ void dfs1(Node *p) {
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 2;
+        res->unit_size = 4;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
@@ -590,10 +590,10 @@ void dfs2(Node *p) {
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         if (v1->ident != NULL && v2->ident != NULL && strcmp(v1->ident,v2->ident) == 0) {
-            turnSign(v1,0,v2->negative);
+            turnSign(v1,1,v2->negative);
         } else {
-            clear(v1,0,0,size(v1));
-            setValue(v1,v2,0);
+            clear(v1,0,1,size(v1));
+            setValue(v1,v2,1);
         }
     } else if (p->type == INTNUMBER_AST) {
     } else if (p->type == DECIMALNUMBER_AST) {
@@ -639,7 +639,7 @@ void dfs2(Node *p) {
         whileBegin(v0);
         dfs2(p->list[0]);
         Variable *v1 = p->list[0]->v;
-        copy(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1,0);
+        copy(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1,2);
         move(v0,v1,0,size(v1)-1,2,getIndex(v1->op),1);
         whileMid(v0);
         dfs2(p->list[1]);
@@ -780,15 +780,15 @@ void dfs2(Node *p) {
     } else if (p->type == SCAN_AST) {
         dfs2(p->list[0]);
         Variable *v1 = p->list[0]->v;
-        clear(v1,0,0,size(v1));
+        clear(v1,0,1,size(v1));
         if (v1->type == UINT_TYPE) {
-            scanUint(v1,0);
+            scanUint(v1,1);
         } else if (v1->type == INT_TYPE) {
-            scanInt(v1,0);
+            scanInt(v1,1);
         } else if (v1->type == FIXED_TYPE) {
-            scanFixed(v1,0);
+            scanFixed(v1,1);
         } else if (v1->type == CHAR_TYPE) {
-            scanChar(v1,0);
+            scanChar(v1,1);
         } else if (v1->type == BOOL_TYPE) {
         } else {}
     } else if (p->type == PRINT_AST) {
@@ -798,15 +798,15 @@ void dfs2(Node *p) {
             dfs2(p->list[0]);
             Variable *v1 = p->list[0]->v;
             if (v1->type == UINT_TYPE) {
-                printUint(v1,0);
+                printUint(v1,1);
             } else if (v1->type == INT_TYPE) {
-                printInt(v1,0);
+                printInt(v1,1);
             } else if (v1->type == FIXED_TYPE) {
-                printFixed(v1,0);
+                printFixed(v1,1);
             } else if (v1->type == CHAR_TYPE) {
-                printChar(v1,0);
+                printChar(v1,1);
             } else if (v1->type == BOOL_TYPE) {
-                printChar(v1,0);
+                printChar(v1,1);
             } else {}
         } else {}
     } else if (p->type == MAIN_AST) {

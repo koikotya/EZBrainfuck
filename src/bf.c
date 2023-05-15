@@ -433,7 +433,7 @@ void copy(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,i
 }
 
 void copyCharToInt(Variable *v1,Variable *v2,int index1,int index2,int empty_index) {
-    output("\nmove copy to int\n");
+    output("\ncopy char to int\n");
     movePointer(0,v2->location);
     movePointer(0,index2);
 
