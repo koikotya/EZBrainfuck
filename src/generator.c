@@ -782,13 +782,13 @@ void dfs2(Node *p) {
         Variable *v1 = p->list[0]->v;
         clear(v1,0,0,size(v1));
         if (v1->type == UINT_TYPE) {
-            scanUint(v1);
+            scanUint(v1,0);
         } else if (v1->type == INT_TYPE) {
-            scanInt(v1);
+            scanInt(v1,0);
         } else if (v1->type == FIXED_TYPE) {
-            scanFixed(v1);
+            scanFixed(v1,0);
         } else if (v1->type == CHAR_TYPE) {
-            scanChar(v1);
+            scanChar(v1,0);
         } else if (v1->type == BOOL_TYPE) {
         } else {}
     } else if (p->type == PRINT_AST) {
@@ -798,15 +798,15 @@ void dfs2(Node *p) {
             dfs2(p->list[0]);
             Variable *v1 = p->list[0]->v;
             if (v1->type == UINT_TYPE) {
-                printUint(v1);
+                printUint(v1,0);
             } else if (v1->type == INT_TYPE) {
-                printInt(v1);
+                printInt(v1,0);
             } else if (v1->type == FIXED_TYPE) {
-                printFixed(v1);
+                printFixed(v1,0);
             } else if (v1->type == CHAR_TYPE) {
-                printChar(v1);
+                printChar(v1,0);
             } else if (v1->type == BOOL_TYPE) {
-                printChar(v1);
+                printChar(v1,0);
             } else {}
         } else {}
     } else if (p->type == MAIN_AST) {

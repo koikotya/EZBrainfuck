@@ -526,17 +526,17 @@ void printStr(int used_memory,char *str) {
     output("\nend print str\n");
 }
 
-void printChar(Variable *v) {
+void printChar(Variable *v,int index) {
     output("\nprint char\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
     output(".");
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend print char\n");
 }
 
-void printUint(Variable *v) {
+void printUint(Variable *v,int index) {
     output("\nprint uint\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
     movePointer(0,v->unit_size*size(v));
     for (int i = 0;i < size(v)-1;++i) {
         movePointer(v->unit_size,0);
@@ -549,13 +549,13 @@ void printUint(Variable *v) {
     output("<[-]>");
     movePointer(v->unit_size,0);
     output("++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------");
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend print uint\n");
 }
 
-void printInt(Variable *v) {
+void printInt(Variable *v,int index) {
     output("\nprint int\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
     movePointer(0,v->unit_size*(size(v)-1));
     output("[>>+<]>[<]>[++++++++++++++++++++++++++++++++++++++++++++.---------------------------------------------]<<");
     for (int i = 0;i < v->idegit-1;++i) {
@@ -569,13 +569,13 @@ void printInt(Variable *v) {
     output("<[-]>");
     movePointer(v->unit_size,0);
     output("++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------");
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend print int\n");
 }
 
-void printFixed(Variable *v) {
+void printFixed(Variable *v,int index) {
     output("\nprint fixed\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
     movePointer(0,v->unit_size*(size(v)-1));
     output("[>>+<]>[<]>[++++++++++++++++++++++++++++++++++++++++++++.---------------------------------------------]<<");
     for (int i = 0;i < v->idegit-1;++i) {
@@ -594,13 +594,13 @@ void printFixed(Variable *v) {
         movePointer(v->unit_size,0);
         output("++++++++++++++++++++++++++++++++++++++++++++++++.------------------------------------------------");
     }
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend print fixed\n");
 }
 
-void scanUint(Variable *v) {
+void scanUint(Variable *v,int index) {
     output("\nscan uint\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
     output(">>+[-<,----------[----------------------[----------------<");
     for (int i = 0;i < v->idegit-1;++i) movePointer(0,v->unit_size);
     for (int i = 0;i < v->idegit-1;++i) {
@@ -612,13 +612,13 @@ void scanUint(Variable *v) {
         output("-]");
     }
     output(">[<+>-]>+<]]>]<<");
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend scan uint\n");
 }
 
-void scanInt(Variable *v) {
+void scanInt(Variable *v,int index) {
     output("\nscan int\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
 
     output(",---------------------------------------------[--->>+<]>[<]>-[+");
     for (int i = 0;i < v->idegit-1;++i) movePointer(0,v->unit_size);
@@ -638,13 +638,13 @@ void scanInt(Variable *v) {
         output("-]");
     }
     output(">[<+>-]>+<]]>]<<");
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend scan int\n");
 }
 
-void scanFixed(Variable *v) {
+void scanFixed(Variable *v,int index) {
     output("\nscan fixed\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
     movePointer(0,v->unit_size*v->fdegit);
 
     output(",---------------------------------------------[--->>+<]>[<]>-[+");
@@ -683,15 +683,15 @@ void scanFixed(Variable *v) {
     movePointer(0,v->unit_size);;
     output(">-],----------[----------------------]]]>]<<");
     movePointer(v->unit_size,0);
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend scan fixed\n");
 }
 
-void scanChar(Variable *v) {
+void scanChar(Variable *v,int index) {
     output("\nscan char\n");
-    movePointer(0,v->location);
+    movePointer(0,v->location+index);
     output(",");
-    movePointer(v->location,0);
+    movePointer(v->location+index,0);
     output("\nend scan char\n");
 }
 
