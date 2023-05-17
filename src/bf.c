@@ -344,16 +344,23 @@ void UnidenDivide(int n) {
 void move(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len) {
     output("\nmove\n");
     movePointer(0,v2->location);
-    movePointer(0,start_unit2*v2->unit_size+index2);
+    movePointer(0,v2->unit_size*start_unit2);
     for (int i = 0;i < len;++i) {
-        output("[");
-        movePointer(v2->location+v2->unit_size*(start_unit2+i)+index2,v1->location+v1->unit_size*(start_unit1+i)+index1);
         output("+");
-        movePointer(v1->location+v1->unit_size*(start_unit1+i)+index1,v2->location+v2->unit_size*(start_unit2+i)+index2);
-        output("-]");
         movePointer(0,v2->unit_size);
     }
-    movePointer(v2->unit_size*(start_unit2+len)+index2,0);
+    movePointer(v2->unit_size*len,0);
+    output("[-");
+    movePointer(0,index2);
+    output("[-");
+    movePointer(v2->location+v2->unit_size*start_unit2+index2,v1->location+v1->unit_size*start_unit1+index1);
+    output("+");
+    movePointer(v1->location+v1->unit_size*start_unit1+index1,v2->location+v2->unit_size*start_unit2+index2);
+    output("]");
+    movePointer(index2,v2->unit_size);
+    output("]");
+    movePointer(v2->unit_size*len,0);
+    movePointer(v2->unit_size*start_unit2,0);
     movePointer(v2->location,0);
     output("\nend move\n");
 }
@@ -382,52 +389,62 @@ void moveCharToInt(Variable *v1,Variable *v2,int index1,int index2) {
 void moveIntToChar(Variable *v1,Variable *v2,int index1,int index2) {
     output("\nmove int to char\n");
     movePointer(0,v2->location);
-    movePointer(0,v2->unit_size*(v2->fdegit+v2->idegit));
-    movePointer(0,index2);
-    for (int i = v2->idegit-1;i >= 0;--i)  {
-        movePointer(v2->unit_size,0);
-        movePointer(v2->location+v2->unit_size*(v2->fdegit+i)+index2,v1->location+index1);
-        output("[>+<-]>[<++++++++++>-]<");
-        movePointer(v1->location+index1,v2->location+v2->unit_size*(v2->fdegit+i)+index2);
-        output("[");
-        movePointer(v2->location+v2->unit_size*(v2->fdegit+i)+index2,v1->location+index1);
+    movePointer(0,v2->unit_size*v2->fdegit);
+    for (int i = 0;i < v2->idegit;++i) {
         output("+");
-        movePointer(v1->location+index1,v2->location+v2->unit_size*(v2->fdegit+i)+index2);
-        output("-]");
+        movePointer(0,v2->unit_size);
     }
-    movePointer(v2->unit_size*(v2->fdegit),0);
-    movePointer(index2,0);
-    movePointer(v2->location,0);
+    movePointer(v2->unit_size*v2->idegit,0);
+    output("[-");
+    movePointer(0,index2);
+    output("[-");
+    movePointer(v2->location+v2->unit_size*v2->fdegit+index2,v1->location+index1);
+    output("+");
+    movePointer(v1->location+index1,v2->location+v2->unit_size*v2->fdegit+index2);
+    output("]");
+    movePointer(index2,v2->unit_size);
+    output("]");
+    movePointer(v2->location+v2->unit_size*(v2->idegit+v2->fdegit+1),v1->location+v2->unit_size*v2->idegit+index1);
+    for (int i = 0;i < v2->idegit-1;++i) {
+        output("[-");
+        movePointer(v2->unit_size,0);
+        output("++++++++++");
+        movePointer(0,v2->unit_size);
+        output("]");
+        movePointer(v2->unit_size,0);
+    }
+    movePointer(v1->location+index1,0);
     output("\nend move int to char\n");
 }
 
 void copy(Variable *v1,Variable *v2,int start_unit1,int start_unit2,int index1,int index2,int len,int empty_index) {
     output("\ncopy\n");
     movePointer(0,v2->location);
-    movePointer(0,start_unit2*v2->unit_size+index2);
+    movePointer(0,v2->unit_size*start_unit2);
     for (int i = 0;i < len;++i) {
-        output("[");
-
-        movePointer(index2,empty_index);
         output("+");
-        movePointer(empty_index,index2);
-
-        movePointer(v2->location+v2->unit_size*(start_unit2+i)+index2,v1->location+v1->unit_size*(start_unit1+i)+index1);
-        output("+");
-        movePointer(v1->location+v1->unit_size*(start_unit1+i)+index1,v2->location+v2->unit_size*(start_unit2+i)+index2);
-        output("-]");
-
-        movePointer(index2,empty_index);
-        output("[");
-        movePointer(empty_index,index2);
-        output("+");
-        movePointer(index2,empty_index);
-        output("-]");
-        movePointer(empty_index,index2);
-
         movePointer(0,v2->unit_size);
     }
-    movePointer(v2->unit_size*(start_unit2+len)+index2,0);
+    movePointer(v2->unit_size*len,0);
+    output("[-");
+    movePointer(0,index2);
+    output("[-");
+    movePointer(index2,empty_index);
+    output("+");
+    movePointer(v2->location+v2->unit_size*start_unit2+empty_index,v1->location+v1->unit_size*start_unit1+index1);
+    output("+");
+    movePointer(v1->location+v1->unit_size*start_unit1+index1,v2->location+v2->unit_size*start_unit2+index2);
+    output("]");
+    movePointer(index2,empty_index);
+    output("[-");
+    movePointer(empty_index,index2);
+    output("+");
+    movePointer(index2,empty_index);
+    output("]");
+    movePointer(empty_index,v2->unit_size);
+    output("]");
+    movePointer(v2->unit_size*len,0);
+    movePointer(v2->unit_size*start_unit2,0);
     movePointer(v2->location,0);
     output("\nend copy\n");
 }
@@ -469,35 +486,39 @@ void copyCharToInt(Variable *v1,Variable *v2,int index1,int index2,int empty_ind
 void copyIntToChar(Variable *v1,Variable *v2,int index1,int index2,int empty_index) {
     output("\ncopy int to char\n");
     movePointer(0,v2->location);
-    movePointer(0,v2->unit_size*(v2->fdegit+v2->idegit));
-    movePointer(0,index2);
-    for (int i = v2->idegit-1;i >= 0;--i) {
-        movePointer(v2->unit_size,0);
-        movePointer(v2->location+v2->unit_size*(v2->fdegit+i)+index2,v1->location+index1);
-        output("[>+<-]>[<++++++++++>-]<");
-        movePointer(v1->location+index1,v2->location+v2->unit_size*(v2->fdegit+i)+index2);
-        output("[");
-
-        movePointer(index2,empty_index);
+    movePointer(0,v2->unit_size*v2->fdegit);
+    for (int i = 0;i < v2->idegit;++i) {
         output("+");
-        movePointer(empty_index,index2);
-
-        movePointer(v2->location+v2->unit_size*(v2->fdegit+i)+index2,v1->location+index1);
-        output("+");
-        movePointer(v1->location+index1,v2->location+v2->unit_size*(v2->fdegit+i)+index2);
-        output("-]");
-
-        movePointer(index2,empty_index);
-        output("[");
-        movePointer(empty_index,index2);
-        output("+");
-        movePointer(index2,empty_index);
-        output("-]");
-        movePointer(empty_index,index2);
+        movePointer(0,v2->unit_size);
     }
-    movePointer(v2->unit_size*(v2->fdegit),0);
-    movePointer(index2,0);
-    movePointer(v2->location,0);
+    movePointer(v2->unit_size*v2->idegit,0);
+    output("[-");
+    movePointer(0,index2);
+    output("[-");
+    movePointer(index2,empty_index);
+    output("+");
+    movePointer(v2->location+v2->unit_size*v2->fdegit+empty_index,v1->location+index1);
+    output("+");
+    movePointer(v1->location+index1,v2->location+v2->unit_size*v2->fdegit+index2);
+    output("]");
+    movePointer(index2,empty_index);
+    output("[-");
+    movePointer(empty_index,index2);
+    output("+");
+    movePointer(index2,empty_index);
+    output("]");
+    movePointer(empty_index,v2->unit_size);
+    output("]");
+    movePointer(v2->location+v2->unit_size*(v2->idegit+v2->fdegit+1),v1->location+v2->unit_size*v2->idegit+index1);
+    for (int i = 0;i < v2->idegit-1;++i) {
+        output("[-");
+        movePointer(v2->unit_size,0);
+        output("++++++++++");
+        movePointer(0,v2->unit_size);
+        output("]");
+        movePointer(v2->unit_size,0);
+    }
+    movePointer(v1->location+index1,0);
     output("\nend copy int to char\n");
 }
 

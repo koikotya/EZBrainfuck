@@ -291,7 +291,7 @@ void dfs1(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 4;
+        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
@@ -302,7 +302,7 @@ void dfs1(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = true;
-        res->unit_size = 4;
+        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
@@ -313,7 +313,7 @@ void dfs1(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = atoi(p->list[1]->str);
         res->sign = true;
-        res->unit_size = 4;
+        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[2]->str;
         val_list[list_size++] = res;
