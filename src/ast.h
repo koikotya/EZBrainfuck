@@ -59,7 +59,7 @@ typedef struct{
     int fdegit; // 小数部の桁数
     bool sign; // int,fixedでは常にtrue、それ以外では常にfalse
     int location; // メモリ使用開始位置（左端の位置）
-    int unit_size; // 変数では2か3、計算中の値では8
+    int unit_size; // 常に8
     bool negative; // int,fixedの時のみ使用、符号を管理
     char *ident; // 変数名、リテラルを保存
 } Variable;

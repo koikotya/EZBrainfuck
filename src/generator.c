@@ -7,7 +7,7 @@
 int list_size = 0;
 Variable *val_list[100010];
 
-int used_memory = 0;
+int used_memory[2] = {0,4};
 
 int min(int a,int b) {
     return (a < b ? a : b);
@@ -36,21 +36,26 @@ int getIndex(Operation op) {
     return res;
 }
 
-void allocate(Variable *v) {
-    v->location = used_memory;
+void allocate(Variable *v,int type) {
+    int id = (used_memory[0] > used_memory[1] ? 0 : 1);
+    if (type == 0) {
+    } else if (type == 1) {
+        id = (1^id);
+    } else {
+    }
+
+    v->location = used_memory[id];
     val_list[list_size++] = v;
-    used_memory += size(v)*v->unit_size;
+    used_memory[id] += size(v)*v->unit_size;
 }
 
 void freeVariable(Variable *v) {
-    // while (val_list[list_size-1]->location != v->location) {
-        // list_size--;
-        // used_memory = val_list[list_size]->location;
-        // clear(val_list[list_size],0,0,size(val_list[list_size]));
-        // free(val_list[list_size]);
-    // }
     list_size--;
-    used_memory = val_list[list_size]->location;
+    if (val_list[list_size]->location%8 == 0) {
+        used_memory[0] = val_list[list_size]->location;
+    } else {
+        used_memory[1] = val_list[list_size]->location;
+    }
     free(v);
 }
 
@@ -92,7 +97,7 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         if (v1->type == CHAR_TYPE && CHAR_TYPE < v2->type) {
             Variable *v3;
             v3 = (Variable *)malloc(sizeof(Variable));
-            allocate(v3);
+            allocate(v3,0);
             moveIntToChar(v3,v2,1,v2_index);
             move(v1,v3,0,0,index1,1,1);
             freeVariable(v3);
@@ -101,7 +106,7 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             v3 = (Variable *)malloc(sizeof(Variable));
             v3->idegit = 3;
             v3->unit_size = 8;
-            allocate(v3);
+            allocate(v3,0);
             moveCharToInt(v3,v2,1,v2_index);
             move(v1,v3,v1->fdegit,0,index1,2,min(v1->idegit,v3->idegit));
             clear(v3,0,1,3);
@@ -124,7 +129,7 @@ void setValue(Variable *v1,Variable *v2,int index1) {
         if (v1->type == CHAR_TYPE && CHAR_TYPE < v2->type) {
             Variable *v3;
             v3 = (Variable *)malloc(sizeof(Variable));
-            allocate(v3);
+            allocate(v3,0);
             copyIntToChar(v3,v2,1,v2_index,2);
             move(v1,v3,0,0,index1,1,1);
             freeVariable(v3);
@@ -133,7 +138,7 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             v3 = (Variable *)malloc(sizeof(Variable));
             v3->idegit = 3;
             v3->unit_size = 8;
-            allocate(v3);
+            allocate(v3,0);
             copyCharToInt(v3,v2,1,v2_index,2);
             move(v1,v3,v1->fdegit,0,index1,2,min(v1->idegit,v3->idegit));
             clear(v3,0,1,3);
@@ -263,7 +268,7 @@ void dfs1(Node *p) {
         res->ident = p->str;
     } else if (p->type == IF_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 4;
+        res->unit_size = 8;
         dfs1(p->list[0]);
         dfs1(p->list[1]);
         res->idegit = 0;
@@ -271,7 +276,7 @@ void dfs1(Node *p) {
         res->sign = true;
     } else if (p->type == IF_ELSE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 4;
+        res->unit_size = 8;
         dfs1(p->list[0]);
         dfs1(p->list[1]);
         dfs1(p->list[2]);
@@ -280,7 +285,7 @@ void dfs1(Node *p) {
         res->sign = true;
     } else if (p->type == WHILE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 4;
+        res->unit_size = 8;
         dfs1(p->list[0]);
         dfs1(p->list[1]);
         res->idegit = 0;
@@ -326,7 +331,7 @@ void dfs1(Node *p) {
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 4;
+        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
@@ -337,7 +342,7 @@ void dfs1(Node *p) {
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 4;
+        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
@@ -424,7 +429,7 @@ void dfs2(Node *p) {
         } else {
             v0->unit_size = 8;
             v0->negative = false;
-            allocate(v0);
+            allocate(v0,0);
             dfs2(p->list[0]);
             dfs2(p->list[1]);
             Variable *v1 = p->list[0]->v;
@@ -455,7 +460,7 @@ void dfs2(Node *p) {
         } else {
             v0->unit_size = 8;
             v0->negative = false;
-            allocate(v0);
+            allocate(v0,0);
             dfs2(p->list[0]);
             dfs2(p->list[1]);
             Variable *v1 = p->list[0]->v;
@@ -484,7 +489,7 @@ void dfs2(Node *p) {
 
         v0->unit_size = 8;
         v0->negative = false;
-        allocate(v0);
+        allocate(v0,0);
         dfs2(p->list[0]);
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
@@ -516,7 +521,7 @@ void dfs2(Node *p) {
 
         v0->unit_size = 8;
         v0->negative = false;
-        allocate(v0);
+        allocate(v0,0);
         dfs2(p->list[0]);
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
@@ -549,7 +554,7 @@ void dfs2(Node *p) {
 
         v0->unit_size = 8;
         v0->negative = false;
-        allocate(v0);
+        allocate(v0,0);
         dfs2(p->list[0]);
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
@@ -590,7 +595,7 @@ void dfs2(Node *p) {
     } else if (p->type == INTNUMBER_AST) {
     } else if (p->type == DECIMALNUMBER_AST) {
     } else if (p->type == IF_AST) {
-        allocate(v0);
+        allocate(v0,1);
 
         dfs2(p->list[0]);
         Variable *v1 = p->list[0]->v;
@@ -603,7 +608,7 @@ void dfs2(Node *p) {
         ifEnd(v0);
         freeVariable(v0);
     } else if (p->type == IF_ELSE_AST) {
-        allocate(v0);
+        allocate(v0,1);
 
         dfs2(p->list[0]);
         Variable *v1 = p->list[0]->v;
@@ -620,7 +625,7 @@ void dfs2(Node *p) {
         ifElseEnd(v0);
         freeVariable(v0);
     } else if (p->type == WHILE_AST) {
-        allocate(v0);
+        allocate(v0,1);
 
         whileBegin(v0);
         dfs2(p->list[0]);
@@ -634,20 +639,20 @@ void dfs2(Node *p) {
         freeVariable(v1);
         freeVariable(v0);
     } else if (p->type == UINT_AST) {
-        allocate(v0);
+        allocate(v0,1);
     } else if (p->type == INT_AST) {
-        allocate(v0);
+        allocate(v0,1);
     } else if (p->type == FIXED_AST) {
-        allocate(v0);
+        allocate(v0,1);
     } else if (p->type == BOOL_AST) {
-        allocate(v0);
+        allocate(v0,1);
     } else if (p->type == CHAR_AST) {
-        allocate(v0);
+        allocate(v0,1);
     } else if (p->type == STR_AST) {
     } else if (p->type == EQUAL_AST) {
         v0->unit_size = 8;
         v0->negative = false;
-        allocate(v0);
+        allocate(v0,0);
         dfs2(p->list[0]);
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
@@ -671,7 +676,7 @@ void dfs2(Node *p) {
     } else if (p->type == NOTEQUAL_AST) {
         v0->unit_size = 8;
         v0->negative = false;
-        allocate(v0);
+        allocate(v0,0);
         dfs2(p->list[0]);
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
@@ -695,7 +700,7 @@ void dfs2(Node *p) {
     } else if (p->type == LESS_AST) {
         v0->unit_size = 8;
         v0->negative = false;
-        allocate(v0);
+        allocate(v0,0);
         dfs2(p->list[0]);
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
@@ -719,7 +724,7 @@ void dfs2(Node *p) {
     } else if (p->type == GREATEREQUAL_AST) {
         v0->unit_size = 8;
         v0->negative = false;
-        allocate(v0);
+        allocate(v0,0);
         dfs2(p->list[0]);
         dfs2(p->list[1]);
         Variable *v1 = p->list[0]->v;
@@ -761,7 +766,7 @@ void dfs2(Node *p) {
         } else {}
     } else if (p->type == PRINT_AST) {
         if (p->list[0]->type == STR_AST) {
-            printStr(used_memory,p->list[0]->str);
+            printStr(0,p->list[0]->str);
         } else if (p->list[0]->type == IDENT_AST) {
             dfs2(p->list[0]);
             Variable *v1 = p->list[0]->v;
