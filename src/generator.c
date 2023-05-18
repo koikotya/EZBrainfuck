@@ -9,13 +9,8 @@ Variable *val_list[100010];
 
 int used_memory[2] = {0,4};
 
-int min(int a,int b) {
-    return (a < b ? a : b);
-}
-
-int max(int a,int b) {
-    return (a > b ? a : b);
-}
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+#define max(a,b) (((a) < (b)) ? (b) : (a))
 
 int size(Variable *v) {
     return v->idegit+v->fdegit+(v->sign ? 1 : 0);
@@ -177,6 +172,7 @@ void dfs1(Node *p) {
             Variable *v2 = p->list[1]->v;
             res->type = castType(v1->type,v2->type);
             res->idegit = max(v1->idegit,v2->idegit);
+            if (res->type != CHAR_TYPE && (v1->type == CHAR_TYPE || v2->type == CHAR_TYPE)) res->idegit = max(res->idegit,3);
             res->fdegit = max(v1->fdegit,v2->fdegit);
             res->sign = (v1->sign|v2->sign);
         }
@@ -199,6 +195,7 @@ void dfs1(Node *p) {
             Variable *v2 = p->list[1]->v;
             res->type = castType(v1->type,v2->type);
             res->idegit = max(v1->idegit,v2->idegit);
+            if (res->type != CHAR_TYPE && (v1->type == CHAR_TYPE || v2->type == CHAR_TYPE)) res->idegit = max(res->idegit,3);
             res->fdegit = max(v1->fdegit,v2->fdegit);
             res->sign = (v1->sign|v2->sign);
         }
