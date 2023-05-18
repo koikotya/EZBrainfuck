@@ -1,0 +1,29 @@
+// https://atcoder.jp/contests/abc297/tasks/abc297_a
+
+fn main() {
+    int(10) ans;
+    ans = -1;
+    uint(3) n;
+    uint(10) d;
+    scan(n);
+    scan(d);
+    uint(10) t1;
+    uint(10) t2;
+    scan(t2);
+    n = n-1;
+ 
+    while (n != 0) {
+        n = n-1;
+        t1 = t2;
+        scan(t2);
+        if (t2-t1 <= d) {
+            ans = t2;
+            n = 0;
+        }
+    }
+    print(ans);
+ 
+    char newl;
+    newl = 10;
+    print(newl);
+}

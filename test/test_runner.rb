@@ -9,7 +9,7 @@ Dir.glob("./problems/*") { |problem_path|
     ok = true
 
     Dir.glob(File.join(problem_path, "/in/*")) { |in_path|
-        out_path = in_path.gsub("in", "out")
+        out_path = in_path.gsub("/in/", "/out/")
 
         command = "bf -c999999999 ./a.bf < " + in_path
         output = IO.popen(command, "r+") { |io|
@@ -44,4 +44,5 @@ Dir.glob("./problems/*") { |problem_path|
     }
 
     puts "#{problem_path}: ok" if ok
+    # puts "#{problem_path}   #{FileTest.size("./a.bf")}"
 }

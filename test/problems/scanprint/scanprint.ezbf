@@ -1,0 +1,23 @@
+fn main() {
+    char newl;
+    newl = 10;
+
+    uint(3) n_uint;
+    int(3) n_int;
+    fixed(3,3) n_fixed;
+    char n_char;
+
+    scan(n_uint);
+    scan(n_int);
+    scan(n_fixed);
+    scan(n_char);
+
+    print(n_uint);
+    print(newl);
+    print(n_int);
+    print(newl);
+    print(n_fixed);
+    print(newl);
+    print(n_char);
+    print(newl);
+}

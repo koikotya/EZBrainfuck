@@ -1,0 +1,47 @@
+fn main() {
+    char newl;
+    newl = 10;
+
+    uint(3) l_uint;
+    uint(3) r_uint;
+    int(3) l_int;
+    int(3) r_int;
+    fixed(3,3) l_fixed;
+    fixed(3,3) r_fixed;
+    char l_char;
+    char r_char;
+
+    scan(l_uint);
+    scan(r_uint);
+    scan(l_int);
+    scan(r_int);
+    scan(l_fixed);
+    scan(r_fixed);
+    scan(l_char);
+    scan(r_char);
+
+    if (l_uint < r_uint) {
+        print("true");
+    } else {
+        print("false");
+    }
+    print(newl);
+    if (l_int < r_int) {
+        print("true");
+    } else {
+        print("false");
+    }
+    print(newl);
+    if (l_fixed < r_fixed) {
+        print("true");
+    } else {
+        print("false");
+    }
+    print(newl);
+    if (l_char < r_char) {
+        print("true");
+    } else {
+        print("false");
+    }
+    print(newl);
+}
