@@ -546,8 +546,8 @@ void dfs2(Node *p) {
         movePointer(v0->location,0);
         clear(v0,0,getIndex(MOD_OP),size(v0));
     } else if (p->type == MOD_AST) {
-        v0->idegit = v0->idegit+v0->idegit;
-        v0->fdegit = v0->fdegit+v0->fdegit;
+        v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
+        v0->fdegit = v0->fdegit;
 
         v0->unit_size = 8;
         v0->negative = false;
@@ -558,8 +558,6 @@ void dfs2(Node *p) {
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,5);
 
-        v0->fdegit /= 2;
-        v0->idegit += v0->fdegit;
         setValue(v0,v2,2);
 
         movePointer(0,v0->location);
