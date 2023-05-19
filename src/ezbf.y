@@ -67,7 +67,7 @@ io
     : SCAN LPAREN IDENT RPAREN {
         $$ = buildNode1(SCAN_AST,$3);
     }
-    | PRINT LPAREN IDENT RPAREN {
+    | PRINT LPAREN expression RPAREN {
         $$ = buildNode1(PRINT_AST,$3);
     }
     | PRINT LPAREN STR RPAREN {

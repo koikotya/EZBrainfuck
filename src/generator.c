@@ -27,6 +27,7 @@ int getIndex(Operation op) {
     else if (op == NOTEQUAL_COND) res = 5;
     else if (op == LESS_COND) res = 1;
     else if (op == GREATEREQUAL_COND) res = 2;
+    else if (op == NOT_OP) res = 1;
     else ;
     return res;
 }
@@ -763,21 +764,44 @@ void generate(Node *p) {
     } else if (p->type == PRINT_AST) {
         if (p->list[0]->type == STR_AST) {
             printStr(0,p->list[0]->str);
-        } else if (p->list[0]->type == IDENT_AST) {
+        } else if (p->list[0]->v->op == INT_LITERAL || p->list[0]->v->op == DECIMAL_LITERAL) {
+            Variable *v1 = p->list[0]->v;
+            v1->unit_size = 8;
+            if (v1->op == INT_LITERAL && v1->negative) {
+                v1->sign = true;
+                v1->type = INT_TYPE;
+            }
+            int index = 1;
+            allocate(v1,index);
+            setValue(v1,v1,index);
+            if (v1->type == UINT_TYPE) {
+                printUint(v1,index);
+            } else if (v1->type == INT_TYPE) {
+                printInt(v1,index);
+            } else if (v1->type == FIXED_TYPE) {
+                printFixed(v1,index);
+            } else {}
+            clear(v1,0,index,size(v1));
+            freeVariable(v1);
+        } else {
             generate(p->list[0]);
             Variable *v1 = p->list[0]->v;
+            int index = getIndex(v1->op);
+            turnSign(v1,index,v1->negative);
             if (v1->type == UINT_TYPE) {
-                printUint(v1,1);
+                printUint(v1,index);
             } else if (v1->type == INT_TYPE) {
-                printInt(v1,1);
+                printInt(v1,index);
             } else if (v1->type == FIXED_TYPE) {
-                printFixed(v1,1);
+                printFixed(v1,index);
             } else if (v1->type == CHAR_TYPE) {
-                printChar(v1,1);
+                printChar(v1,index);
             } else if (v1->type == BOOL_TYPE) {
-                printChar(v1,1);
+                printChar(v1,index);
             } else {}
-        } else {}
+            if (v1->op == NOT_OP) turnSign(v1,index,v1->negative);
+            else clear(v1,0,index,size(v1));
+        }
     } else if (p->type == MAIN_AST) {
         for (int i = 0;i < p->n;++i) generate(p->list[i]);
         // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->address);
