@@ -5,8 +5,7 @@ fn main() {
     uint(4) w;
     scan(n);
     scan(w);
-    n = n/w;
-    print(n);
+    print(n/w);
     
     char newl;
     newl = 10;

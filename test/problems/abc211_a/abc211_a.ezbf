@@ -4,16 +4,13 @@ fn main() {
     uint(3) temp;
     fixed(3,6) a;
     fixed(3,6) b;
-    fixed(3,6) c;
 
     scan(temp);
     a = temp;
     scan(temp);
     b = temp;
 
-    c = (a+2*b)/3;
-
-    print(c);
+    print((a+2*b)/3);
     
     char newl;
     newl = 10;

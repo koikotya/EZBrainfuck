@@ -5,11 +5,9 @@ fn main() {
     uint(6) b;
     scan(a);
     scan(b);
-    fixed(2,5) ans;
     fixed(6,5) temp;
     temp = a;
-    ans = (temp-b)/temp*100;
-    print(ans);
+    print((temp-b)/temp*100);
     
     char newl;
     newl = 10;

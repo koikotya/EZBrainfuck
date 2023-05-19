@@ -6,14 +6,12 @@ fn main() {
 
     int(3) a;
     int(3) b;
-    int(3) ans;
     scan(a);
     scan(b);
     if (b < a) {
-        ans = 0;
+        print(0);
     } else {
-        ans = b-a+1;
+        print(b-a+1);
     }
-    print(ans);
     print(newl);
 }

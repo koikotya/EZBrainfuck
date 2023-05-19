@@ -2,8 +2,6 @@
 
 fn main() {
     uint(5) n;
-    uint(5) ans;
     scan(n);
-    ans = (1000-(n%1000))%1000;
-    print(ans);
+    print((1000-(n%1000))%1000);
 }

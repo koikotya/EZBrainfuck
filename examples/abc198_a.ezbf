@@ -3,8 +3,7 @@
 fn main() {
     uint(2) n;
     scan(n);
-    n = n-1;
-    print(n);
+    print(n-1);
     
     char newl;
     newl = 10;
