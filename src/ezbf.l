@@ -43,14 +43,14 @@ int yywrap(void) {
 [ \t\n] ;
 "//".* ;
 [0-9]+                 {
-    yylval.p = build_str_node(INTNUMBER_AST,yytext);
+    yylval.p = buildStrNode(INTNUMBER_AST,yytext);
     return INTNUMBER;
 }
 \'.\'                  {
     char *s;
     s = (char *)malloc(3);
     sprintf(s,"%d",yytext[1]);
-    yylval.p = build_str_node(INTNUMBER_AST,s);
+    yylval.p = buildStrNode(INTNUMBER_AST,s);
     return INTNUMBER;
 }
 \".+\"                 {
@@ -60,15 +60,15 @@ int yywrap(void) {
     // char s[256];
     // for (int i = 1;i < yyleng-1;++i) s[i-1] = yytext[i];
     s[yyleng-2] = '\0';
-    yylval.p = build_str_node(STR_AST,s);
+    yylval.p = buildStrNode(STR_AST,s);
     return STR;
 }
 [0-9]+\.[0-9]*         {
-    yylval.p = build_str_node(DECIMALNUMBER_AST,yytext);
+    yylval.p = buildStrNode(DECIMALNUMBER_AST,yytext);
     return DECIMALNUMBER;
 }
 [a-zA-Z_][0-9a-zA-Z_]* {
-    yylval.p = build_str_node(IDENT_AST,yytext);
+    yylval.p = buildStrNode(IDENT_AST,yytext);
     return IDENT;
 }
     /* "true"        {return TRUE;} */

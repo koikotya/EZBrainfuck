@@ -7,8 +7,8 @@ extern FILE *yyin;
 extern Node *parse_result;
 extern int yyparse(void);
 extern int list_size;
-extern void dfs1(Node *p);
-extern void dfs2(Node *p);
+extern void setMemorySize(Node *p);
+extern void generate(Node *p);
 
 #ifdef __EMSCRIPTEN__
 // emcc main.c ast.c bf.c ezbf.tab.c generator.c lex.yy.c -s EXPORTED_RUNTIME_METHODS=['ccall'] -s EXPORT_ES6=1 -s MODULARIZE=1 -s ENVIRONMENT=web -o ezbf.js
@@ -24,15 +24,15 @@ EMSCRIPTEN_KEEPALIVE char* gen_code(char *s) {
     yy_scan_string(s);
 
     if (yyparse()) {
-        print_err("parser erorr\n");
+        printErr("parser erorr\n");
         exit(1);
     }
     // printf("syntax ok\n");
-    // print_node(parse_result,0);
-    dfs1(parse_result);
+    // printNode(parse_result,0);
+    setMemorySize(parse_result);
     list_size = 0;
-    dfs2(parse_result);
-    print_err("Successfully generated code\n");
+    generate(parse_result);
+    printErr("Successfully generated code\n");
     return result;
 }
 
@@ -63,15 +63,15 @@ int main(int argc, char *argv[]) {
     else Fresult = fopen(argv[2],"w");
 
     if (yyparse()) {
-        print_err("parser erorr\n");
+        printErr("parser erorr\n");
         exit(1);
     }
     // printf("syntax ok\n");
-    // print_node(parse_result,0);
-    dfs1(parse_result);
+    // printNode(parse_result,0);
+    setMemorySize(parse_result);
     list_size = 0;
-    dfs2(parse_result);
+    generate(parse_result);
     fclose(Fresult);
-    print_err("Successfully generated code\n");
+    printErr("Successfully generated code\n");
 }
 #endif

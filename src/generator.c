@@ -39,17 +39,17 @@ void allocate(Variable *v,int type) {
     } else {
     }
 
-    v->location = used_memory[id];
+    v->address = used_memory[id];
     val_list[list_size++] = v;
     used_memory[id] += size(v)*v->unit_size;
 }
 
 void freeVariable(Variable *v) {
     list_size--;
-    if (val_list[list_size]->location%8 == 0) {
-        used_memory[0] = val_list[list_size]->location;
+    if (val_list[list_size]->address%8 == 0) {
+        used_memory[0] = val_list[list_size]->address;
     } else {
-        used_memory[1] = val_list[list_size]->location;
+        used_memory[1] = val_list[list_size]->address;
     }
     free(v);
 }
@@ -68,7 +68,7 @@ void setLiteral(Variable *v1,Variable *v2,int index1) {
     } else if (v1->type == BOOL_TYPE) {
         setChar(v1,index1,v2->ident);
     } else {
-        print_err("error setLiteral\n");
+        printErr("error setLiteral\n");
     }
 }
 
@@ -149,14 +149,12 @@ void setValue(Variable *v1,Variable *v2,int index1) {
     }
 };
 
-// todo:激ヤバ実装なのでどうにかする。名前を変える
-// 1回目のdfsで桁数などを取得、2回目のdfsでメモリの位置を確定、コード生成
-void dfs1(Node *p) {
+void setMemorySize(Node *p) {
     Variable *res = NULL;
     if (p == NULL) return;
     if (p->type == PLUS_AST) {
         if (p->n == 1) {
-            dfs1(p->list[0]);
+            setMemorySize(p->list[0]);
             res = (Variable *)malloc(sizeof(Variable));
             *res = *p->list[0]->v;
             res->sign = true;
@@ -166,8 +164,8 @@ void dfs1(Node *p) {
             res->op = PLUS_OP;
             res->unit_size = 8;
             res->negative = false;
-            dfs1(p->list[0]);
-            dfs1(p->list[1]);
+            setMemorySize(p->list[0]);
+            setMemorySize(p->list[1]);
             Variable *v1 = p->list[0]->v;
             Variable *v2 = p->list[1]->v;
             res->type = castType(v1->type,v2->type);
@@ -178,7 +176,7 @@ void dfs1(Node *p) {
         }
     } else if (p->type == MINUS_AST) {
         if (p->n == 1) {
-            dfs1(p->list[0]);
+            setMemorySize(p->list[0]);
             res = (Variable *)malloc(sizeof(Variable));
             *res = *p->list[0]->v;
             res->sign = true;
@@ -189,8 +187,8 @@ void dfs1(Node *p) {
             res->op = MINUS_OP;
             res->unit_size = 8;
             res->negative = false;
-            dfs1(p->list[0]);
-            dfs1(p->list[1]);
+            setMemorySize(p->list[0]);
+            setMemorySize(p->list[1]);
             Variable *v1 = p->list[0]->v;
             Variable *v2 = p->list[1]->v;
             res->type = castType(v1->type,v2->type);
@@ -204,8 +202,8 @@ void dfs1(Node *p) {
         res->op = TIMES_OP;
         res->unit_size = 8;
         res->negative = false;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         res->type = castType(v1->type,v2->type);
@@ -217,8 +215,8 @@ void dfs1(Node *p) {
         res->op = DIVIDE_OP;
         res->unit_size = 8;
         res->negative = false;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         res->type = castType(v1->type,v2->type);
@@ -230,8 +228,8 @@ void dfs1(Node *p) {
         res->op = MOD_OP;
         res->unit_size = 8;
         res->negative = false;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         res->type = castType(v1->type,v2->type);
@@ -239,8 +237,8 @@ void dfs1(Node *p) {
         res->fdegit = max(v1->fdegit,v2->fdegit);
         res->sign = (v1->sign|v2->sign);
     } else if (p->type == ASSIGN_AST) {
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
     } else if (p->type == INTNUMBER_AST) {
@@ -266,25 +264,25 @@ void dfs1(Node *p) {
     } else if (p->type == IF_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->unit_size = 8;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         res->idegit = 0;
         res->fdegit = 0;
         res->sign = true;
     } else if (p->type == IF_ELSE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->unit_size = 8;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
-        dfs1(p->list[2]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
+        setMemorySize(p->list[2]);
         res->idegit = 0;
         res->fdegit = 0;
         res->sign = true;
     } else if (p->type == WHILE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->unit_size = 8;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         res->idegit = 0;
         res->fdegit = 0;
         res->sign = true;
@@ -349,8 +347,8 @@ void dfs1(Node *p) {
         res->op = EQUAL_COND;
         res->unit_size = 8;
         res->negative = false;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         res->type = castType(v1->type,v2->type);
@@ -362,8 +360,8 @@ void dfs1(Node *p) {
         res->op = NOTEQUAL_COND;
         res->unit_size = 8;
         res->negative = false;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         res->type = castType(v1->type,v2->type);
@@ -375,8 +373,8 @@ void dfs1(Node *p) {
         res->op = LESS_COND;
         res->unit_size = 8;
         res->negative = false;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         res->type = castType(v1->type,v2->type);
@@ -388,8 +386,8 @@ void dfs1(Node *p) {
         res->op = GREATEREQUAL_COND;
         res->unit_size = 8;
         res->negative = false;
-        dfs1(p->list[0]);
-        dfs1(p->list[1]);
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         res->type = castType(v1->type,v2->type);
@@ -404,39 +402,39 @@ void dfs1(Node *p) {
             break;
         }
     } else if (p->type == SCAN_AST) {
-        dfs1(p->list[0]);
+        setMemorySize(p->list[0]);
     } else if (p->type == PRINT_AST) {
-        dfs1(p->list[0]);
+        setMemorySize(p->list[0]);
     } else if (p->type == MAIN_AST) {
-        for (int i = 0;i < p->n;++i) dfs1(p->list[i]);
-        // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->location);
+        for (int i = 0;i < p->n;++i) setMemorySize(p->list[i]);
+        // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->address);
     } else if (p->type == STATEMENTS_AST) {
-        for (int i = 0;i < p->n;++i) dfs1(p->list[i]);
+        for (int i = 0;i < p->n;++i) setMemorySize(p->list[i]);
     } else {
     }
     p->v = res;
 }
 
-void dfs2(Node *p) {
+void generate(Node *p) {
     if (p == NULL) return;
     Variable *v0 = p->v;
     if (p->type == PLUS_AST) {
         if (p->n == 1) {
-            dfs2(p->list[0]);
+            generate(p->list[0]);
             Variable *v1 = p->list[0]->v;
-            v0->location = v1->location;
+            v0->address = v1->address;
         } else {
             v0->unit_size = 8;
             v0->negative = false;
             allocate(v0,0);
-            dfs2(p->list[0]);
-            dfs2(p->list[1]);
+            generate(p->list[0]);
+            generate(p->list[1]);
             Variable *v1 = p->list[0]->v;
             Variable *v2 = p->list[1]->v;
             setValue(v0,v1,2);
             setValue(v0,v2,1);
 
-            movePointer(0,v0->location);
+            movePointer(0,v0->address);
             if (v0->type == UINT_TYPE) {
                 add(v0->idegit);
             } else if (v0->type == INT_TYPE) {
@@ -450,25 +448,25 @@ void dfs2(Node *p) {
             } else {
                 // error
             }
-            movePointer(v0->location,0);
+            movePointer(v0->address,0);
         }
     } else if (p->type == MINUS_AST) {
         if (p->n == 1) {
-            dfs2(p->list[0]);
+            generate(p->list[0]);
             Variable *v1 = p->list[0]->v;
-            v0->location = v1->location;
+            v0->address = v1->address;
         } else {
             v0->unit_size = 8;
             v0->negative = false;
             allocate(v0,0);
-            dfs2(p->list[0]);
-            dfs2(p->list[1]);
+            generate(p->list[0]);
+            generate(p->list[1]);
             Variable *v1 = p->list[0]->v;
             Variable *v2 = p->list[1]->v;
             setValue(v0,v1,2);
             setValue(v0,v2,1);
 
-            movePointer(0,v0->location);
+            movePointer(0,v0->address);
             if (v0->type == UINT_TYPE) {
                 sub(v0->idegit);
             } else if (v0->type == INT_TYPE) {
@@ -482,7 +480,7 @@ void dfs2(Node *p) {
             } else {
                 // error
             }
-            movePointer(v0->location,0);
+            movePointer(v0->address,0);
         }
     } else if (p->type == TIMES_AST) {
         v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
@@ -490,8 +488,8 @@ void dfs2(Node *p) {
         v0->unit_size = 8;
         v0->negative = false;
         allocate(v0,0);
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,2);
@@ -500,7 +498,7 @@ void dfs2(Node *p) {
         v0->idegit -= v0->fdegit;
         v0->fdegit += v0->fdegit;
 
-        movePointer(0,v0->location);
+        movePointer(0,v0->address);
         if (v0->type == UINT_TYPE) {
             multShort(v0->idegit/2);
         } else if (v0->type == INT_TYPE) {
@@ -514,7 +512,7 @@ void dfs2(Node *p) {
         } else {
             // error
         }
-        movePointer(v0->location,0);
+        movePointer(v0->address,0);
     } else if (p->type == DIVIDE_AST) {
         v0->idegit = v0->idegit+v0->idegit;
         v0->fdegit = v0->fdegit+v0->fdegit;
@@ -522,8 +520,8 @@ void dfs2(Node *p) {
         v0->unit_size = 8;
         v0->negative = false;
         allocate(v0,0);
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,5);
@@ -532,7 +530,7 @@ void dfs2(Node *p) {
         v0->idegit += v0->fdegit;
         setValue(v0,v2,2);
 
-        movePointer(0,v0->location);
+        movePointer(0,v0->address);
         if (v0->type == UINT_TYPE) {
             divide(v0->idegit/2);
         } else if (v0->type == INT_TYPE) {
@@ -546,7 +544,7 @@ void dfs2(Node *p) {
         } else {
             // error
         }
-        movePointer(v0->location,0);
+        movePointer(v0->address,0);
         clear(v0,0,getIndex(MOD_OP),size(v0));
     } else if (p->type == MOD_AST) {
         v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
@@ -555,15 +553,15 @@ void dfs2(Node *p) {
         v0->unit_size = 8;
         v0->negative = false;
         allocate(v0,0);
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,5);
 
         setValue(v0,v2,2);
 
-        movePointer(0,v0->location);
+        movePointer(0,v0->address);
         if (v0->type == UINT_TYPE) {
             divide(v0->idegit/2);
         } else if (v0->type == INT_TYPE) {
@@ -577,11 +575,11 @@ void dfs2(Node *p) {
         } else {
             // error
         }
-        movePointer(v0->location,0);
+        movePointer(v0->address,0);
         clear(v0,0,getIndex(DIVIDE_OP),size(v0));
     } else if (p->type == ASSIGN_AST) {
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         if (v1->ident != NULL && v2->ident != NULL && strcmp(v1->ident,v2->ident) == 0) {
@@ -595,30 +593,30 @@ void dfs2(Node *p) {
     } else if (p->type == IF_AST) {
         allocate(v0,1);
 
-        dfs2(p->list[0]);
+        generate(p->list[0]);
         Variable *v1 = p->list[0]->v;
         move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
         freeVariable(v1);
         ifBegin(v0);
 
-        dfs2(p->list[1]);
+        generate(p->list[1]);
 
         ifEnd(v0);
         freeVariable(v0);
     } else if (p->type == IF_ELSE_AST) {
         allocate(v0,1);
 
-        dfs2(p->list[0]);
+        generate(p->list[0]);
         Variable *v1 = p->list[0]->v;
         move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
         freeVariable(v1);
         ifElseBegin(v0);
 
-        dfs2(p->list[1]);
+        generate(p->list[1]);
 
         ifElseMid(v0);
 
-        dfs2(p->list[2]);
+        generate(p->list[2]);
 
         ifElseEnd(v0);
         freeVariable(v0);
@@ -626,12 +624,12 @@ void dfs2(Node *p) {
         allocate(v0,1);
 
         whileBegin(v0);
-        dfs2(p->list[0]);
+        generate(p->list[0]);
         Variable *v1 = p->list[0]->v;
         copy(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1,2);
         move(v0,v1,0,size(v1)-1,2,getIndex(v1->op),1);
         whileMid(v0);
-        dfs2(p->list[1]);
+        generate(p->list[1]);
         whileEnd(v0);
 
         freeVariable(v1);
@@ -651,8 +649,8 @@ void dfs2(Node *p) {
         v0->unit_size = 8;
         v0->negative = false;
         allocate(v0,0);
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,2);
@@ -675,8 +673,8 @@ void dfs2(Node *p) {
         v0->unit_size = 8;
         v0->negative = false;
         allocate(v0,0);
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,3);
@@ -699,8 +697,8 @@ void dfs2(Node *p) {
         v0->unit_size = 8;
         v0->negative = false;
         allocate(v0,0);
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,2);
@@ -723,8 +721,8 @@ void dfs2(Node *p) {
         v0->unit_size = 8;
         v0->negative = false;
         allocate(v0,0);
-        dfs2(p->list[0]);
-        dfs2(p->list[1]);
+        generate(p->list[0]);
+        generate(p->list[1]);
         Variable *v1 = p->list[0]->v;
         Variable *v2 = p->list[1]->v;
         setValue(v0,v1,2);
@@ -749,7 +747,7 @@ void dfs2(Node *p) {
             break;
         }
     } else if (p->type == SCAN_AST) {
-        dfs2(p->list[0]);
+        generate(p->list[0]);
         Variable *v1 = p->list[0]->v;
         clear(v1,0,1,size(v1));
         if (v1->type == UINT_TYPE) {
@@ -766,7 +764,7 @@ void dfs2(Node *p) {
         if (p->list[0]->type == STR_AST) {
             printStr(0,p->list[0]->str);
         } else if (p->list[0]->type == IDENT_AST) {
-            dfs2(p->list[0]);
+            generate(p->list[0]);
             Variable *v1 = p->list[0]->v;
             if (v1->type == UINT_TYPE) {
                 printUint(v1,1);
@@ -781,10 +779,10 @@ void dfs2(Node *p) {
             } else {}
         } else {}
     } else if (p->type == MAIN_AST) {
-        for (int i = 0;i < p->n;++i) dfs2(p->list[i]);
-        // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->location);
+        for (int i = 0;i < p->n;++i) generate(p->list[i]);
+        // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->address);
     } else if (p->type == STATEMENTS_AST) {
-        for (int i = 0;i < p->n;++i) dfs2(p->list[i]);
+        for (int i = 0;i < p->n;++i) generate(p->list[i]);
     } else {
     }
 }

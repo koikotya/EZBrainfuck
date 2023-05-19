@@ -1443,7 +1443,7 @@ yyreduce:
 #line 30 ".\\ezbf.y"
     {
         parse_result = (Node *)malloc(sizeof(Node));
-        parse_result = build_node1(MAIN_AST,(yyvsp[(6) - (7)].p));
+        parse_result = buildNode1(MAIN_AST,(yyvsp[(6) - (7)].p));
     ;}
     break;
 
@@ -1461,7 +1461,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 40 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(STATEMENTS_AST,(yyvsp[(1) - (2)].p),(yyvsp[(2) - (2)].p));
+        (yyval.p) = buildNode2(STATEMENTS_AST,(yyvsp[(1) - (2)].p),(yyvsp[(2) - (2)].p));
     ;}
     break;
 
@@ -1497,7 +1497,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 55 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(IF_AST,(yyvsp[(3) - (7)].p),(yyvsp[(6) - (7)].p));
+        (yyval.p) = buildNode2(IF_AST,(yyvsp[(3) - (7)].p),(yyvsp[(6) - (7)].p));
     ;}
     break;
 
@@ -1506,7 +1506,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 58 ".\\ezbf.y"
     {
-        (yyval.p) = build_node3(IF_ELSE_AST,(yyvsp[(3) - (11)].p),(yyvsp[(6) - (11)].p),(yyvsp[(10) - (11)].p));
+        (yyval.p) = buildNode3(IF_ELSE_AST,(yyvsp[(3) - (11)].p),(yyvsp[(6) - (11)].p),(yyvsp[(10) - (11)].p));
     ;}
     break;
 
@@ -1515,7 +1515,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 61 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(WHILE_AST,(yyvsp[(3) - (7)].p),(yyvsp[(6) - (7)].p));
+        (yyval.p) = buildNode2(WHILE_AST,(yyvsp[(3) - (7)].p),(yyvsp[(6) - (7)].p));
     ;}
     break;
 
@@ -1524,7 +1524,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 67 ".\\ezbf.y"
     {
-        (yyval.p) = build_node1(SCAN_AST,(yyvsp[(3) - (4)].p));
+        (yyval.p) = buildNode1(SCAN_AST,(yyvsp[(3) - (4)].p));
     ;}
     break;
 
@@ -1533,7 +1533,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 70 ".\\ezbf.y"
     {
-        (yyval.p) = build_node1(PRINT_AST,(yyvsp[(3) - (4)].p));
+        (yyval.p) = buildNode1(PRINT_AST,(yyvsp[(3) - (4)].p));
     ;}
     break;
 
@@ -1542,7 +1542,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 73 ".\\ezbf.y"
     {
-        (yyval.p) = build_node1(PRINT_AST,(yyvsp[(3) - (4)].p));
+        (yyval.p) = buildNode1(PRINT_AST,(yyvsp[(3) - (4)].p));
     ;}
     break;
 
@@ -1551,7 +1551,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 79 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(EQUAL_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(EQUAL_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1560,7 +1560,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 82 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(NOTEQUAL_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(NOTEQUAL_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1569,7 +1569,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 85 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(LESS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(LESS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1578,7 +1578,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 88 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(GREATEREQUAL_AST,(yyvsp[(3) - (3)].p),(yyvsp[(1) - (3)].p));
+        (yyval.p) = buildNode2(GREATEREQUAL_AST,(yyvsp[(3) - (3)].p),(yyvsp[(1) - (3)].p));
     ;}
     break;
 
@@ -1587,7 +1587,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 91 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(LESS_AST,(yyvsp[(3) - (3)].p),(yyvsp[(1) - (3)].p));
+        (yyval.p) = buildNode2(LESS_AST,(yyvsp[(3) - (3)].p),(yyvsp[(1) - (3)].p));
     ;}
     break;
 
@@ -1596,7 +1596,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 94 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(GREATEREQUAL_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(GREATEREQUAL_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1605,7 +1605,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 100 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(UINT_AST,(yyvsp[(3) - (5)].p),(yyvsp[(5) - (5)].p));
+        (yyval.p) = buildNode2(UINT_AST,(yyvsp[(3) - (5)].p),(yyvsp[(5) - (5)].p));
     ;}
     break;
 
@@ -1614,7 +1614,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 103 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(INT_AST,(yyvsp[(3) - (5)].p),(yyvsp[(5) - (5)].p));
+        (yyval.p) = buildNode2(INT_AST,(yyvsp[(3) - (5)].p),(yyvsp[(5) - (5)].p));
     ;}
     break;
 
@@ -1623,7 +1623,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 106 ".\\ezbf.y"
     {
-        (yyval.p) = build_node3(FIXED_AST,(yyvsp[(3) - (7)].p),(yyvsp[(5) - (7)].p),(yyvsp[(7) - (7)].p));
+        (yyval.p) = buildNode3(FIXED_AST,(yyvsp[(3) - (7)].p),(yyvsp[(5) - (7)].p),(yyvsp[(7) - (7)].p));
     ;}
     break;
 
@@ -1632,7 +1632,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 109 ".\\ezbf.y"
     {
-        (yyval.p) = build_node1(BOOL_AST,(yyvsp[(2) - (2)].p));
+        (yyval.p) = buildNode1(BOOL_AST,(yyvsp[(2) - (2)].p));
     ;}
     break;
 
@@ -1641,7 +1641,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 112 ".\\ezbf.y"
     {
-        (yyval.p) = build_node1(CHAR_AST,(yyvsp[(2) - (2)].p));
+        (yyval.p) = buildNode1(CHAR_AST,(yyvsp[(2) - (2)].p));
     ;}
     break;
 
@@ -1650,7 +1650,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 118 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(ASSIGN_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(ASSIGN_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1668,7 +1668,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 127 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(PLUS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(PLUS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1677,7 +1677,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 130 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(MINUS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(MINUS_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1695,7 +1695,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 139 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(TIMES_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(TIMES_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1704,7 +1704,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 142 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(DIVIDE_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(DIVIDE_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1713,7 +1713,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 145 ".\\ezbf.y"
     {
-        (yyval.p) = build_node2(MOD_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
+        (yyval.p) = buildNode2(MOD_AST,(yyvsp[(1) - (3)].p),(yyvsp[(3) - (3)].p));
     ;}
     break;
 
@@ -1731,7 +1731,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 154 ".\\ezbf.y"
     {
-        (yyval.p) = build_node1(PLUS_AST,(yyvsp[(2) - (2)].p));
+        (yyval.p) = buildNode1(PLUS_AST,(yyvsp[(2) - (2)].p));
     ;}
     break;
 
@@ -1740,7 +1740,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 157 ".\\ezbf.y"
     {
-        (yyval.p) = build_node1(MINUS_AST,(yyvsp[(2) - (2)].p));
+        (yyval.p) = buildNode1(MINUS_AST,(yyvsp[(2) - (2)].p));
     ;}
     break;
 
@@ -2000,8 +2000,8 @@ yyreturn:
 
 int yyerror(char const *str) {
     extern char *yytext;
-    print_err("parser error near ");
-    print_err(yytext);
-    print_err("\n");
+    printErr("parser error near ");
+    printErr(yytext);
+    printErr("\n");
     return 0;
 }

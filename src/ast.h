@@ -58,7 +58,7 @@ typedef struct{
     int idegit; // 整数部の桁数
     int fdegit; // 小数部の桁数
     bool sign; // int,fixedでは常にtrue、それ以外では常にfalse
-    int location; // メモリ使用開始位置（左端の位置）
+    int address; // メモリ使用開始位置（左端の位置）
     int unit_size; // 常に8
     bool negative; // int,fixedの時のみ使用、符号を管理
     char *ident; // 変数名、リテラルを保存
@@ -72,12 +72,12 @@ typedef struct node {
     Variable *v;
 } Node;
 
-Node* build_str_node(Ntype t,char s[]);
-Node* build_node1(Ntype t,Node* p1);
-Node* build_node2(Ntype t,Node* p1,Node* p2);
-Node* build_node3(Ntype t,Node* p1,Node* p2,Node* p3);
-void print_node(Node *p,int i);
-void print_err(char *s);
+Node* buildStrNode(Ntype t,char s[]);
+Node* buildNode1(Ntype t,Node* p1);
+Node* buildNode2(Ntype t,Node* p1,Node* p2);
+Node* buildNode3(Ntype t,Node* p1,Node* p2,Node* p3);
+void printNode(Node *p,int i);
+void printErr(char *s);
 
 int size(Variable *v) ;
 

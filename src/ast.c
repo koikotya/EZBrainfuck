@@ -32,7 +32,7 @@ const char *Ntype_str[] = {
     "STATEMENTS_AST",
 };
 
-Node* build_str_node(Ntype t,char s[]) {
+Node* buildStrNode(Ntype t,char s[]) {
     Node *p;
     p = (Node *)malloc(sizeof(Node));
     p->type = t;
@@ -40,7 +40,7 @@ Node* build_str_node(Ntype t,char s[]) {
     return p;
 }
 
-Node* build_node1(Ntype t,Node* p1) {
+Node* buildNode1(Ntype t,Node* p1) {
     Node *p;
     p = (Node *)malloc(sizeof(Node));
     p->type = t;
@@ -50,7 +50,7 @@ Node* build_node1(Ntype t,Node* p1) {
     return p;
 }
 
-Node* build_node2(Ntype t,Node* p1,Node* p2) {
+Node* buildNode2(Ntype t,Node* p1,Node* p2) {
     Node *p;
     p = (Node *)malloc(sizeof(Node));
     p->type = t;
@@ -61,7 +61,7 @@ Node* build_node2(Ntype t,Node* p1,Node* p2) {
     return p;
 }
 
-Node* build_node3(Ntype t,Node* p1,Node* p2,Node* p3) {
+Node* buildNode3(Ntype t,Node* p1,Node* p2,Node* p3) {
     Node *p;
     p = (Node *)malloc(sizeof(Node));
     p->type = t;
@@ -73,13 +73,13 @@ Node* build_node3(Ntype t,Node* p1,Node* p2,Node* p3) {
     return p;
 }
 
-void print_node(Node *p,int i) {
+void printNode(Node *p,int i) {
     for (int j = 0;j < i;++j) printf("  ");
     printf("%s ",Ntype_str[p->type]);
     if (strlen(p->str) > 0) printf("%s ",p->str);
     if (0 < p->n) {
         printf("{\n");
-        for (int j = 0;j < p->n;++j) if (p->list[j] != NULL) print_node(p->list[j],i+1);
+        for (int j = 0;j < p->n;++j) if (p->list[j] != NULL) printNode(p->list[j],i+1);
         for (int j = 0;j < i;++j) printf("  ");
         printf("}");
     }
@@ -89,11 +89,11 @@ void print_node(Node *p,int i) {
 #ifdef __EMSCRIPTEN__
 extern char err[1000];
 
-void print_err(char *s) {
+void printErr(char *s) {
     strcat(err, s);
 }
 #else
-void print_err(char *s) {
+void printErr(char *s) {
     fprintf(stderr,"%s",s);
 }
 #endif

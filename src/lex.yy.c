@@ -827,7 +827,7 @@ case 33:
 YY_RULE_SETUP
 #line 45 ".\\ezbf.l"
 {
-    yylval.p = build_str_node(INTNUMBER_AST,yytext);
+    yylval.p = buildStrNode(INTNUMBER_AST,yytext);
     return INTNUMBER;
 }
 	YY_BREAK
@@ -838,7 +838,7 @@ YY_RULE_SETUP
     char *s;
     s = (char *)malloc(3);
     sprintf(s,"%d",yytext[1]);
-    yylval.p = build_str_node(INTNUMBER_AST,s);
+    yylval.p = buildStrNode(INTNUMBER_AST,s);
     return INTNUMBER;
 }
 	YY_BREAK
@@ -852,7 +852,7 @@ YY_RULE_SETUP
     // char s[256];
     // for (int i = 1;i < yyleng-1;++i) s[i-1] = yytext[i];
     s[yyleng-2] = '\0';
-    yylval.p = build_str_node(STR_AST,s);
+    yylval.p = buildStrNode(STR_AST,s);
     return STR;
 }
 	YY_BREAK
@@ -860,7 +860,7 @@ case 36:
 YY_RULE_SETUP
 #line 66 ".\\ezbf.l"
 {
-    yylval.p = build_str_node(DECIMALNUMBER_AST,yytext);
+    yylval.p = buildStrNode(DECIMALNUMBER_AST,yytext);
     return DECIMALNUMBER;
 }
 	YY_BREAK
@@ -868,7 +868,7 @@ case 37:
 YY_RULE_SETUP
 #line 70 ".\\ezbf.l"
 {
-    yylval.p = build_str_node(IDENT_AST,yytext);
+    yylval.p = buildStrNode(IDENT_AST,yytext);
     return IDENT;
 }
 	YY_BREAK
