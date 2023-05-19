@@ -183,7 +183,7 @@ void dfs1(Node *p) {
             *res = *p->list[0]->v;
             res->sign = true;
             if (res->type == UINT_TYPE) res->type = INT_TYPE;
-            // res->negative = (!res->negative);
+            res->negative = (!res->negative);
         } else {
             res = (Variable *)malloc(sizeof(Variable));
             res->op = MINUS_OP;
@@ -423,6 +423,8 @@ void dfs2(Node *p) {
     if (p->type == PLUS_AST) {
         if (p->n == 1) {
             dfs2(p->list[0]);
+            Variable *v1 = p->list[0]->v;
+            v0->location = v1->location;
         } else {
             v0->unit_size = 8;
             v0->negative = false;
@@ -453,7 +455,8 @@ void dfs2(Node *p) {
     } else if (p->type == MINUS_AST) {
         if (p->n == 1) {
             dfs2(p->list[0]);
-            v0->negative = (!v0->negative);
+            Variable *v1 = p->list[0]->v;
+            v0->location = v1->location;
         } else {
             v0->unit_size = 8;
             v0->negative = false;
