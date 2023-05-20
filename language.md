@@ -65,9 +65,16 @@ b = a;
 変数で表現できる以上の桁数の入力を与えた場合の動作は未定義です。
 
 ### 出力
-`print()`に変数を渡すことで変数の中身を出力できます。
+`print()`に式を渡すことで式の結果を出力できます。
 `bool`に対しては定義されていません。
+```
+uint(3) a;
+a = 90;
 
+print(a);
+print(a+10);
+print(123);
+```
 また、文字列リテラルを渡すことで文字列の出力ができます。
 ```
 print("Hello, world!");
@@ -88,11 +95,17 @@ print("Hello, world!");
 
 ### 比較演算子
 - `==` equal to
+    - `uint`、`int`、`fixed`、`char`、`bool`'に対して定義されています。
 - `!=` not equal to
+    - `uint`、`int`、`fixed`、`char`、`bool`'に対して定義されています。
 - `<` less than
+    - `uint`、`int`、`fixed`、`char`に対して定義されています。
 - `<=` less than or equal to
+    - `uint`、`int`、`fixed`、`char`に対して定義されています。
 - `>` greater than
+    - `uint`、`int`、`fixed`、`char`に対して定義されています。
 - `>=` greater than or equal to
+    - `uint`、`int`、`fixed`、`char`に対して定義されています。
 
 ### if文
 以下に例を示します。
@@ -159,9 +172,8 @@ c = a + b;
 // cの絶対値をuint(2)に変換した値がdに代入されます。
 d = c;
 ```
-`char`から上位の型への変換にバグを含んでいます。変換先の型の整数部を3桁以上にすると動作が安定します。
 
-また、明示的に型変換する構文は存在しません。
+明示的に型変換する構文は存在しません。
 
 ### リテラルと型
 使用可能なリテラルの例と対応する型を示します。
