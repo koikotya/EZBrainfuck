@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
-// #include "generator.h"
+#include "func.h"
 
 extern FILE *yyin;
 extern Node *parse_result;

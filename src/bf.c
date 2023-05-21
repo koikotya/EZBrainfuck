@@ -1,23 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ast.h"
-// #include "generator.h"
-
-#ifdef __EMSCRIPTEN__
-extern char result[1<<20];
-
-void output(char *s) {
-    strcat(result, s);
-}
-
-#else
-extern FILE *Fresult;
-
-void output(char *s) {
-    fprintf(Fresult,s);
-}
-#endif
+#include "func.h"
+#include "bf.h"
 
 void movePointer(int p1,int p2) {
     if (p1 < p2) {

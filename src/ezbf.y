@@ -3,6 +3,7 @@
 #include <stdlib.h>
 // #define YYDEBUG 1
 #include "ast.h"
+#include "func.h"
 
 Node *parse_result = NULL;
 
