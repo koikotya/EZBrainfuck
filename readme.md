@@ -32,4 +32,4 @@ EZBrainfuckを以下のWebページで動かせます
 
 ## 謝辞
 
-一部のBrainf*ckコードを提供していただいた[@unidentifiedexe](https://gist.github.com/unidentifiedexe)氏に感謝申し上げます。
+一部のBrainf*ckコードを提供していただいた[@unidentifiedexe](https://github.com/unidentifiedexe)氏に感謝申し上げます。
