@@ -19,8 +19,6 @@ void generate(Node *p) {
             Variable *v1 = p->list[0]->v;
             v0->address = v1->address;
         } else {
-            v0->unit_size = 8;
-            v0->negative = false;
             allocate(v0,0);
             generate(p->list[0]);
             generate(p->list[1]);
@@ -51,8 +49,6 @@ void generate(Node *p) {
             Variable *v1 = p->list[0]->v;
             v0->address = v1->address;
         } else {
-            v0->unit_size = 8;
-            v0->negative = false;
             allocate(v0,0);
             generate(p->list[0]);
             generate(p->list[1]);
@@ -80,8 +76,6 @@ void generate(Node *p) {
     } else if (p->type == TIMES_AST) {
         v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
 
-        v0->unit_size = 8;
-        v0->negative = false;
         allocate(v0,0);
         generate(p->list[0]);
         generate(p->list[1]);
@@ -112,8 +106,6 @@ void generate(Node *p) {
         v0->idegit = v0->idegit+v0->idegit;
         v0->fdegit = v0->fdegit+v0->fdegit;
 
-        v0->unit_size = 8;
-        v0->negative = false;
         allocate(v0,0);
         generate(p->list[0]);
         generate(p->list[1]);
@@ -145,8 +137,6 @@ void generate(Node *p) {
         v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
         v0->fdegit = v0->fdegit;
 
-        v0->unit_size = 8;
-        v0->negative = false;
         allocate(v0,0);
         generate(p->list[0]);
         generate(p->list[1]);
@@ -241,8 +231,6 @@ void generate(Node *p) {
         allocate(v0,1);
     } else if (p->type == STR_AST) {
     } else if (p->type == EQUAL_AST) {
-        v0->unit_size = 8;
-        v0->negative = false;
         allocate(v0,0);
         generate(p->list[0]);
         generate(p->list[1]);
@@ -265,8 +253,6 @@ void generate(Node *p) {
             // error
         }
     } else if (p->type == NOTEQUAL_AST) {
-        v0->unit_size = 8;
-        v0->negative = false;
         allocate(v0,0);
         generate(p->list[0]);
         generate(p->list[1]);
@@ -289,8 +275,6 @@ void generate(Node *p) {
             // error
         }
     } else if (p->type == LESS_AST) {
-        v0->unit_size = 8;
-        v0->negative = false;
         allocate(v0,0);
         generate(p->list[0]);
         generate(p->list[1]);
@@ -313,8 +297,6 @@ void generate(Node *p) {
             // error
         }
     } else if (p->type == GREATEREQUAL_AST) {
-        v0->unit_size = 8;
-        v0->negative = false;
         allocate(v0,0);
         generate(p->list[0]);
         generate(p->list[1]);
