@@ -153,10 +153,10 @@ factor
         $$ = $1;
     }
     | PLUS primary_expression {
-        $$ = buildNode1(PLUS_AST,$2);
+        $$ = buildNode1(UNARY_PLUS_AST,$2);
     }
     | MINUS primary_expression {
-        $$ = buildNode1(MINUS_AST,$2);
+        $$ = buildNode1(UNARY_MINUS_AST,$2);
     }
     ;
 

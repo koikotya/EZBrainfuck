@@ -7,7 +7,9 @@
 #define max(a,b) (((a) < (b)) ? (b) : (a))
 
 typedef enum {
-    PLUS_AST = 0,
+    UNARY_PLUS_AST = 0,
+    UNARY_MINUS_AST,
+    PLUS_AST,
     MINUS_AST,
     TIMES_AST,
     DIVIDE_AST,

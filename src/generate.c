@@ -13,66 +13,62 @@ int used_memory[2] = {0,4};
 void generate(Node *p) {
     if (p == NULL) return;
     Variable *v0 = p->v;
-    if (p->type == PLUS_AST) {
-        if (p->n == 1) {
-            generate(p->list[0]);
-            Variable *v1 = p->list[0]->v;
-            v0->address = v1->address;
-        } else {
-            allocate(v0,0);
-            generate(p->list[0]);
-            generate(p->list[1]);
-            Variable *v1 = p->list[0]->v;
-            Variable *v2 = p->list[1]->v;
-            setValue(v0,v1,2);
-            setValue(v0,v2,1);
+    if (p->type == UNARY_PLUS_AST) {
+        generate(p->list[0]);
+        Variable *v1 = p->list[0]->v;
+        v0->address = v1->address;
+    } else if (p->type == UNARY_MINUS_AST) {
+        generate(p->list[0]);
+        Variable *v1 = p->list[0]->v;
+        v0->address = v1->address;
+    } else if (p->type == PLUS_AST) {
+        allocate(v0,0);
+        generate(p->list[0]);
+        generate(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,2);
+        setValue(v0,v2,1);
 
-            movePointer(0,v0->address);
-            if (v0->type == UINT_TYPE) {
-                add(v0->idegit);
-            } else if (v0->type == INT_TYPE) {
-                addSigned(v0->idegit);
-            } else if (v0->type == FIXED_TYPE) {
-                addSigned(v0->idegit+v0->fdegit);
-            } else if (v0->type == CHAR_TYPE) {
-                addChar();
-            } else if (v0->type == BOOL_TYPE) {
-                // 定義しない
-            } else {
-                // error
-            }
-            movePointer(v0->address,0);
+        movePointer(0,v0->address);
+        if (v0->type == UINT_TYPE) {
+            add(v0->idegit);
+        } else if (v0->type == INT_TYPE) {
+            addSigned(v0->idegit);
+        } else if (v0->type == FIXED_TYPE) {
+            addSigned(v0->idegit+v0->fdegit);
+        } else if (v0->type == CHAR_TYPE) {
+            addChar();
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
         }
+        movePointer(v0->address,0);
     } else if (p->type == MINUS_AST) {
-        if (p->n == 1) {
-            generate(p->list[0]);
-            Variable *v1 = p->list[0]->v;
-            v0->address = v1->address;
-        } else {
-            allocate(v0,0);
-            generate(p->list[0]);
-            generate(p->list[1]);
-            Variable *v1 = p->list[0]->v;
-            Variable *v2 = p->list[1]->v;
-            setValue(v0,v1,2);
-            setValue(v0,v2,1);
+        allocate(v0,0);
+        generate(p->list[0]);
+        generate(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        setValue(v0,v1,2);
+        setValue(v0,v2,1);
 
-            movePointer(0,v0->address);
-            if (v0->type == UINT_TYPE) {
-                sub(v0->idegit);
-            } else if (v0->type == INT_TYPE) {
-                subSigned(v0->idegit);
-            } else if (v0->type == FIXED_TYPE) {
-                subSigned(v0->idegit+v0->fdegit);
-            } else if (v0->type == CHAR_TYPE) {
-                subChar();
-            } else if (v0->type == BOOL_TYPE) {
-                // 定義しない
-            } else {
-                // error
-            }
-            movePointer(v0->address,0);
+        movePointer(0,v0->address);
+        if (v0->type == UINT_TYPE) {
+            sub(v0->idegit);
+        } else if (v0->type == INT_TYPE) {
+            subSigned(v0->idegit);
+        } else if (v0->type == FIXED_TYPE) {
+            subSigned(v0->idegit+v0->fdegit);
+        } else if (v0->type == CHAR_TYPE) {
+            subChar();
+        } else if (v0->type == BOOL_TYPE) {
+            // 定義しない
+        } else {
+            // error
         }
+        movePointer(v0->address,0);
     } else if (p->type == TIMES_AST) {
         v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
 

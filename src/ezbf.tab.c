@@ -1734,7 +1734,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 155 ".\\ezbf.y"
     {
-        (yyval.p) = buildNode1(PLUS_AST,(yyvsp[(2) - (2)].p));
+        (yyval.p) = buildNode1(UNARY_PLUS_AST,(yyvsp[(2) - (2)].p));
     ;}
     break;
 
@@ -1743,7 +1743,7 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 158 ".\\ezbf.y"
     {
-        (yyval.p) = buildNode1(MINUS_AST,(yyvsp[(2) - (2)].p));
+        (yyval.p) = buildNode1(UNARY_MINUS_AST,(yyvsp[(2) - (2)].p));
     ;}
     break;
 

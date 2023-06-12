@@ -9,51 +9,47 @@ Variable *val_list[100010];
 void setMemorySize(Node *p) {
     Variable *res = NULL;
     if (p == NULL) return;
-    if (p->type == PLUS_AST) {
-        if (p->n == 1) {
-            setMemorySize(p->list[0]);
-            res = (Variable *)malloc(sizeof(Variable));
-            *res = *p->list[0]->v;
-            res->sign = true;
-            if (res->type == UINT_TYPE) res->type = INT_TYPE;
-        } else {
-            res = (Variable *)malloc(sizeof(Variable));
-            res->op = PLUS_OP;
-            res->unit_size = 8;
-            res->negative = false;
-            setMemorySize(p->list[0]);
-            setMemorySize(p->list[1]);
-            Variable *v1 = p->list[0]->v;
-            Variable *v2 = p->list[1]->v;
-            res->type = castType(v1->type,v2->type);
-            res->idegit = max(v1->idegit,v2->idegit);
-            if (res->type != CHAR_TYPE && (v1->type == CHAR_TYPE || v2->type == CHAR_TYPE)) res->idegit = max(res->idegit,3);
-            res->fdegit = max(v1->fdegit,v2->fdegit);
-            res->sign = (v1->sign|v2->sign);
-        }
+    if (p->type == UNARY_PLUS_AST) {
+        setMemorySize(p->list[0]);
+        res = (Variable *)malloc(sizeof(Variable));
+        *res = *p->list[0]->v;
+        res->sign = true;
+        if (res->type == UINT_TYPE) res->type = INT_TYPE;
+    } else if (p->type == UNARY_MINUS_AST) {
+        setMemorySize(p->list[0]);
+        res = (Variable *)malloc(sizeof(Variable));
+        *res = *p->list[0]->v;
+        res->sign = true;
+        if (res->type == UINT_TYPE) res->type = INT_TYPE;
+        res->negative = (!res->negative);
+    } else if (p->type == PLUS_AST) {
+        res = (Variable *)malloc(sizeof(Variable));
+        res->op = PLUS_OP;
+        res->unit_size = 8;
+        res->negative = false;
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        if (res->type != CHAR_TYPE && (v1->type == CHAR_TYPE || v2->type == CHAR_TYPE)) res->idegit = max(res->idegit,3);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = (v1->sign|v2->sign);
     } else if (p->type == MINUS_AST) {
-        if (p->n == 1) {
-            setMemorySize(p->list[0]);
-            res = (Variable *)malloc(sizeof(Variable));
-            *res = *p->list[0]->v;
-            res->sign = true;
-            if (res->type == UINT_TYPE) res->type = INT_TYPE;
-            res->negative = (!res->negative);
-        } else {
-            res = (Variable *)malloc(sizeof(Variable));
-            res->op = MINUS_OP;
-            res->unit_size = 8;
-            res->negative = false;
-            setMemorySize(p->list[0]);
-            setMemorySize(p->list[1]);
-            Variable *v1 = p->list[0]->v;
-            Variable *v2 = p->list[1]->v;
-            res->type = castType(v1->type,v2->type);
-            res->idegit = max(v1->idegit,v2->idegit);
-            if (res->type != CHAR_TYPE && (v1->type == CHAR_TYPE || v2->type == CHAR_TYPE)) res->idegit = max(res->idegit,3);
-            res->fdegit = max(v1->fdegit,v2->fdegit);
-            res->sign = (v1->sign|v2->sign);
-        }
+        res = (Variable *)malloc(sizeof(Variable));
+        res->op = MINUS_OP;
+        res->unit_size = 8;
+        res->negative = false;
+        setMemorySize(p->list[0]);
+        setMemorySize(p->list[1]);
+        Variable *v1 = p->list[0]->v;
+        Variable *v2 = p->list[1]->v;
+        res->type = castType(v1->type,v2->type);
+        res->idegit = max(v1->idegit,v2->idegit);
+        if (res->type != CHAR_TYPE && (v1->type == CHAR_TYPE || v2->type == CHAR_TYPE)) res->idegit = max(res->idegit,3);
+        res->fdegit = max(v1->fdegit,v2->fdegit);
+        res->sign = (v1->sign|v2->sign);
     } else if (p->type == TIMES_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = TIMES_OP;
