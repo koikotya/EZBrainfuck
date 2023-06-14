@@ -4,6 +4,8 @@
 #include "ast.h"
 
 const char *Ntype_str[] = {
+    "UNARY_PLUS_AST",
+    "UNARY_MINUS_AST",
     "PLUS_AST",
     "MINUS_AST",
     "TIMES_AST",
