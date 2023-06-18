@@ -76,7 +76,7 @@ typedef struct{
 typedef struct node {
     Ntype type;
     int n;
-    struct node **list;
+    struct node **childs;
     char str[256];
     Variable *v;
 } Node;

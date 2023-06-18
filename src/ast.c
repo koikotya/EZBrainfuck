@@ -47,8 +47,8 @@ Node* buildNode1(Ntype t,Node* p1) {
     p = (Node *)malloc(sizeof(Node));
     p->type = t;
     p->n = 1;
-    p->list = (Node**)malloc(p->n*sizeof(Node*));
-    p->list[0] = p1;
+    p->childs = (Node**)malloc(p->n*sizeof(Node*));
+    p->childs[0] = p1;
     return p;
 }
 
@@ -57,9 +57,9 @@ Node* buildNode2(Ntype t,Node* p1,Node* p2) {
     p = (Node *)malloc(sizeof(Node));
     p->type = t;
     p->n = 2;
-    p->list = (Node**)malloc(p->n*sizeof(Node*));
-    p->list[0] = p1;
-    p->list[1] = p2;
+    p->childs = (Node**)malloc(p->n*sizeof(Node*));
+    p->childs[0] = p1;
+    p->childs[1] = p2;
     return p;
 }
 
@@ -68,10 +68,10 @@ Node* buildNode3(Ntype t,Node* p1,Node* p2,Node* p3) {
     p = (Node *)malloc(sizeof(Node));
     p->type = t;
     p->n = 3;
-    p->list = (Node**)malloc(p->n*sizeof(Node*));
-    p->list[0] = p1;
-    p->list[1] = p2;
-    p->list[2] = p3;
+    p->childs = (Node**)malloc(p->n*sizeof(Node*));
+    p->childs[0] = p1;
+    p->childs[1] = p2;
+    p->childs[2] = p3;
     return p;
 }
 
@@ -81,7 +81,7 @@ void printNode(Node *p,int i) {
     if (strlen(p->str) > 0) printf("%s ",p->str);
     if (0 < p->n) {
         printf("{\n");
-        for (int j = 0;j < p->n;++j) if (p->list[j] != NULL) printNode(p->list[j],i+1);
+        for (int j = 0;j < p->n;++j) if (p->childs[j] != NULL) printNode(p->childs[j],i+1);
         for (int j = 0;j < i;++j) printf("  ");
         printf("}");
     }

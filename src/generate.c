@@ -14,19 +14,19 @@ void generate(Node *p) {
     if (p == NULL) return;
     Variable *v0 = p->v;
     if (p->type == UNARY_PLUS_AST) {
-        generate(p->list[0]);
-        Variable *v1 = p->list[0]->v;
+        generate(p->childs[0]);
+        Variable *v1 = p->childs[0]->v;
         v0->address = v1->address;
     } else if (p->type == UNARY_MINUS_AST) {
-        generate(p->list[0]);
-        Variable *v1 = p->list[0]->v;
+        generate(p->childs[0]);
+        Variable *v1 = p->childs[0]->v;
         v0->address = v1->address;
     } else if (p->type == PLUS_AST) {
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,2);
         setValue(v0,v2,1);
 
@@ -47,10 +47,10 @@ void generate(Node *p) {
         movePointer(v0->address,0);
     } else if (p->type == MINUS_AST) {
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,2);
         setValue(v0,v2,1);
 
@@ -73,10 +73,10 @@ void generate(Node *p) {
         v0->idegit = v0->idegit+v0->idegit+v0->fdegit;
 
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,2);
         setValue(v0,v2,1);
 
@@ -103,10 +103,10 @@ void generate(Node *p) {
         v0->fdegit = v0->fdegit+v0->fdegit;
 
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,5);
 
         v0->fdegit /= 2;
@@ -134,10 +134,10 @@ void generate(Node *p) {
         v0->fdegit = v0->fdegit;
 
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,5);
 
         setValue(v0,v2,2);
@@ -159,10 +159,10 @@ void generate(Node *p) {
         movePointer(v0->address,0);
         clear(v0,0,getIndex(DIVIDE_OP),size(v0));
     } else if (p->type == ASSIGN_AST) {
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         if (v1->ident != NULL && v2->ident != NULL && strcmp(v1->ident,v2->ident) == 0) {
             turnSign(v1,1,v2->negative);
         } else {
@@ -174,30 +174,30 @@ void generate(Node *p) {
     } else if (p->type == IF_AST) {
         allocate(v0,1);
 
-        generate(p->list[0]);
-        Variable *v1 = p->list[0]->v;
+        generate(p->childs[0]);
+        Variable *v1 = p->childs[0]->v;
         move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
         freeVariable(v1);
         ifBegin(v0);
 
-        generate(p->list[1]);
+        generate(p->childs[1]);
 
         ifEnd(v0);
         freeVariable(v0);
     } else if (p->type == IF_ELSE_AST) {
         allocate(v0,1);
 
-        generate(p->list[0]);
-        Variable *v1 = p->list[0]->v;
+        generate(p->childs[0]);
+        Variable *v1 = p->childs[0]->v;
         move(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1);
         freeVariable(v1);
         ifElseBegin(v0);
 
-        generate(p->list[1]);
+        generate(p->childs[1]);
 
         ifElseMid(v0);
 
-        generate(p->list[2]);
+        generate(p->childs[2]);
 
         ifElseEnd(v0);
         freeVariable(v0);
@@ -205,12 +205,12 @@ void generate(Node *p) {
         allocate(v0,1);
 
         whileBegin(v0);
-        generate(p->list[0]);
-        Variable *v1 = p->list[0]->v;
+        generate(p->childs[0]);
+        Variable *v1 = p->childs[0]->v;
         copy(v0,v1,0,size(v1)-1,1,getIndex(v1->op),1,2);
         move(v0,v1,0,size(v1)-1,2,getIndex(v1->op),1);
         whileMid(v0);
-        generate(p->list[1]);
+        generate(p->childs[1]);
         whileEnd(v0);
 
         freeVariable(v1);
@@ -228,10 +228,10 @@ void generate(Node *p) {
     } else if (p->type == STR_AST) {
     } else if (p->type == EQUAL_AST) {
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,2);
         setValue(v0,v2,1);
 
@@ -250,10 +250,10 @@ void generate(Node *p) {
         }
     } else if (p->type == NOTEQUAL_AST) {
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,3);
         setValue(v0,v2,2);
 
@@ -272,10 +272,10 @@ void generate(Node *p) {
         }
     } else if (p->type == LESS_AST) {
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,2);
         setValue(v0,v2,1);
 
@@ -294,10 +294,10 @@ void generate(Node *p) {
         }
     } else if (p->type == GREATEREQUAL_AST) {
         allocate(v0,0);
-        generate(p->list[0]);
-        generate(p->list[1]);
-        Variable *v1 = p->list[0]->v;
-        Variable *v2 = p->list[1]->v;
+        generate(p->childs[0]);
+        generate(p->childs[1]);
+        Variable *v1 = p->childs[0]->v;
+        Variable *v2 = p->childs[1]->v;
         setValue(v0,v1,2);
         setValue(v0,v2,1);
 
@@ -320,8 +320,8 @@ void generate(Node *p) {
             break;
         }
     } else if (p->type == SCAN_AST) {
-        generate(p->list[0]);
-        Variable *v1 = p->list[0]->v;
+        generate(p->childs[0]);
+        Variable *v1 = p->childs[0]->v;
         clear(v1,0,1,size(v1));
         if (v1->type == UINT_TYPE) {
             scanUint(v1,1);
@@ -334,10 +334,10 @@ void generate(Node *p) {
         } else if (v1->type == BOOL_TYPE) {
         } else {}
     } else if (p->type == PRINT_AST) {
-        if (p->list[0]->type == STR_AST) {
-            printStr(0,p->list[0]->str);
-        } else if (p->list[0]->v->op == INT_LITERAL || p->list[0]->v->op == DECIMAL_LITERAL) {
-            Variable *v1 = p->list[0]->v;
+        if (p->childs[0]->type == STR_AST) {
+            printStr(0,p->childs[0]->str);
+        } else if (p->childs[0]->v->op == INT_LITERAL || p->childs[0]->v->op == DECIMAL_LITERAL) {
+            Variable *v1 = p->childs[0]->v;
             if (v1->op == INT_LITERAL && v1->negative) {
                 v1->sign = true;
                 v1->type = INT_TYPE;
@@ -355,8 +355,8 @@ void generate(Node *p) {
             clear(v1,0,index,size(v1));
             freeVariable(v1);
         } else {
-            generate(p->list[0]);
-            Variable *v1 = p->list[0]->v;
+            generate(p->childs[0]);
+            Variable *v1 = p->childs[0]->v;
             int index = getIndex(v1->op);
             turnSign(v1,index,v1->negative);
             if (v1->type == UINT_TYPE) {
@@ -374,10 +374,10 @@ void generate(Node *p) {
             else clear(v1,0,index,size(v1));
         }
     } else if (p->type == MAIN_AST) {
-        for (int i = 0;i < p->n;++i) generate(p->list[i]);
+        for (int i = 0;i < p->n;++i) generate(p->childs[i]);
         // for (int i = 0;i < list_size;++i) printf("%d\n",val_list[i]->address);
     } else if (p->type == STATEMENTS_AST) {
-        for (int i = 0;i < p->n;++i) generate(p->list[i]);
+        for (int i = 0;i < p->n;++i) generate(p->childs[i]);
     } else {
     }
 }
