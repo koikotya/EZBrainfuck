@@ -25,7 +25,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == PLUS_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = PLUS_OP;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -39,7 +38,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == MINUS_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = MINUS_OP;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -53,7 +51,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == TIMES_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = TIMES_OP;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -66,7 +63,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == DIVIDE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = DIVIDE_OP;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -79,7 +75,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == MOD_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = MOD_OP;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -116,7 +111,6 @@ void setMemorySize(Node *p) {
         res->ident = p->str;
     } else if (p->type == IF_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 8;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
         res->idegit = 0;
@@ -124,7 +118,6 @@ void setMemorySize(Node *p) {
         res->sign = true;
     } else if (p->type == IF_ELSE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 8;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
         setMemorySize(p->list[2]);
@@ -133,7 +126,6 @@ void setMemorySize(Node *p) {
         res->sign = true;
     } else if (p->type == WHILE_AST) {
         res = (Variable *)malloc(sizeof(Variable));
-        res->unit_size = 8;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
         res->idegit = 0;
@@ -146,7 +138,6 @@ void setMemorySize(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
@@ -157,7 +148,6 @@ void setMemorySize(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = 0;
         res->sign = true;
-        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[1]->str;
         val_list[list_size++] = res;
@@ -168,7 +158,6 @@ void setMemorySize(Node *p) {
         res->idegit = atoi(p->list[0]->str);
         res->fdegit = atoi(p->list[1]->str);
         res->sign = true;
-        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[2]->str;
         val_list[list_size++] = res;
@@ -179,7 +168,6 @@ void setMemorySize(Node *p) {
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
@@ -190,7 +178,6 @@ void setMemorySize(Node *p) {
         res->idegit = 1;
         res->fdegit = 0;
         res->sign = false;
-        res->unit_size = 8;
         res->negative = false;
         res->ident = p->list[0]->str;
         val_list[list_size++] = res;
@@ -198,7 +185,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == EQUAL_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = EQUAL_COND;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -211,7 +197,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == NOTEQUAL_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = NOTEQUAL_COND;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -224,7 +209,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == LESS_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = LESS_COND;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);
@@ -237,7 +221,6 @@ void setMemorySize(Node *p) {
     } else if (p->type == GREATEREQUAL_AST) {
         res = (Variable *)malloc(sizeof(Variable));
         res->op = GREATEREQUAL_COND;
-        res->unit_size = 8;
         res->negative = false;
         setMemorySize(p->list[0]);
         setMemorySize(p->list[1]);

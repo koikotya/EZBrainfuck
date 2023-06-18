@@ -34,7 +34,7 @@ void allocate(Variable *v,int type) {
 
     v->address = used_memory[id];
     val_list[list_size++] = v;
-    used_memory[id] += size(v)*v->unit_size;
+    used_memory[id] += size(v)*INTERVAL;
 }
 
 void freeVariable(Variable *v) {
@@ -93,7 +93,6 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             Variable *v3;
             v3 = (Variable *)malloc(sizeof(Variable));
             v3->idegit = 3;
-            v3->unit_size = 8;
             allocate(v3,0);
             moveCharToInt(v3,v2,1,v2_index);
             move(v1,v3,v1->fdegit,0,index1,2,min(v1->idegit,v3->idegit));
@@ -125,7 +124,6 @@ void setValue(Variable *v1,Variable *v2,int index1) {
             Variable *v3;
             v3 = (Variable *)malloc(sizeof(Variable));
             v3->idegit = 3;
-            v3->unit_size = 8;
             allocate(v3,0);
             copyCharToInt(v3,v2,1,v2_index,2);
             move(v1,v3,v1->fdegit,0,index1,2,min(v1->idegit,v3->idegit));

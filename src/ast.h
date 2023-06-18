@@ -6,6 +6,8 @@
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define max(a,b) (((a) < (b)) ? (b) : (a))
 
+#define INTERVAL 8
+
 typedef enum {
     UNARY_PLUS_AST = 0,
     UNARY_MINUS_AST,
@@ -67,7 +69,6 @@ typedef struct{
     int fdegit; // 小数部の桁数
     bool sign; // int,fixedでは常にtrue、それ以外では常にfalse
     int address; // メモリ使用開始位置（左端の位置）
-    int unit_size; // 常に8
     bool negative; // int,fixedの時のみ使用、符号を管理
     char *ident; // 変数名、リテラルを保存
 } Variable;

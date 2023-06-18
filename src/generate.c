@@ -338,7 +338,6 @@ void generate(Node *p) {
             printStr(0,p->list[0]->str);
         } else if (p->list[0]->v->op == INT_LITERAL || p->list[0]->v->op == DECIMAL_LITERAL) {
             Variable *v1 = p->list[0]->v;
-            v1->unit_size = 8;
             if (v1->op == INT_LITERAL && v1->negative) {
                 v1->sign = true;
                 v1->type = INT_TYPE;
