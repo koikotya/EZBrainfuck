@@ -74,14 +74,18 @@ Node* buildNode3(Ntype t,Node* p1,Node* p2,Node* p3) {
 }
 
 void printNode(Node *p,int i) {
-    for (int j = 0;j < i;++j) printf("  ");
-    printf("%s ",Ntype_str[p->type]);
-    if (strlen(p->str) > 0) printf("%s ",p->str);
-    if (0 < p->n) {
-        printf("{\n");
-        for (int j = 0;j < p->n;++j) if (p->list[j] != NULL) printNode(p->list[j],i+1);
+    if (p->type == STATEMENTS_AST) {
+        for (int j = 0;j < p->n;++j) if (p->list[j] != NULL) printNode(p->list[j],i);
+    } else {
         for (int j = 0;j < i;++j) printf("  ");
-        printf("}");
+        printf("%s ",Ntype_str[p->type]);
+        if (strlen(p->str) > 0) printf("%s ",p->str);
+        if (0 < p->n) {
+            printf("{\n");
+            for (int j = 0;j < p->n;++j) if (p->list[j] != NULL) printNode(p->list[j],i+1);
+            for (int j = 0;j < i;++j) printf("  ");
+            printf("}");
+        }
+        printf("\n");
     }
-    printf("\n");
 }
