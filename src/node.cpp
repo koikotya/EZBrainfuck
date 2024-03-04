@@ -14,9 +14,10 @@ const char *Ntype_str[] = {
     "ASSIGN_AST",
     "INTNUMBER_AST",
     "DECIMALNUMBER_AST",
-    "IF_AST",
+    "IF_STATEMENT_AST",
     "IF_ELSE_AST",
     "WHILE_AST",
+    "DIGITS_LIST_AST",
     "UINT_AST",
     "INT_AST",
     "FIXED_AST",
@@ -32,7 +33,6 @@ const char *Ntype_str[] = {
     "PRINT_AST",
     "MAIN_AST",
     "STATEMENTS_AST",
-    "DEFAULT"
 };
 
 Node::Node() : left(nullptr), right(nullptr) {}

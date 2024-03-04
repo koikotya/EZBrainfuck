@@ -17,8 +17,6 @@ all: $(BASE)
 $(BASE): main.o node.o driver.o parser.o scanner.o
 	$(CXX) -o $@ $^
 
-parser.hpp: parser.yy
-scanner.hpp: scanner.ll
 main.o: node.hpp driver.hpp parser.hpp
 node.o: node.hpp
 driver.o: node.hpp driver.hpp parser.hpp scanner.hpp
