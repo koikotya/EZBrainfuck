@@ -14,10 +14,9 @@ const char *Ntype_str[] = {
     "ASSIGN_AST",
     "INTNUMBER_AST",
     "DECIMALNUMBER_AST",
-    "IF_STATEMENT_AST",
-    "IF_ELSE_AST",
+    "IF_AST",
     "WHILE_AST",
-    "DIGITS_LIST_AST",
+    "ARGUMENTS_AST",
     "UINT_AST",
     "INT_AST",
     "FIXED_AST",
@@ -35,42 +34,25 @@ const char *Ntype_str[] = {
     "STATEMENTS_AST",
 };
 
-Node::Node() : left(nullptr), right(nullptr) {}
+Node::Node() {}
 
 Node::Node(Ntype t,char s[]) {
     type = t;
-    left = nullptr;
-    right = nullptr;
     strcpy(str,s);
 }
 
-Node::Node(Ntype t, Node* p1) {
-    type = t;
-    left = p1;
-    right = nullptr;
+Node::Node(Ntype t, std::initializer_list<Node*> list) : type(t), childs(list.begin(),list.end()){
 }
 
-Node::Node(Ntype t, Node* p1, Node* p2) {
-    type = t;
-    left = p1;
-    right = p2;
-}
-
-void Node::print(int i) {
-    if (type == STATEMENTS_AST) {
-        if (left != nullptr) left->print(i);
-        if (right != nullptr) right->print(i);
-    } else {
+void Node::print(int i) const {
+    for (int j = 0;j < i;++j) printf("  ");
+    printf("%s ",Ntype_str[type]);
+    if (strlen(str) > 0) printf("%s ",str);
+    if (!childs.empty()) {
+        printf("{\n");
+        for (auto c : childs) c->print(i+1);
         for (int j = 0;j < i;++j) printf("  ");
-        printf("%s ",Ntype_str[type]);
-        if (strlen(str) > 0) printf("%s ",str);
-        if (left != nullptr) {
-            printf("{\n");
-            left->print(i+1);
-            if (right != nullptr) right->print(i+1);
-            for (int j = 0;j < i;++j) printf("  ");
-            printf("}");
-        }
-        printf("\n");
+        printf("}");
     }
+    printf("\n");
 }

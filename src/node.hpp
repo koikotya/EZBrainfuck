@@ -1,6 +1,9 @@
 #ifndef INCLUDED_NODE
 #define INCLUDED_NODE
 
+#include<vector>
+#include<initializer_list>
+
 enum Ntype {
     UNARY_PLUS_AST = 0,
     UNARY_MINUS_AST,
@@ -12,10 +15,9 @@ enum Ntype {
     ASSIGN_AST,
     INTNUMBER_AST,
     DECIMALNUMBER_AST,
-    IF_STATEMENT_AST,
-    IF_ELSE_AST,
+    IF_AST,
     WHILE_AST,
-    DIGITS_LIST_AST,
+    ARGUMENTS_AST,
     UINT_AST,
     INT_AST,
     FIXED_AST,
@@ -35,16 +37,14 @@ enum Ntype {
 
 struct Node {
     Ntype type;
-    Node* left;
-    Node* right;
+    std::vector<Node*> childs;
     char str[256] = {};
 
     Node();
     Node(Ntype t,char s[]);
-    Node(Ntype t, Node* p1);
-    Node(Ntype t, Node* p1, Node* p2);
+    Node(Ntype t, std::initializer_list<Node*> list);
 
-    void print(int i = 0);
+    void print(int i = 0) const;
 };
 
 #endif
