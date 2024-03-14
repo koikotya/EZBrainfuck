@@ -43,5 +43,3 @@ clean:
 -include $(DEPS)
 
 MKDIR_P ?= mkdir -p
-
-# SRCSにparser.cpp, scanner.cppも加わるように
