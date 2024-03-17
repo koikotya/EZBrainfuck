@@ -38,7 +38,7 @@ Node::Node() {}
 
 Node::Node(Ntype t,char s[]) {
     type = t;
-    strcpy(str,s);
+    str = std::string(s);
 }
 
 Node::Node(Ntype t, std::initializer_list<Node*> list) : type(t), childs(list.begin(),list.end()){
@@ -47,7 +47,7 @@ Node::Node(Ntype t, std::initializer_list<Node*> list) : type(t), childs(list.be
 void Node::print(int i) const {
     for (int j = 0;j < i;++j) printf("  ");
     printf("%s ",Ntype_str[type]);
-    if (strlen(str) > 0) printf("%s ",str);
+    if (str.size() > 0) printf("%s ",str.c_str());
     if (!childs.empty()) {
         printf("{\n");
         for (auto c : childs) c->print(i+1);

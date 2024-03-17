@@ -2,6 +2,7 @@
 #define INCLUDED_NODE
 
 #include<vector>
+#include<string>
 #include<initializer_list>
 
 enum Ntype {
@@ -38,7 +39,7 @@ enum Ntype {
 struct Node {
     Ntype type;
     std::vector<Node*> childs;
-    char str[256] = {};
+    std::string str;
 
     Node();
     Node(Ntype t,char s[]);
