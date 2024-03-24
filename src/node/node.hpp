@@ -5,47 +5,98 @@
 #include<string>
 #include<initializer_list>
 
-enum Ntype {
-    UNARY_PLUS_AST = 0,
-    UNARY_MINUS_AST,
-    PLUS_AST,
-    MINUS_AST,
-    TIMES_AST,
-    DIVIDE_AST,
-    MOD_AST,
-    ASSIGN_AST,
-    INTNUMBER_AST,
-    DECIMALNUMBER_AST,
-    IF_AST,
-    WHILE_AST,
-    ARGUMENTS_AST,
-    UINT_AST,
-    INT_AST,
-    FIXED_AST,
-    BOOL_AST,
-    CHAR_AST,
-    STR_AST,
-    EQUAL_AST,
-    NOTEQUAL_AST,
-    LESS_AST,
-    GREATEREQUAL_AST,
-    IDENT_AST,
-    SCAN_AST,
-    PRINT_AST,
-    MAIN_AST,
-    STATEMENTS_AST,
+using std::vector;
+using std::ostream;
+using std::string;
+/*
+NODE_GEN
+    UNARY 
+        UNARY_PLUS
+        UNARY_MINUS
+    BINARY
+        PLUS
+        MINUS
+        TIMES
+        DIVIDE
+        MOD
+        EQUAL
+        NOTEQUAL
+        LESS
+        GREATEREQUAL
+    DECL
+        DECL_UINT
+        DECL_INT
+        DECL_FIXED
+        DECL_BOOL
+        DECL_CHAR
+    LITERAL
+        INTNUMBER
+        DECIMALNUMBER
+    CONTROL
+        IF
+        WHILE
+    IO
+        SCAN
+        PRINT_NODE
+        PRINT_LITERAL
+        PRINT_STR
+    ASSIGN
+    IDENT
+    STATEMENTS
+    ROOT
+*/
+
+class Node {
+public:
+    vector<Node*> childs_;
+    string str_;
+
+    Node() ;
+    Node(char s[]) ;
+    Node(std::initializer_list<Node*> list) ;
+
+    virtual ostream& print(ostream& os,int i = 0) const;
+    ostream& printNode(ostream& os,string class_name,int i = 0) const;
+
+    friend ostream& operator<<(ostream& os,const Node& node) ;
 };
 
-struct Node {
-    Ntype type;
-    std::vector<Node*> childs;
-    std::string str;
+class Root : public Node {
+    using Node::Node;
 
-    Node();
-    Node(Ntype t,char s[]);
-    Node(Ntype t, std::initializer_list<Node*> list);
+    ostream& print(ostream& os,int i = 0) const override;
+};
 
-    void print(int i = 0) const;
+class Ident : public Node {
+    using Node::Node;
+
+    ostream& print(ostream& os,int i = 0) const override;
+};
+
+class Statements : public Node {
+    using Node::Node;
+
+    ostream& print(ostream& os,int i = 0) const override;
+};
+
+class Decl : public Node {
+    using Node::Node;
+};
+
+class DeclUint : public Decl {
+    using Decl::Decl;
+
+    ostream& print(ostream& os,int i = 0) const override;
+};
+
+class Literal : public Node {
+    using Node::Node;
+};
+
+class IntNumber : public Literal {
+    using Literal::Literal;
+
+    ostream& print(ostream& os,int i = 0) const override;
 };
 
 #endif

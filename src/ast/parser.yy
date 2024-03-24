@@ -7,7 +7,7 @@
 
 %code requires {
     class Driver;
-    struct Node;
+    class Node;
 }
 
 %param {Driver& drv}
@@ -39,16 +39,16 @@
 
 program :
     FN MAIN LPAREN RPAREN LBRACE statements RBRACE {
-        drv.root_ = new Node(MAIN_AST,{$6});
+        drv.root_ = new Root({$6});
     }
     ;
 
 statements :
     {
-        $$ = new Node(STATEMENTS_AST,{});
+        $$ = new Statements({});
     }
     | statements statement {
-        $1->childs.push_back($2);
+        $1->childs_.push_back($2);
         $$ = $1;
     }
     ;
@@ -57,7 +57,7 @@ statement :
     declaration SEMI {
         $$ = $1;
     }
-    | assignment SEMI {
+    /* | assignment SEMI {
         $$ = $1;
     }
     | io SEMI {
@@ -68,9 +68,9 @@ statement :
     }
     | WHILE LPAREN condition RPAREN LBRACE statements RBRACE {
         $$ = new Node(WHILE_AST,{$3,$6});
-    }
+    } */
     ;
-
+/* 
 if_statement : 
     IF LPAREN condition RPAREN LBRACE statements RBRACE {
         $$ = new Node(IF_AST,{$3,$6});
@@ -114,13 +114,13 @@ condition
     | expression GREATEREQUAL expression {
         $$ = new Node(GREATEREQUAL_AST,{$1,$3});
     }
-    ;
+    ; */
 
 declaration :
     UINT LPAREN INTNUMBER RPAREN IDENT {
-        $$ = new Node(UINT_AST,{new Node(ARGUMENTS_AST,{$3}),$5});
+        $$ = new DeclUint({$3,$5});
     }
-    | INT LPAREN INTNUMBER RPAREN IDENT {
+    /* | INT LPAREN INTNUMBER RPAREN IDENT {
         $$ = new Node(INT_AST,{new Node(ARGUMENTS_AST,{$3}),$5});
     }
     | FIXED LPAREN INTNUMBER COMMA INTNUMBER RPAREN IDENT {
@@ -131,9 +131,9 @@ declaration :
     }
     | CHAR IDENT {
         $$ = new Node(CHAR_AST,{$2});
-    }
+    } */
     ;
-
+/* 
 assignment
     : IDENT ASSIGN expression {
         $$ = new Node(ASSIGN_AST,{$1,$3});
@@ -193,7 +193,7 @@ primary_expression
     | LPAREN expression RPAREN {
         $$ = $2;
     }
-    ;
+    ; */
 %%
 
 namespace yy {

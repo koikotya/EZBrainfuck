@@ -1,58 +1,56 @@
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
+#include <string>
 
 #include "node.hpp"
 
-const char *Ntype_str[] = {
-    "UNARY_PLUS_AST",
-    "UNARY_MINUS_AST",
-    "PLUS_AST",
-    "MINUS_AST",
-    "TIMES_AST",
-    "DIVIDE_AST",
-    "MOD_AST",
-    "ASSIGN_AST",
-    "INTNUMBER_AST",
-    "DECIMALNUMBER_AST",
-    "IF_AST",
-    "WHILE_AST",
-    "ARGUMENTS_AST",
-    "UINT_AST",
-    "INT_AST",
-    "FIXED_AST",
-    "BOOL_AST",
-    "CHAR_AST",
-    "STR_AST",
-    "EQUAL_AST",
-    "NOTEQUAL_AST",
-    "LESS_AST",
-    "GREATEREQUAL_AST",
-    "IDENT_AST",
-    "SCAN_AST",
-    "PRINT_AST",
-    "MAIN_AST",
-    "STATEMENTS_AST",
-};
+using std::ostream;
+using std::string;
 
 Node::Node() {}
 
-Node::Node(Ntype t,char s[]) {
-    type = t;
-    str = std::string(s);
+Node::Node(char s[]) {
+    str_ = string(s);
 }
 
-Node::Node(Ntype t, std::initializer_list<Node*> list) : type(t), childs(list.begin(),list.end()){
+Node::Node(std::initializer_list<Node*> list) : childs_(list.begin(),list.end()){
 }
 
-void Node::print(int i) const {
-    for (int j = 0;j < i;++j) printf("  ");
-    printf("%s ",Ntype_str[type]);
-    if (str.size() > 0) printf("%s ",str.c_str());
-    if (!childs.empty()) {
-        printf("{\n");
-        for (auto c : childs) c->print(i+1);
-        for (int j = 0;j < i;++j) printf("  ");
-        printf("}");
+ostream& Node::printNode(ostream& os,string class_name,int i) const {
+    os << string(4*i,' ') << class_name << " ";
+    if (str_.size() > 0) os << str_ << " ";
+    if (!childs_.empty()) {
+        os << "{\n";
+        for (auto c : childs_) c->print(os,i+1);
+        os << string(4*i,' ') << "}";
     }
-    printf("\n");
+    os << "\n";
+    return os;
+}
+
+ostream& operator<<(ostream& os,const Node& node) {node.print(os);return os;}
+
+ostream& Node::print(ostream& os,int i) const {
+    return printNode(os,"Node",i);
+}
+
+ostream& Root::print(ostream& os,int i) const {
+    return printNode(os,"Root",i);
+}
+
+ostream& Ident::print(ostream& os,int i) const {
+    return printNode(os,"Ident",i);
+}
+
+ostream& Statements::print(ostream& os,int i) const {
+    return printNode(os,"Statements",i);
+}
+
+ostream& DeclUint::print(ostream& os,int i) const {
+    return printNode(os,"DeclUint",i);
+}
+
+ostream& IntNumber::print(ostream& os,int i) const {
+    return printNode(os,"IntNumber",i);
 }

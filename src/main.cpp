@@ -1,4 +1,5 @@
-#include<assert.h>
+#include <iostream>
+#include <assert.h>
 
 #include "node.hpp"
 #include "driver.hpp"
@@ -10,5 +11,5 @@ int main(int argc, char *argv[]) {
     }
     Driver drv(argv[1]);
     drv.parse();
-    drv.root_->print();
+    std::cout << *drv.root_;
 }
