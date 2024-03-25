@@ -6,7 +6,7 @@ MAKE = make --no-print-directory
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./src
 
-PARSER = $(SRC_DIRS)/ast
+PARSER = $(SRC_DIRS)/parser
 
 SRCS := $(addsuffix .cpp,$(sort $(basename $(shell find $(SRC_DIRS) -name *.cpp -or -name *.yy -or -name *.ll))))
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
