@@ -1,9 +1,9 @@
 #ifndef INCLUDED_NODE
 #define INCLUDED_NODE
 
-#include<vector>
-#include<string>
-#include<initializer_list>
+#include <vector>
+#include <string>
+#include <initializer_list>
 
 using std::vector;
 using std::ostream;
@@ -56,7 +56,6 @@ public:
     Node(std::initializer_list<Node*> list) ;
 
     virtual ostream& print(ostream& os,int i = 0) const;
-    ostream& printNode(ostream& os,string class_name,int i = 0) const;
 
     friend ostream& operator<<(ostream& os,const Node& node) ;
 };
