@@ -48,6 +48,24 @@
     Node* node = new IntNumber(yytext);
     return yy::parser::make_INTNUMBER(node);
 }
+\'.\'                  {
+    char *s;
+    s = (char *)malloc(3);
+    sprintf(s,"%d",yytext[1]);
+    Node* node = new IntNumber(s);
+    return yy::parser::make_INTNUMBER(node);
+}
+\".+\"                 {
+    char *s;
+    s = (char *)malloc(sizeof(char)*yyleng-1);
+    memcpy(s,&yytext[1],yyleng-2);
+    s[yyleng-2] = '\0';
+    return yy::parser::make_STR(s);
+}
+[0-9]+\.[0-9]*         {
+    Node* node = new DecimalNumber(yytext);
+    return yy::parser::make_DECIMALNUMBER(node);
+}
 [a-zA-Z_][0-9a-zA-Z_]* {
     Node* node = new Ident(yytext);
     return yy::parser::make_IDENT(node);

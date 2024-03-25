@@ -21,4 +21,10 @@ class Statements : public Node {
     ostream& print(ostream& os,int i = 0) const override;
 };
 
+class Assign : public Node {
+    using Node::Node;
+
+    ostream& print(ostream& os,int i = 0) const override;
+};
+
 #endif

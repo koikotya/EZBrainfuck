@@ -11,3 +11,8 @@ ostream& IntNumber::print(ostream& os,int i) const {
     os << string(4*i,' ') << "IntNumber ";
     return Node::print(os,i);
 }
+
+ostream& DecimalNumber::print(ostream& os,int i) const {
+    os << string(4*i,' ') << "DecimalNumber ";
+    return Node::print(os,i);
+}

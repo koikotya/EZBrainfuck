@@ -21,3 +21,8 @@ ostream& Statements::print(ostream& os,int i) const {
     os << string(4*i,' ') << "Statements ";
     return Node::print(os,i);
 }
+
+ostream& Assign::print(ostream& os,int i) const {
+    os << string(4*i,' ') << "Assign ";
+    return Node::print(os,i);
+}

@@ -13,5 +13,10 @@ class IntNumber : public Literal {
     ostream& print(ostream& os,int i = 0) const override;
 };
 
+class DecimalNumber : public Literal {
+    using Literal::Literal;
+
+    ostream& print(ostream& os,int i = 0) const override;
+};
 
 #endif
