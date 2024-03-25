@@ -5,6 +5,8 @@
 #include <string>
 #include <initializer_list>
 
+#include "attribute.hpp"
+
 using std::vector;
 using std::ostream;
 using std::string;
@@ -50,6 +52,7 @@ class Node {
 public:
     vector<Node*> childs_;
     string str_;
+    Attribute attr_;
 
     Node() ;
     Node(char s[]) ;

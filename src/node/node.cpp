@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include "attribute.hpp"
 #include "node.hpp"
 
 using std::ostream;
@@ -10,8 +11,7 @@ using std::string;
 
 Node::Node() {}
 
-Node::Node(char s[]) {
-    str_ = string(s);
+Node::Node(char s[]) : str_(s) {
 }
 
 Node::Node(std::initializer_list<Node*> list) : childs_(list.begin(),list.end()) {
