@@ -32,28 +32,3 @@ ostream& Node::print(ostream& os,int i) const {
     os << "\n";
     return os;
 }
-
-ostream& Root::print(ostream& os,int i) const {
-    os << string(4*i,' ') << "Root ";
-    return Node::print(os,i);
-}
-
-ostream& Ident::print(ostream& os,int i) const {
-    os << string(4*i,' ') << "Ident ";
-    return Node::print(os,i);
-}
-
-ostream& Statements::print(ostream& os,int i) const {
-    os << string(4*i,' ') << "Statements ";
-    return Node::print(os,i);
-}
-
-ostream& DeclUint::print(ostream& os,int i) const {
-    os << string(4*i,' ') << "DeclUint ";
-    return Node::print(os,i);
-}
-
-ostream& IntNumber::print(ostream& os,int i) const {
-    os << string(4*i,' ') << "IntNumber ";
-    return Node::print(os,i);
-}

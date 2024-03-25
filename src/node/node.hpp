@@ -9,7 +9,7 @@ using std::vector;
 using std::ostream;
 using std::string;
 /*
-NODE_GEN
+NODE
     UNARY 
         UNARY_PLUS
         UNARY_MINUS
@@ -60,43 +60,4 @@ public:
     friend ostream& operator<<(ostream& os,const Node& node) ;
 };
 
-class Root : public Node {
-    using Node::Node;
-
-    ostream& print(ostream& os,int i = 0) const override;
-};
-
-class Ident : public Node {
-    using Node::Node;
-
-    ostream& print(ostream& os,int i = 0) const override;
-};
-
-class Statements : public Node {
-    using Node::Node;
-
-    ostream& print(ostream& os,int i = 0) const override;
-};
-
-class Decl : public Node {
-    using Node::Node;
-};
-
-class DeclUint : public Decl {
-    using Decl::Decl;
-
-    ostream& print(ostream& os,int i = 0) const override;
-};
-
-class Literal : public Node {
-    using Node::Node;
-};
-
-class IntNumber : public Literal {
-    using Literal::Literal;
-
-    ostream& print(ostream& os,int i = 0) const override;
-};
-
 #endif
-

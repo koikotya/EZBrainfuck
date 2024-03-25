@@ -16,7 +16,7 @@
 %define parse.error detailed
 
 %code {
-#include "node.hpp"
+#include "all_node.hpp"
 #include "driver.hpp"
 }
 

@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-#include "node.hpp"
+#include "all_node.hpp"
 #include "driver.hpp"
 #include "parser.hpp"
 #include "scanner.hpp"

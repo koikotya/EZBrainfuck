@@ -3,7 +3,7 @@
 
 #include<stdio.h>
 
-#include "node.hpp"
+#include "all_node.hpp"
 #include "parser.hpp"
 
 #define YY_DECL yy::parser::symbol_type yylex (Driver& drv)
