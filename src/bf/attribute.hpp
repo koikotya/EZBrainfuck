@@ -38,7 +38,9 @@ struct Attribute {
     bool negative; // int,fixedの時のみ使用、符号を管理
     string ident; // 変数名、リテラルを保存
 
-    Attribute() {};
+    Attribute() ;
 };
+
+Type castType(Type t1,Type t2) ;
 
 #endif
