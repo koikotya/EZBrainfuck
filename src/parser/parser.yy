@@ -77,10 +77,10 @@ if_statement :
         $$ = new If({$3,$6});
     }
     | IF LPAREN condition RPAREN LBRACE statements RBRACE ELSE LBRACE statements RBRACE {
-        $$ = new If({$3,$6,$10});
+        $$ = new IfElse({$3,$6,$10});
     }
     | IF LPAREN condition RPAREN LBRACE statements RBRACE ELSE if_statement {
-        $$ = new If({$3,$6,$9});
+        $$ = new IfElse({$3,$6,$9});
     }
     ;
 
