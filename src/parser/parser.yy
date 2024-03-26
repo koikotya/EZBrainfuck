@@ -119,18 +119,18 @@ condition
 
 declaration :
     UINT LPAREN INTNUMBER RPAREN IDENT {
-        $$ = new DeclUint({$3,$5});
+        $$ = new DeclUint({$5,$3});
     }
     | INT LPAREN INTNUMBER RPAREN IDENT {
-        $$ = new DeclInt({$3,$5});
+        $$ = new DeclInt({$5,$3});
     }
     | FIXED LPAREN INTNUMBER COMMA INTNUMBER RPAREN IDENT {
-        $$ = new DeclFixed({$3,$5,$7});
+        $$ = new DeclFixed({$7,$3,$5});
     } 
-    | BOOL IDENT {
+    | CHAR IDENT {
         $$ = new DeclChar({$2});
     }
-    | CHAR IDENT {
+    | BOOL IDENT {
         $$ = new DeclBool({$2});
     }
     ;
