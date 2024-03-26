@@ -89,7 +89,11 @@ io
         $$ = new Scan({$3});
     }
     | PRINT LPAREN expression RPAREN {
-        $$ = new PrintNode({$3});
+        if ($3->attr_.op == INT_LITERAL || $3->attr_.op == DECIMAL_LITERAL) {
+            $$ = new PrintLiteral({$3});
+        } else {
+            $$ = new PrintNode({$3});
+        }
     }
     | PRINT LPAREN STR RPAREN {
         $$ = new PrintStr($3);
