@@ -7,6 +7,7 @@
 
 using std::ostream;
 using std::string;
+using std::initializer_list;
 using std::max;
 
 Binary::Binary(initializer_list<Node*> list) : Node(list) {
@@ -20,6 +21,7 @@ Binary::Binary(initializer_list<Node*> list) : Node(list) {
 }
 
 Plus::Plus(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = PLUS_OP;
     if (attr_.type != CHAR_TYPE && (childs_[0]->attr_.type == CHAR_TYPE || childs_[1]->attr_.type == CHAR_TYPE)) {
         attr_.idegit = max(attr_.idegit,3);
     }
@@ -31,6 +33,7 @@ ostream& Plus::print(ostream& os,int i) const {
 }
 
 Minus::Minus(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = MINUS_OP;
     if (attr_.type != CHAR_TYPE && (childs_[0]->attr_.type == CHAR_TYPE || childs_[1]->attr_.type == CHAR_TYPE)) {
         attr_.idegit = max(attr_.idegit,3);
     }
@@ -41,49 +44,63 @@ ostream& Minus::print(ostream& os,int i) const {
     return Node::print(os,i);
 }
 
-// Times::Times(initializer_list<Node*> list) : Binary(list) {}
+Times::Times(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = TIMES_OP;
+}
 
 ostream& Times::print(ostream& os,int i) const {
     os << string(4*i,' ') << "Times ";
     return Node::print(os,i);
 }
 
-// Divide::Divide(initializer_list<Node*> list) : Binary(list) {}
+Divide::Divide(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = DIVIDE_OP;
+}
 
 ostream& Divide::print(ostream& os,int i) const {
     os << string(4*i,' ') << "Divide ";
     return Node::print(os,i);
 }
 
-// Mod::Mod(initializer_list<Node*> list) : Binary(list) {}
+Mod::Mod(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = MOD_OP;
+}
 
 ostream& Mod::print(ostream& os,int i) const {
     os << string(4*i,' ') << "Mod ";
     return Node::print(os,i);
 }
 
-// Equal::Equal(initializer_list<Node*> list) : Binary(list) {}
+Equal::Equal(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = EQUAL_COND;
+}
 
 ostream& Equal::print(ostream& os,int i) const {
     os << string(4*i,' ') << "Equal ";
     return Node::print(os,i);
 }
 
-// NotEqual::NotEqual(initializer_list<Node*> list) : Binary(list) {}
+NotEqual::NotEqual(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = NOTEQUAL_COND;
+}
 
 ostream& NotEqual::print(ostream& os,int i) const {
     os << string(4*i,' ') << "NotEqual ";
     return Node::print(os,i);
 }
 
-// Less::Less(initializer_list<Node*> list) : Binary(list) {}
+Less::Less(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = LESS_COND;
+}
 
 ostream& Less::print(ostream& os,int i) const {
     os << string(4*i,' ') << "Less ";
     return Node::print(os,i);
 }
 
-// GreaterEqual::GreaterEqual(initializer_list<Node*> list) : Binary(list) {}
+GreaterEqual::GreaterEqual(initializer_list<Node*> list) : Binary(list) {
+    attr_.op = GREATEREQUAL_COND;
+}
 
 ostream& GreaterEqual::print(ostream& os,int i) const {
     os << string(4*i,' ') << "GreaterEqual ";
