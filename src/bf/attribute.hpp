@@ -36,7 +36,7 @@ struct Attribute {
     bool sign; // 符号の有無（int,fixed、その他ifやwhile等でも使用）
     int address; // メモリ使用開始位置（左端の位置）
     bool negative; // int,fixedの時のみ使用、符号を管理
-    string ident; // 変数名、リテラルを保存
+    string str; // 変数名、リテラルを保存
 
     Attribute() ;
 };

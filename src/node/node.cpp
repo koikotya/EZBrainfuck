@@ -11,7 +11,8 @@ using std::string;
 
 Node::Node() {}
 
-Node::Node(char s[]) : str_(s) {
+Node::Node(char s[]) {
+    attr_.str = string(s);
 }
 
 Node::Node(std::initializer_list<Node*> list) : childs_(list.begin(),list.end()) {
@@ -23,7 +24,6 @@ ostream& operator<<(ostream& os,const Node& node) {
 }
 
 ostream& Node::print(ostream& os,int i) const {
-    if (str_.size() > 0) os << str_ << " ";
     if (!childs_.empty()) {
         os << "{\n";
         for (auto c : childs_) c->print(os,i+1);

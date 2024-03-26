@@ -51,7 +51,6 @@ NODE
 class Node {
 public:
     vector<Node*> childs_;
-    string str_;
     Attribute attr_;
 
     Node() ;
