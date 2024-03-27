@@ -15,7 +15,7 @@ Decl::Decl(initializer_list<Node*> list) : Node(list) {
     attr_.negative = false;
     attr_.str = childs_[0]->attr_.str;
     delete childs_[0];
-    // todo: attr_ポインタを属性リストに追加
+    Attribute::addVar(&attr_);
 }
 
 DeclUint::DeclUint(initializer_list<Node*> list) : Decl(list) {

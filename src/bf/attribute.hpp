@@ -2,8 +2,10 @@
 #define INCLUDED_ATTRIBUTE
 
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 enum Type {
     BOOL_TYPE = 2000,
@@ -29,6 +31,10 @@ enum Operation {
 };
 
 struct Attribute {
+private:
+    static vector<Attribute*> var_list;
+    
+public:
     Type type;
     Operation op;
     int idegit; // 整数部の桁数
@@ -39,6 +45,10 @@ struct Attribute {
     string str; // 変数名、リテラルを保存
 
     Attribute() ;
+    Attribute(string s) ;
+
+    static void addVar(Attribute* attr) ;
+    static Attribute getVar(string s) ;
 };
 
 Type castType(Type t1,Type t2) ;
