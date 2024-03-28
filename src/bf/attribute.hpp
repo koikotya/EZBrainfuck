@@ -1,6 +1,8 @@
 #ifndef INCLUDED_ATTRIBUTE
 #define INCLUDED_ATTRIBUTE
 
+#define INTERVAL 8
+
 #include <string>
 #include <vector>
 
@@ -33,7 +35,8 @@ enum Operation {
 struct Attribute {
 private:
     static vector<Attribute*> var_list;
-    
+    static int used_memory[2];
+
 public:
     Type type;
     Operation op;
@@ -47,10 +50,15 @@ public:
     Attribute() ;
     Attribute(string s) ;
 
+    int size() ;
+
     static void addVar(Attribute* attr) ;
     static Attribute getVar(string s) ;
+    static void allocateVar(Attribute *v,int type) ;
+    static void deallocVar(Attribute *v) ;
 };
 
+int getIndex(Operation op) ;
 Type castType(Type t1,Type t2) ;
 
 #endif
